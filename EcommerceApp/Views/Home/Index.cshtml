@@ -1,0 +1,466 @@
+﻿@model IEnumerable<EcommerceApp.Models.Product>
+
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<style>
+
+    .home-page {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+
+
+    .hero {
+        position: relative;
+        width: 100%;
+        min-height: 650px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        overflow: hidden;
+        background-image: linear-gradient( rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0.38) ), url("https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=2000&q=90");
+        background-size: cover;
+        background-position: center;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 800px;
+        padding: 30px;
+        color: white;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    .hero-small {
+        margin-bottom: 14px;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 5px;
+        text-transform: uppercase;
+        color: white;
+    }
+
+    .hero h1 {
+        margin: 0;
+        font-size: 72px;
+        line-height: 1;
+        font-weight: 700;
+        letter-spacing: -1px;
+        color: white;
+    }
+
+    .hero p {
+        margin: 22px 0 32px;
+        font-size: 20px;
+        color: white;
+    }
+
+    .hero-button {
+        display: inline-block;
+        padding: 13px 30px;
+        border-radius: 6px;
+        background: white;
+        color: #222;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.25s ease;
+    }
+
+        .hero-button:hover {
+            background: #222;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+
+    .products-section {
+        padding: 90px 30px;
+        background: white;
+    }
+
+    .products-title {
+        text-align: center;
+        margin-bottom: 48px;
+    }
+
+        .products-title span {
+            display: block;
+            margin-bottom: 10px;
+            color: #999;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .products-title h2 {
+            margin: 0 0 12px;
+            color: #222;
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        .products-title p {
+            margin: 0;
+            color: #777;
+            font-size: 15px;
+        }
+
+    .category-grid {
+        max-width: 1150px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 22px;
+    }
+
+    .category-card {
+        position: relative;
+        display: block;
+        height: 320px;
+        overflow: hidden;
+        border-radius: 12px;
+        text-decoration: none;
+        background: #eee;
+    }
+
+        .category-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .category-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient( transparent 35%, rgba(0, 0, 0, 0.75) );
+        }
+
+        .category-card:hover img {
+            transform: scale(1.07);
+        }
+
+    .category-info {
+        position: absolute;
+        z-index: 2;
+        left: 22px;
+        right: 22px;
+        bottom: 22px;
+        color: white;
+    }
+
+        .category-info h3 {
+            margin: 0 0 7px;
+            color: white;
+            font-size: 21px;
+            font-weight: 600;
+        }
+
+        .category-info span {
+            color: rgba(255,255,255,0.9);
+            font-size: 13px;
+        }
+
+    .no-products {
+        text-align: center;
+        color: #777;
+    }
+
+
+    .why-section {
+        position: relative;
+        min-height: 540px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        overflow: hidden;
+        background-image: linear-gradient( rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55) ), url("https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=2000&q=90");
+        background-size: cover;
+        background-position: center;
+    }
+
+    .why-content {
+        max-width: 750px;
+        padding: 40px 25px;
+        color: white;
+    }
+
+        .why-content small {
+            display: block;
+            margin-bottom: 15px;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .why-content h2 {
+            margin: 0 0 20px;
+            color: white;
+            font-size: 46px;
+            font-weight: 700;
+        }
+
+        .why-content p {
+            max-width: 620px;
+            margin: 0 auto 30px;
+            color: rgba(255,255,255,0.92);
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+    .why-values {
+        margin-bottom: 35px;
+        color: white;
+        font-size: 14px;
+        letter-spacing: 1px;
+    }
+
+        .why-values span {
+            margin: 0 10px;
+        }
+
+    .about-button {
+        display: inline-block;
+        padding: 13px 29px;
+        border: 1px solid white;
+        border-radius: 6px;
+        background: white;
+        color: #222;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.25s ease;
+    }
+
+        .about-button:hover {
+            background: transparent;
+            color: white;
+        }
+
+
+    @@media (max-width: 1000px) {
+
+        .category-grid {
+            grid-template-columns: repeat(2, 1fr);
+            max-width: 750px;
+        }
+
+        .hero h1 {
+            font-size: 60px;
+        }
+    }
+
+    @@media (max-width: 600px) {
+
+        .hero {
+            min-height: 570px;
+        }
+
+            .hero h1 {
+                font-size: 45px;
+            }
+
+        .hero-small {
+            font-size: 11px;
+            letter-spacing: 3px;
+        }
+
+        .hero p {
+            font-size: 17px;
+        }
+
+        .products-section {
+            padding: 65px 20px;
+        }
+
+        .products-title h2 {
+            font-size: 29px;
+        }
+
+        .category-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .category-card {
+            height: 280px;
+        }
+
+        .why-section {
+            min-height: 500px;
+        }
+
+        .why-content h2 {
+            font-size: 34px;
+        }
+
+        .why-content p {
+            font-size: 15px;
+        }
+
+        .why-values {
+            line-height: 2;
+        }
+    }
+
+</style>
+
+
+<div class="home-page">
+
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="hero-small">
+                Repostería artesanal
+            </div>
+
+            <h1>
+                Dulce Antojo
+            </h1>
+
+            <p>
+                Pequeños momentos, grandes sabores.
+            </p>
+
+            <a asp-controller="Products"
+               asp-action="Index"
+               class="hero-button">
+                Ver productos
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <section class="products-section">
+
+        <div class="products-title">
+
+            <span>
+                Descubre nuestros sabores
+            </span>
+
+            <h2>
+                Productos destacados
+            </h2>
+
+            <p>
+                Encuentra algo especial para cada ocasión.
+            </p>
+
+        </div>
+
+
+        @if (Model.Any())
+        {
+            <div class="category-grid">
+
+                @foreach (var product in Model)
+                {
+                    <a asp-controller="Products"
+                       asp-action="Index"
+                       asp-route-category="@product.Category"
+                       class="category-card">
+
+                        @if (!string.IsNullOrWhiteSpace(product.ImageUrl))
+                        {
+                            <img src="@product.ImageUrl"
+                                 alt="@product.Category" />
+                        }
+                        else
+                        {
+                            <div style="
+                                            width:100%;
+                                            height:100%;
+                                            display:flex;
+                                            align-items:center;
+                                            justify-content:center;
+                                            background:#eeeeee;
+                                            color:#777;">
+                                Sin imagen
+                            </div>
+                        }
+
+                        <div class="category-info">
+
+                            <h3>
+                                @product.Category
+                            </h3>
+
+                            <span>
+                                Ver productos →
+                            </span>
+
+                        </div>
+
+                    </a>
+                }
+
+            </div>
+        }
+        else
+        {
+            <div class="no-products">
+                No hay productos disponibles actualmente.
+            </div>
+        }
+
+    </section>
+
+
+    <section class="why-section">
+
+        <div class="why-content">
+
+            <small>
+                Dulce Antojo
+            </small>
+
+            <h2>
+                Hecho con dedicación
+            </h2>
+
+            <p>
+                Creamos cada producto pensando en esos pequeños
+                momentos que merecen algo especial. Cuidamos el
+                sabor, la preparación y cada detalle para que
+                disfrutar sea parte de la experiencia.
+            </p>
+
+            <div class="why-values">
+                <span>Artesanal</span>
+                ·
+                <span>Calidad</span>
+                ·
+                <span>Dedicación</span>
+            </div>
+
+            <a asp-controller="Home"
+               asp-action="Privacy"
+               class="about-button">
+                Conócenos
+            </a>
+
+        </div>
+
+    </section>
+
+</div>

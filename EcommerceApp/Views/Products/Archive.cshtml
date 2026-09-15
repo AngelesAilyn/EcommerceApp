@@ -1,0 +1,213 @@
+﻿@model EcommerceApp.Models.Product
+
+@{
+    ViewData["Title"] = "Archivar producto";
+}
+
+<style>
+    .archive-page {
+        min-height: calc(100vh - 70px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 50px 20px 70px;
+        background: #f3eadf;
+    }
+
+    .archive-card {
+        width: 100%;
+        max-width: 520px;
+        padding: 38px 42px;
+        background: #fffdf9;
+        border: 1px solid #e4d5c5;
+        border-radius: 22px;
+        box-shadow: 0 14px 35px rgba(73, 51, 40, 0.12);
+        text-align: center;
+    }
+
+    .archive-icon {
+        width: 58px;
+        height: 58px;
+        margin: 0 auto 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: #eee3d6;
+        color: #8b6a4e;
+        font-size: 25px;
+    }
+
+    .archive-card h1 {
+        margin: 0 0 10px;
+        color: #35241b;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 30px;
+    }
+
+    .archive-message {
+        margin-bottom: 25px;
+        color: #786960;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .product-info {
+        margin-bottom: 28px;
+        padding: 18px;
+        background: #f8f1e9;
+        border: 1px solid #eaded2;
+        border-radius: 14px;
+        text-align: left;
+    }
+
+        .product-info h2 {
+            margin: 0 0 8px;
+            color: #4a3426;
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        .product-info p {
+            margin: 5px 0;
+            color: #756657;
+            font-size: 13px;
+        }
+
+        .product-info strong {
+            color: #4a3426;
+        }
+
+    .archive-notice {
+        margin-bottom: 25px;
+        padding: 12px 14px;
+        border-radius: 10px;
+        background: #f3eadf;
+        color: #6f513b;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .archive-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+    }
+
+        .archive-actions button,
+        .archive-actions a {
+            min-width: 145px;
+            padding: 11px 18px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: .2s ease;
+        }
+
+    .btn-archive-cancel {
+        border: 1px solid #cdb9a5;
+        background: #fff;
+        color: #5d493c;
+    }
+
+        .btn-archive-cancel:hover {
+            background: #f3eadf;
+            color: #4a3426;
+        }
+
+    .btn-archive-confirm {
+        border: none;
+        background: #8b6a4e;
+        color: white;
+        cursor: pointer;
+    }
+
+        .btn-archive-confirm:hover {
+            background: #6f513b;
+        }
+
+    @@media (max-width: 550px) {
+        .archive-page {
+            padding: 35px 15px 55px;
+        }
+
+        .archive-card {
+            padding: 32px 24px;
+        }
+
+        .archive-actions {
+            flex-direction: column-reverse;
+        }
+
+            .archive-actions button,
+            .archive-actions a {
+                width: 100%;
+            }
+    }
+</style>
+
+<div class="archive-page">
+
+    <div class="archive-card">
+
+        <div class="archive-icon">
+            <i class="bi bi-archive"></i>
+        </div>
+
+        <h1>Archivar producto</h1>
+
+        <p class="archive-message">
+            El producto dejará de aparecer en el catálogo,
+            pero permanecerá guardado en el sistema.
+        </p>
+
+        <div class="product-info">
+
+            <h2>@Model.Name</h2>
+
+            <p>
+                <strong>Descripción:</strong>
+                @Model.Description
+            </p>
+
+            <p>
+                <strong>Precio:</strong>
+                @Model.Price.ToString("C")
+            </p>
+
+            <p>
+                <strong>Stock:</strong>
+                @Model.Stock
+            </p>
+
+        </div>
+
+        <div class="archive-notice">
+            Archivar no elimina el producto de la base de datos.
+            Podrá conservarse para el registro administrativo.
+        </div>
+
+        <form asp-action="Archive" method="post">
+
+            <input type="hidden" asp-for="Id" />
+
+            <div class="archive-actions">
+
+                <a asp-action="Index"
+                   class="btn-archive-cancel">
+                    Cancelar
+                </a>
+
+                <button type="submit"
+                        class="btn-archive-confirm">
+                    Archivar producto
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

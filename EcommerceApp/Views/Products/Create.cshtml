@@ -1,0 +1,302 @@
+﻿@model EcommerceApp.Models.Product
+
+@{
+    ViewData["Title"] = "Nuevo producto";
+}
+
+<style>
+
+    .product-form-page {
+        min-height: auto;
+        padding: 25px 20px 35px;
+        background: #f3eadf;
+    }
+
+    .product-form-card {
+        width: 100%;
+        max-width: 650px;
+        margin: 0 auto;
+        padding: 25px 35px;
+        background: #fffdf9;
+        border: 1px solid #e4d5c5;
+        border-radius: 20px;
+        box-shadow: 0 12px 30px rgba(73, 51, 40, 0.10);
+    }
+
+    .product-form-header {
+        text-align: center;
+        margin-bottom: 18px;
+    }
+
+        .product-form-header span {
+            display: block;
+            margin-bottom: 5px;
+            color: #8b5e3c;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .product-form-header h1 {
+            margin: 0;
+            color: #35241b;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .product-form-header p {
+            margin: 6px 0 0;
+            color: #786960;
+            font-size: 13px;
+        }
+
+    .form-field {
+        margin-bottom: 12px;
+    }
+
+        .form-field label {
+            display: block;
+            margin-bottom: 5px;
+            color: #493328;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+    .form-control,
+    .form-select {
+        width: 100%;
+        padding: 8px 11px;
+        border: 1px solid #d8c4ae;
+        border-radius: 9px;
+        background: #fff;
+        color: #493328;
+        font-size: 13px;
+    }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #8b5e3c;
+            box-shadow: 0 0 0 3px rgba(139, 94, 60, 0.10);
+            outline: none;
+        }
+
+    textarea.form-control {
+        min-height: 75px;
+        resize: vertical;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    .field-validation-error,
+    .validation-summary-errors {
+        color: #a0443b;
+        font-size: 11px;
+    }
+
+    .validation-summary-errors {
+        margin-bottom: 12px;
+        padding: 8px 11px;
+        border-radius: 9px;
+        background: #f8e8e5;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 17px;
+        padding-top: 14px;
+        border-top: 1px solid #eaded2;
+    }
+
+    .btn-save {
+        border: none;
+        border-radius: 9px;
+        padding: 9px 19px;
+        background: #4a3426;
+        color: white;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+        .btn-save:hover {
+            background: #6f513b;
+        }
+
+    .btn-cancel {
+        color: #705d4d;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+        .btn-cancel:hover {
+            color: #4a3426;
+        }
+
+    @@media (max-width: 600px) {
+
+        .product-form-page {
+            padding: 20px 15px 30px;
+        }
+
+        .product-form-card {
+            padding: 22px 20px;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .product-form-header h1 {
+            font-size: 27px;
+        }
+    }
+
+</style>
+
+<div class="product-form-page">
+
+    <div class="product-form-card">
+
+        <div class="product-form-header">
+
+            <span>
+                Dulce Antojo
+            </span>
+
+            <h1>
+                Nuevo producto
+            </h1>
+
+            <p>
+                Agrega un nuevo producto al catálogo.
+            </p>
+
+        </div>
+
+        <form asp-action="Create" method="post">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger"></div>
+
+            <div class="form-field">
+
+                <label asp-for="Name"></label>
+
+                <input asp-for="Name"
+                       class="form-control"
+                       placeholder="Ej. Roll de Chocolate" />
+
+                <span asp-validation-for="Name"
+                      class="text-danger"></span>
+
+            </div>
+
+            <div class="form-field">
+
+                <label asp-for="Description"></label>
+
+                <textarea asp-for="Description"
+                          class="form-control"
+                          placeholder="Describe brevemente el producto"></textarea>
+
+                <span asp-validation-for="Description"
+                      class="text-danger"></span>
+
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-field">
+
+                    <label asp-for="Price"></label>
+
+                    <input asp-for="Price"
+                           class="form-control"
+                           type="number"
+                           min="0.01"
+                           step="0.01"
+                           placeholder="0.00" />
+
+                    <span asp-validation-for="Price"
+                          class="text-danger"></span>
+
+                </div>
+
+                <div class="form-field">
+
+                    <label asp-for="Stock"></label>
+
+                    <input asp-for="Stock"
+                           class="form-control"
+                           type="number"
+                           min="0"
+                           step="1"
+                           placeholder="0" />
+
+                    <span asp-validation-for="Stock"
+                          class="text-danger"></span>
+
+                </div>
+
+            </div>
+
+            <div class="form-field">
+
+                <label asp-for="Category"></label>
+
+                <input asp-for="Category"
+                       class="form-control"
+                       placeholder="Ej. Rolls de canela" />
+
+                <span asp-validation-for="Category"
+                      class="text-danger"></span>
+
+            </div>
+
+            <div class="form-field">
+
+                <label asp-for="ImageUrl"></label>
+
+                <input asp-for="ImageUrl"
+                       class="form-control"
+                       type="url"
+                       placeholder="https://..." />
+
+                <span asp-validation-for="ImageUrl"
+                      class="text-danger"></span>
+
+            </div>
+
+            <div class="form-actions">
+
+                <a asp-action="Index"
+                   class="btn-cancel">
+                    Cancelar
+                </a>
+
+                <button type="submit"
+                        class="btn-save">
+                    Guardar producto
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

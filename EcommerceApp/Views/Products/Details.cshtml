@@ -1,0 +1,352 @@
+﻿@model EcommerceApp.Models.Product
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<style>
+    .detail-page {
+        min-height: calc(100vh - 70px);
+        padding: 50px 20px 70px;
+        background: #f3eadf;
+    }
+
+    .detail-container {
+        max-width: 1050px;
+        margin: 0 auto;
+    }
+
+    .detail-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        margin-bottom: 22px;
+        color: #6f513b;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+        .detail-back:hover {
+            color: #4a3426;
+        }
+
+    .detail-card {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        overflow: hidden;
+        background: #fffdf9;
+        border: 1px solid #e4d5c5;
+        border-radius: 24px;
+        box-shadow: 0 15px 35px rgba(73, 51, 40, 0.12);
+    }
+
+    .detail-image-container {
+        min-height: 400px;
+        background: #ead9c5;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .detail-image {
+        width: 100%;
+        height: 100%;
+        min-height: 400px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .detail-no-image {
+        min-height: 530px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 12px;
+        color: #8b6a4e;
+        background: #ead9c5;
+    }
+
+        .detail-no-image i {
+            font-size: 55px;
+        }
+
+        .detail-no-image span {
+            font-size: 14px;
+        }
+
+    .detail-content {
+        padding: 35px 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .detail-category {
+        display: inline-block;
+        width: fit-content;
+        margin-bottom: 15px;
+        padding: 7px 13px;
+        border-radius: 20px;
+        background: #f0e3d4;
+        color: #8b5e3c;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    .detail-content h1 {
+        margin: 0 0 14px;
+        color: #35241b;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 34px;
+        line-height: 1.15;
+    }
+
+    .detail-description {
+        margin-bottom: 25px;
+        color: #756657;
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    .detail-price {
+        margin-bottom: 24px;
+        color: #8b5e3c;
+        font-size: 30px;
+        font-weight: 700;
+    }
+
+    .detail-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 30px;
+    }
+
+    .detail-info-box {
+        padding: 14px 16px;
+        background: #f8f1e9;
+        border: 1px solid #eaded2;
+        border-radius: 12px;
+    }
+
+    .detail-info-label {
+        display: block;
+        margin-bottom: 4px;
+        color: #8a786a;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+    }
+
+    .detail-info-value {
+        color: #493328;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .stock-available {
+        color: #61744c;
+    }
+
+    .stock-empty {
+        color: #a0443b;
+    }
+
+    .detail-actions {
+        display: flex;
+        gap: 12px;
+    }
+
+    .detail-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 20px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: .2s ease;
+    }
+
+    .detail-primary {
+        background: #4a3426;
+        color: white;
+    }
+
+        .detail-primary:hover {
+            background: #6f513b;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+    .detail-secondary {
+        border: 1px solid #cdb9a5;
+        background: white;
+        color: #5d493c;
+    }
+
+        .detail-secondary:hover {
+            background: #f3eadf;
+            color: #4a3426;
+        }
+
+    @@media (max-width: 800px) {
+
+        .detail-page {
+            padding: 35px 15px 55px;
+        }
+
+        .detail-card {
+            grid-template-columns: 1fr;
+        }
+
+        .detail-image-container,
+        .detail-image,
+        .detail-no-image {
+            min-height: 360px;
+        }
+
+        .detail-content {
+            padding: 35px 28px;
+        }
+
+            .detail-content h1 {
+                font-size: 32px;
+            }
+    }
+
+    @@media (max-width: 500px) {
+
+        .detail-info {
+            grid-template-columns: 1fr;
+        }
+
+        .detail-actions {
+            flex-direction: column;
+        }
+
+        .detail-button {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="detail-page">
+
+    <div class="detail-container">
+
+        <a asp-action="Index" class="detail-back">
+            <i class="bi bi-arrow-left"></i>
+            Volver a productos
+        </a>
+
+        <div class="detail-card">
+
+            <div class="detail-image-container">
+
+                @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+                {
+                    <img src="@Model.ImageUrl"
+                         alt="@Model.Name"
+                         class="detail-image" />
+                }
+                else
+                {
+                    <div class="detail-no-image">
+                        <i class="bi bi-image"></i>
+                        <span>Imagen no disponible</span>
+                    </div>
+                }
+
+            </div>
+
+            <div class="detail-content">
+
+                @if (!string.IsNullOrWhiteSpace(Model.Category))
+                {
+                    <span class="detail-category">
+                        @Model.Category
+                    </span>
+                }
+
+                <h1>
+                    @Model.Name
+                </h1>
+
+                <p class="detail-description">
+                    @Model.Description
+                </p>
+
+                <div class="detail-price">
+                    @Model.Price.ToString("C")
+                </div>
+
+                <div class="detail-info">
+
+                    <div class="detail-info-box">
+
+                        <span class="detail-info-label">
+                            Disponibilidad
+                        </span>
+
+                        @if (Model.Stock > 0)
+                        {
+                            <span class="detail-info-value stock-available">
+                                Disponible
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="detail-info-value stock-empty">
+                                Agotado
+                            </span>
+                        }
+
+                    </div>
+
+                    <div class="detail-info-box">
+
+                        <span class="detail-info-label">
+                            Stock
+                        </span>
+
+                        <span class="detail-info-value">
+                            @Model.Stock unidades
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="detail-actions">
+
+                    <a asp-action="Index"
+                       class="detail-button detail-secondary">
+                        <i class="bi bi-arrow-left"></i>
+                        Seguir viendo
+                    </a>
+
+                    @if (Model.Stock > 0)
+                    {
+                        <a href="#"
+                           class="detail-button detail-primary">
+                            <i class="bi bi-cart-plus"></i>
+                            Agregar al carrito
+                        </a>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

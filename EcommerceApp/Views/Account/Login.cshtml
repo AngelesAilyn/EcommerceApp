@@ -1,0 +1,252 @@
+﻿@model EcommerceApp.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Iniciar sesión";
+}
+
+<style>
+    .auth-page {
+        min-height: calc(100vh - 70px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 55px 20px 70px;
+        background: #f3eadf;
+    }
+
+    .auth-card {
+        width: 100%;
+        max-width: 430px;
+        padding: 40px 42px;
+        background: #fffdf9;
+        border: 1px solid #e4d5c5;
+        border-radius: 22px;
+        box-shadow: 0 14px 35px rgba(73, 51, 40, 0.12);
+    }
+
+    .auth-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .auth-brand {
+        color: #8b5e3c;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+    }
+
+    .auth-header h1 {
+        margin: 0;
+        color: #35241b;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 34px;
+        font-weight: 700;
+    }
+
+    .auth-header p {
+        margin: 10px 0 0;
+        color: #786960;
+        font-size: 14px;
+    }
+
+    .auth-field {
+        margin-bottom: 19px;
+    }
+
+        .auth-field label {
+            display: block;
+            margin-bottom: 7px;
+            color: #493328;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+    .auth-control {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid #d8c4ae;
+        border-radius: 10px;
+        background: #ffffff;
+        color: #493328;
+        font-size: 14px;
+        outline: none;
+        transition: .2s ease;
+    }
+
+        .auth-control:focus {
+            border-color: #8b5e3c;
+            box-shadow: 0 0 0 3px rgba(139, 94, 60, 0.10);
+        }
+
+    .auth-check {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 4px 0 24px;
+        color: #6f5d52;
+        font-size: 13px;
+    }
+
+        .auth-check input {
+            accent-color: #8b5e3c;
+        }
+
+    .auth-validation {
+        display: block;
+        margin-top: 6px;
+        color: #a0443b;
+        font-size: 12px;
+    }
+
+    .auth-summary {
+        margin-bottom: 20px;
+        padding: 12px 14px;
+        border-radius: 10px;
+        background: #f8e8e5;
+        color: #a0443b;
+        font-size: 12px;
+    }
+
+    .auth-button {
+        width: 100%;
+        border: none;
+        border-radius: 10px;
+        padding: 13px;
+        background: #4a3426;
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: .2s ease;
+    }
+
+        .auth-button:hover {
+            background: #6f513b;
+            transform: translateY(-1px);
+        }
+
+    .auth-footer {
+        margin-top: 25px;
+        padding-top: 22px;
+        border-top: 1px solid #eaded2;
+        text-align: center;
+        color: #786960;
+        font-size: 13px;
+    }
+
+        .auth-footer a {
+            color: #8b5e3c;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+            .auth-footer a:hover {
+                color: #4a3426;
+                text-decoration: underline;
+            }
+
+    @@media (max-width: 600px) {
+        .auth-page {
+            padding: 35px 15px 55px;
+        }
+
+        .auth-card {
+            padding: 32px 24px;
+        }
+
+        .auth-header h1 {
+            font-size: 29px;
+        }
+    }
+</style>
+
+<div class="auth-page">
+
+    <div class="auth-card">
+
+        <div class="auth-header">
+            <div class="auth-brand">
+                Dulce Antojo
+            </div>
+
+            <h1>
+                Bienvenido
+            </h1>
+
+            <p>
+                Inicia sesión para continuar.
+            </p>
+        </div>
+
+        <form asp-action="Login" method="post">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="auth-summary"></div>
+
+            <div class="auth-field">
+
+                <label asp-for="Email"></label>
+
+                <input asp-for="Email"
+                       class="auth-control"
+                       type="email"
+                       placeholder="correo@ejemplo.com"
+                       autocomplete="email" />
+
+                <span asp-validation-for="Email"
+                      class="auth-validation"></span>
+
+            </div>
+
+            <div class="auth-field">
+
+                <label asp-for="Password"></label>
+
+                <input asp-for="Password"
+                       class="auth-control"
+                       type="password"
+                       placeholder="Ingresa tu contraseña"
+                       autocomplete="current-password" />
+
+                <span asp-validation-for="Password"
+                      class="auth-validation"></span>
+
+            </div>
+
+            <label class="auth-check">
+
+                <input asp-for="RememberMe" />
+
+                <span>
+                    Recordarme
+                </span>
+
+            </label>
+
+            <button type="submit"
+                    class="auth-button">
+                Iniciar sesión
+            </button>
+
+        </form>
+
+        <div class="auth-footer">
+
+            ¿No tienes una cuenta?
+            <a asp-controller="Account"
+               asp-action="Register">
+                Regístrate aquí
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

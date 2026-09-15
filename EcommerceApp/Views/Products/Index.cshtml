@@ -1,0 +1,636 @@
+﻿@model IEnumerable<EcommerceApp.Models.Product>
+
+@{
+    ViewData["Title"] = "Productos";
+}
+
+<style>
+
+    .catalog-page {
+        min-height: 100vh;
+        padding: 55px 35px 90px;
+        background-color: #f3eadf;
+        background-image: radial-gradient(circle at 20px 20px, rgba(116, 77, 51, 0.08) 2px, transparent 2.5px), radial-gradient(circle at 60px 60px, rgba(116, 77, 51, 0.06) 2px, transparent 2.5px);
+        background-size: 80px 80px;
+    }
+
+    .catalog-container {
+        max-width: 1250px;
+        margin: 0 auto;
+    }
+
+    .catalog-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .catalog-label {
+        display: block;
+        margin-bottom: 10px;
+        color: #8b5e3c;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+    }
+
+    .catalog-header h1 {
+        margin: 0;
+        color: #35241b;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 50px;
+        line-height: 1.1;
+        font-weight: 700;
+    }
+
+    .catalog-header p {
+        max-width: 650px;
+        margin: 15px auto 0;
+        color: #756456;
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    .catalog-filter {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 65px;
+    }
+
+        .catalog-filter select {
+            min-width: 285px;
+            padding: 13px 18px;
+            border: 1px solid #d3b99e;
+            border-radius: 30px;
+            background: #fffdf9;
+            color: #493328;
+            font-size: 14px;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            box-shadow: 0 5px 18px rgba(73, 51, 40, 0.10);
+        }
+
+            .catalog-filter select:focus {
+                border-color: #8b5e3c;
+                box-shadow: 0 0 0 3px rgba(139, 94, 60, 0.12);
+            }
+
+    .admin-product-button {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 25px;
+    }
+
+        .admin-product-button a {
+            padding: 10px 18px;
+            border-radius: 10px;
+            background: #4a3426;
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: .2s ease;
+        }
+
+            .admin-product-button a:hover {
+                background: #6f513b;
+                color: white;
+            }
+
+    .catalog-category {
+        margin-bottom: 75px;
+    }
+
+    .category-heading {
+        display: flex;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+        .category-heading::after {
+            content: "";
+            height: 1px;
+            flex: 1;
+            margin-left: 20px;
+            background: #d4bda6;
+        }
+
+        .category-heading h2 {
+            margin: 0;
+            color: #38271e;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+    .category-heading-count {
+        margin-left: 20px;
+        color: #927b69;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .catalog-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+    }
+
+    .catalog-card {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        overflow: hidden;
+        border: 1px solid #e4d5c5;
+        border-radius: 18px;
+        background: #fffdf9;
+        box-shadow: 0 7px 22px rgba(73, 51, 40, 0.10);
+        transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+        .catalog-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 16px 32px rgba(73, 51, 40, 0.17);
+        }
+
+    .catalog-image {
+        position: relative;
+        width: 100%;
+        height: 225px;
+        overflow: hidden;
+        background: #e9d9c7;
+    }
+
+        .catalog-image img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            transition: transform .5s ease;
+        }
+
+    .catalog-card:hover .catalog-image img {
+        transform: scale(1.06);
+    }
+
+    .catalog-stock-badge {
+        position: absolute;
+        top: 13px;
+        right: 13px;
+        padding: 7px 11px;
+        border-radius: 20px;
+        background: #4a3426;
+        color: white;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: .5px;
+    }
+
+    .catalog-info {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        padding: 19px 18px 18px;
+    }
+
+        .catalog-info h3 {
+            margin: 0 0 8px;
+            color: #3d2a20;
+            font-size: 18px;
+            line-height: 1.3;
+            font-weight: 700;
+        }
+
+    .catalog-description {
+        display: -webkit-box;
+        overflow: hidden;
+        margin: 0 0 18px;
+        color: #786960;
+        font-size: 13px;
+        line-height: 1.55;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .catalog-bottom {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: auto;
+    }
+
+    .catalog-price {
+        color: #8b5e3c;
+        font-size: 19px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .catalog-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 9px 14px;
+        border-radius: 9px;
+        background: #4a3426;
+        color: white !important;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 600;
+        transition: .2s ease;
+    }
+
+        .catalog-button:hover {
+            background: #74513b;
+            color: white !important;
+        }
+
+    .catalog-arrow {
+        font-size: 15px;
+        line-height: 0;
+    }
+
+    .catalog-unavailable {
+        padding: 9px 13px;
+        border-radius: 9px;
+        background: #e2dbd3;
+        color: #82766d;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .catalog-empty {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 60px 30px;
+        text-align: center;
+        border: 1px solid #e2d3c2;
+        border-radius: 20px;
+        background: #fffdf9;
+    }
+
+        .catalog-empty h3 {
+            margin-bottom: 10px;
+            color: #3d2a20;
+            font-family: Georgia, "Times New Roman", serif;
+        }
+
+        .catalog-empty p {
+            margin: 0;
+            color: #786960;
+            font-size: 14px;
+        }
+
+    @@media (max-width: 1050px) {
+
+        .catalog-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @@media (max-width: 800px) {
+
+        .catalog-page {
+            padding: 45px 20px 70px;
+        }
+
+        .catalog-header h1 {
+            font-size: 42px;
+        }
+
+        .catalog-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .catalog-image {
+            height: 205px;
+        }
+    }
+
+    @@media (max-width: 550px) {
+
+        .catalog-page {
+            padding: 35px 15px 60px;
+        }
+
+        .catalog-header h1 {
+            font-size: 35px;
+        }
+
+        .catalog-header p {
+            font-size: 14px;
+        }
+
+        .catalog-filter {
+            margin-bottom: 45px;
+        }
+
+            .catalog-filter select {
+                width: 100%;
+                min-width: 0;
+            }
+
+        .catalog-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .catalog-image {
+            height: 235px;
+        }
+
+        .category-heading h2 {
+            font-size: 27px;
+        }
+
+        .category-heading-count {
+            margin-left: 12px;
+        }
+    }
+
+    .admin-actions {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 12px 18px 16px;
+        border-top: 1px solid #eee2d5;
+    }
+
+        .admin-actions a,
+        .admin-actions button {
+            border: none;
+            border-radius: 7px;
+            padding: 7px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .admin-actions form {
+            margin: 0;
+        }
+
+    .admin-edit {
+        background: #ead8c7;
+        color: #654333 !important;
+    }
+
+        .admin-edit:hover {
+            background: #d8bea4;
+        }
+
+    .admin-archive {
+        background: #eee3d6;
+        color: #705d4d;
+    }
+
+        .admin-archive:hover {
+            background: #dfd0c0;
+        }
+
+    .admin-delete {
+        background: #ead0cc;
+        color: #814b44 !important;
+    }
+
+        .admin-delete:hover {
+            background: #dcb9b3;
+        }
+
+    .btn-archive {
+        background: #c49a6c;
+        color: white;
+        border: none;
+        border-radius: 9px;
+        padding: 8px 14px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        transition: .2s ease;
+    }
+
+        .btn-archive:hover {
+            background: #a98055;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+</style>
+
+<div class="catalog-page">
+
+    <div class="catalog-container">
+
+        <div class="catalog-header">
+
+            <span class="catalog-label">
+                Dulce Antojo
+            </span>
+
+            <h1>
+                Nuestro catálogo
+            </h1>
+
+            <p>
+                Descubre nuestros productos de repostería
+                preparados para disfrutar en cada ocasión.
+            </p>
+
+        </div>
+
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="admin-product-button">
+
+                <a asp-action="Create">
+                    + Nuevo producto
+                </a>
+
+                <a asp-action="Archived"
+                   style="margin-left:10px;
+                      background:#c49a6c;">
+                    <i class="bi bi-archive"></i>
+                    Productos archivados
+                </a>
+
+            </div>
+        }
+
+        <div class="catalog-filter">
+
+            <form asp-action="Index" method="get">
+
+                <select name="category"
+                        onchange="this.form.submit()">
+
+                    <option value="">
+                        Todos los productos
+                    </option>
+
+                    @foreach (var category in ViewBag.Categories)
+                    {
+                        <option value="@category"
+                                selected="@(ViewBag.SelectedCategory == category)">
+                            @category
+                        </option>
+                    }
+
+                </select>
+
+            </form>
+
+        </div>
+
+        @if (Model.Any())
+        {
+            var productosPorCategoria = Model
+            .GroupBy(p => string.IsNullOrWhiteSpace(p.Category)
+            ? "Otros productos"
+            : p.Category)
+            .OrderBy(g => g.Key);
+
+            foreach (var grupo in productosPorCategoria)
+            {
+                <section class="catalog-category">
+
+                    <div class="category-heading">
+
+                        <h2>
+                            @grupo.Key
+                        </h2>
+
+                        <span class="category-heading-count">
+                            @grupo.Count()
+                            @(grupo.Count() == 1 ? "producto" : "productos")
+                        </span>
+
+                    </div>
+
+                    <div class="catalog-grid">
+
+                        @foreach (var product in grupo)
+                        {
+                            <article class="catalog-card">
+
+                                <div class="catalog-image">
+
+                                    @if (!string.IsNullOrWhiteSpace(product.ImageUrl))
+                                    {
+                                        <img src="@product.ImageUrl"
+                                             alt="@product.Name" />
+                                    }
+                                    else
+                                    {
+                                        <div style="
+                                                            width:100%;
+                                                            height:100%;
+                                                            display:flex;
+                                                            align-items:center;
+                                                            justify-content:center;
+                                                            color:#8b7869;
+                                                            font-size:13px;">
+                                            Sin imagen
+                                        </div>
+                                    }
+
+                                    @if (product.Stock <= 0)
+                                    {
+                                        <span class="catalog-stock-badge">
+                                            AGOTADO
+                                        </span>
+                                    }
+
+                                </div>
+
+                                <div class="catalog-info">
+
+                                    <h3>
+                                        @product.Name
+                                    </h3>
+
+                                    <p class="catalog-description">
+                                        @product.Description
+                                    </p>
+
+                                    <div class="catalog-bottom">
+
+                                        <span class="catalog-price">
+                                            Bs. @product.Price.ToString("0.00")
+                                        </span>
+
+                                        @if (product.Stock > 0)
+                                        {
+                                            <a asp-action="Details"
+                                               asp-route-id="@product.Id"
+                                               class="catalog-button">
+                                                Ver producto
+                                                <span class="catalog-arrow">→</span>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <span class="catalog-unavailable">
+                                                Agotado
+                                            </span>
+                                        }
+
+                                    </div>
+
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <div class="admin-actions">
+
+                                            <a asp-action="Edit"
+                                               asp-route-id="@product.Id"
+                                               class="admin-edit">
+                                                Editar
+                                            </a>
+
+                                            <a asp-action="Archive"
+                                               asp-route-id="@product.Id"
+                                               class="btn btn-archive">
+                                                <i class="bi bi-archive"></i>
+                                                Archivar
+                                            </a>
+
+                                            <a asp-action="Delete"
+                                               asp-route-id="@product.Id"
+                                               class="admin-delete">
+                                                Eliminar
+                                            </a>
+
+                                        </div>
+                                    }
+
+                                </div>
+
+                            </article>
+                        }
+
+                    </div>
+
+                </section>
+            }
+        }
+        else
+        {
+            <div class="catalog-empty">
+
+                <h3>
+                    No hay productos disponibles
+                </h3>
+
+                <p>
+                    Prueba seleccionando otra categoría.
+                </p>
+
+            </div>
+        }
+
+    </div>
+
+</div>

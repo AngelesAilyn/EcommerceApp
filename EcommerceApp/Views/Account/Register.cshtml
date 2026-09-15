@@ -1,0 +1,299 @@
+﻿@model EcommerceApp.Models.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Crear cuenta";
+}
+
+<style>
+    .register-page {
+        min-height: calc(100vh - 70px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 45px 20px 65px;
+        background: #f3eadf;
+    }
+
+    .register-card {
+        width: 100%;
+        max-width: 620px;
+        padding: 38px 42px;
+        background: #fffdf9;
+        border: 1px solid #e4d5c5;
+        border-radius: 22px;
+        box-shadow: 0 14px 35px rgba(73, 51, 40, 0.12);
+    }
+
+    .register-header {
+        text-align: center;
+        margin-bottom: 28px;
+    }
+
+    .register-brand {
+        color: #8b5e3c;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        margin-bottom: 9px;
+    }
+
+    .register-header h1 {
+        margin: 0;
+        color: #35241b;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 32px;
+        font-weight: 700;
+    }
+
+    .register-header p {
+        margin: 9px 0 0;
+        color: #786960;
+        font-size: 14px;
+    }
+
+    .register-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px 20px;
+    }
+
+    .register-field {
+        margin-bottom: 2px;
+    }
+
+        .register-field.full {
+            grid-column: 1 / -1;
+        }
+
+        .register-field label {
+            display: block;
+            margin-bottom: 7px;
+            color: #493328;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+    .register-control {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid #d8c4ae;
+        border-radius: 10px;
+        background: #ffffff;
+        color: #493328;
+        font-size: 14px;
+        outline: none;
+        transition: .2s ease;
+        box-sizing: border-box;
+    }
+
+        .register-control:focus {
+            border-color: #8b5e3c;
+            box-shadow: 0 0 0 3px rgba(139, 94, 60, 0.10);
+        }
+
+    .register-validation {
+        display: block;
+        margin-top: 5px;
+        color: #a0443b;
+        font-size: 12px;
+    }
+
+    .register-summary {
+        margin-bottom: 20px;
+        padding: 12px 14px;
+        border-radius: 10px;
+        background: #f8e8e5;
+        color: #a0443b;
+        font-size: 12px;
+    }
+
+    .register-button {
+        width: 100%;
+        margin-top: 23px;
+        border: none;
+        border-radius: 10px;
+        padding: 13px;
+        background: #4a3426;
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: .2s ease;
+    }
+
+        .register-button:hover {
+            background: #6f513b;
+            transform: translateY(-1px);
+        }
+
+    .register-footer {
+        margin-top: 23px;
+        padding-top: 20px;
+        border-top: 1px solid #eaded2;
+        text-align: center;
+        color: #786960;
+        font-size: 13px;
+    }
+
+        .register-footer a {
+            color: #8b5e3c;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+            .register-footer a:hover {
+                color: #4a3426;
+                text-decoration: underline;
+            }
+
+    @@media (max-width: 650px) {
+        .register-page {
+            padding: 30px 15px 50px;
+        }
+
+        .register-card {
+            padding: 32px 24px;
+        }
+
+        .register-grid {
+            grid-template-columns: 1fr;
+            gap: 17px;
+        }
+
+        .register-field.full {
+            grid-column: auto;
+        }
+
+        .register-header h1 {
+            font-size: 29px;
+        }
+    }
+</style>
+
+<div class="register-page">
+
+    <div class="register-card">
+
+        <div class="register-header">
+
+            <div class="register-brand">
+                Dulce Antojo
+            </div>
+
+            <h1>
+                Crear cuenta
+            </h1>
+
+            <p>
+                Regístrate para realizar tus pedidos.
+            </p>
+
+        </div>
+
+        <form asp-action="Register" method="post">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="register-summary"></div>
+
+            <div class="register-grid">
+
+                <div class="register-field">
+
+                    <label asp-for="FullName"></label>
+
+                    <input asp-for="FullName"
+                           class="register-control"
+                           placeholder="Nombre completo"
+                           autocomplete="name" />
+
+                    <span asp-validation-for="FullName"
+                          class="register-validation"></span>
+
+                </div>
+
+                <div class="register-field">
+
+                    <label asp-for="Email"></label>
+
+                    <input asp-for="Email"
+                           class="register-control"
+                           type="email"
+                           placeholder="correo@ejemplo.com"
+                           autocomplete="email" />
+
+                    <span asp-validation-for="Email"
+                          class="register-validation"></span>
+
+                </div>
+
+                <div class="register-field">
+
+                    <label asp-for="Password"></label>
+
+                    <input asp-for="Password"
+                           class="register-control"
+                           type="password"
+                           placeholder="Contraseña"
+                           autocomplete="new-password" />
+
+                    <span asp-validation-for="Password"
+                          class="register-validation"></span>
+
+                </div>
+
+                <div class="register-field">
+
+                    <label asp-for="ConfirmPassword"></label>
+
+                    <input asp-for="ConfirmPassword"
+                           class="register-control"
+                           type="password"
+                           placeholder="Repite tu contraseña"
+                           autocomplete="new-password" />
+
+                    <span asp-validation-for="ConfirmPassword"
+                          class="register-validation"></span>
+
+                </div>
+
+                <div class="register-field full">
+
+                    <label asp-for="Address"></label>
+
+                    <input asp-for="Address"
+                           class="register-control"
+                           placeholder="Dirección (opcional)"
+                           autocomplete="street-address" />
+
+                    <span asp-validation-for="Address"
+                          class="register-validation"></span>
+
+                </div>
+
+            </div>
+
+            <button type="submit"
+                    class="register-button">
+                Crear mi cuenta
+            </button>
+
+        </form>
+
+        <div class="register-footer">
+
+            ¿Ya tienes una cuenta?
+            <a asp-controller="Account"
+               asp-action="Login">
+                Inicia sesión
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
