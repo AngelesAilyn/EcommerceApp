@@ -1,0 +1,383 @@
+﻿@model EcommerceApp.Models.Order
+
+@{
+    ViewData["Title"] = "Pedido confirmado";
+}
+
+<div class="order-details-page">
+    <div class="order-success">
+        <div class="order-success-icon">
+            <i class="bi bi-check-lg"></i>
+        </div>
+
+        <h1>¡Pedido realizado!</h1>
+
+        <p>
+            Tu pedido fue registrado correctamente.
+        </p>
+
+    </div>
+
+    <div class="order-card">
+
+        <div class="order-card-header">
+
+            <div>
+                <span class="order-label">Pedido</span>
+                <h2>#@Model.Id</h2>
+            </div>
+
+            <div class="order-status">
+                @Model.Status
+            </div>
+
+        </div>
+
+        <div class="order-info">
+
+            <div>
+                <span>Fecha</span>
+                <strong>
+                    @Model.OrderDate.ToLocalTime().ToString("dd/MM/yyyy HH:mm")
+                </strong>
+            </div>
+
+            <div>
+                <span>Total</span>
+                <strong>
+                    Bs. @Model.Total.ToString("F2")
+                </strong>
+            </div>
+
+            <div>
+                <span>Estado del pedido</span>
+                <strong>
+                    @Model.Status
+                </strong>
+            </div>
+
+            <div>
+                <span>Método de pago</span>
+                <strong>
+                    @Model.PaymentMethod
+                </strong>
+            </div>
+
+            <div>
+                <span>Estado del pago</span>
+                <strong>
+                    @Model.PaymentStatus
+                </strong>
+            </div>
+
+            <div>
+                <span>Forma de entrega</span>
+                <strong>
+                    @Model.DeliveryMethod
+                </strong>
+            </div>
+
+        </div>
+
+        <div class="order-products">
+
+            <h3>Productos</h3>
+
+            @foreach (var detail in Model.OrderDetails)
+            {
+                <div class="order-product">
+
+                    <div class="order-product-info">
+
+                        <strong>
+                            @(detail.Product?.Name ?? "Producto")
+                        </strong>
+
+                        <span>
+                            Cantidad: @detail.Quantity
+                        </span>
+
+                    </div>
+
+                    <div class="order-product-price">
+
+                        <span>
+                            Bs. @detail.UnitPrice.ToString("F2") c/u
+                        </span>
+
+                        <strong>
+                            Bs. @detail.Subtotal.ToString("F2")
+                        </strong>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+        <div class="order-total">
+
+            <span>Total del pedido</span>
+
+            <strong>
+                Bs. @Model.Total.ToString("F2")
+            </strong>
+
+        </div>
+
+        <div class="order-actions">
+
+            <a asp-controller="Orders"
+               asp-action="MyOrders"
+               class="order-button secondary">
+                <i class="bi bi-bag"></i>
+                Mis compras
+            </a>
+
+            <a asp-controller="Products"
+               asp-action="Index"
+               class="order-button primary">
+                <i class="bi bi-shop"></i>
+                Seguir comprando
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+<style>
+
+    .order-details-page {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 60px 20px 90px;
+    }
+
+    .order-success {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .order-success-icon {
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: #e8f3e7;
+        color: #4c7a4a;
+        font-size: 30px;
+    }
+
+    .order-success h1 {
+        margin: 0;
+        color: #35241b;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 34px;
+    }
+
+    .order-success p {
+        margin: 10px 0 0;
+        color: #786960;
+        font-size: 15px;
+    }
+
+    .order-card {
+        background: #fffdf9;
+        border: 1px solid #e4d5c5;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 12px 30px rgba(73, 51, 40, 0.10);
+    }
+
+    .order-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding-bottom: 22px;
+        border-bottom: 1px solid #eaded2;
+    }
+
+    .order-label {
+        color: #8b5e3c;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .order-card-header h2 {
+        margin: 4px 0 0;
+        color: #35241b;
+        font-size: 25px;
+    }
+
+    .order-status {
+        padding: 8px 14px;
+        border-radius: 20px;
+        background: #f4eadf;
+        color: #6f513b;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .order-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        padding: 22px 0;
+        border-bottom: 1px solid #eaded2;
+    }
+
+        .order-info span,
+        .order-product-info span {
+            display: block;
+            margin-bottom: 5px;
+            color: #8a7a70;
+            font-size: 12px;
+        }
+
+        .order-info strong {
+            color: #493328;
+            font-size: 14px;
+        }
+
+    .order-products {
+        padding-top: 25px;
+    }
+
+        .order-products h3 {
+            margin: 0 0 15px;
+            color: #35241b;
+            font-size: 19px;
+        }
+
+    .order-product {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 16px 0;
+        border-bottom: 1px solid #eee3d8;
+    }
+
+    .order-product-info strong {
+        display: block;
+        color: #493328;
+        font-size: 15px;
+        margin-bottom: 5px;
+    }
+
+    .order-product-price {
+        text-align: right;
+        white-space: nowrap;
+    }
+
+        .order-product-price span {
+            display: block;
+            margin-bottom: 4px;
+            color: #8a7a70;
+            font-size: 12px;
+        }
+
+        .order-product-price strong {
+            color: #493328;
+            font-size: 15px;
+        }
+
+    .order-total {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 24px 0;
+        color: #493328;
+    }
+
+        .order-total strong {
+            font-size: 23px;
+            color: #8b5e3c;
+        }
+
+    .order-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        padding-top: 5px;
+    }
+
+    .order-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        padding: 11px 18px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        transition: .2s ease;
+    }
+
+        .order-button.primary {
+            background: #4a3426;
+            color: white;
+        }
+
+            .order-button.primary:hover {
+                background: #6f513b;
+                transform: translateY(-1px);
+            }
+
+        .order-button.secondary {
+            background: #f4eadf;
+            color: #5c4332;
+        }
+
+            .order-button.secondary:hover {
+                background: #ead9c8;
+            }
+
+    @@media (max-width: 600px) {
+
+        .order-details-page {
+            padding: 40px 15px 70px;
+        }
+
+        .order-card {
+            padding: 22px;
+        }
+
+        .order-card-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .order-info {
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .order-product {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .order-product-price {
+            text-align: left;
+        }
+
+        .order-actions {
+            flex-direction: column;
+        }
+
+        .order-button {
+            width: 100%;
+        }
+    }
+
+</style>

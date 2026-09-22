@@ -268,10 +268,10 @@
 
             <div class="detail-content">
 
-                @if (!string.IsNullOrWhiteSpace(Model.Category))
+                @if (!string.IsNullOrWhiteSpace(Model.CategoryNavigation?.Name ?? Model.Category))
                 {
                     <span class="detail-category">
-                        @Model.Category
+                        @(Model.CategoryNavigation?.Name ?? Model.Category)
                     </span>
                 }
 
@@ -322,24 +322,71 @@
 
                     </div>
 
+                    @if (Model.ExpirationDate.HasValue)
+                    {
+                        <div class="detail-info-box">
+
+                            <span class="detail-info-label">
+                                Fecha de vencimiento
+                            </span>
+
+                            <span class="detail-info-value">
+                                @Model.ExpirationDate.Value.ToString("dd/MM/yyyy")
+                            </span>
+
+                        </div>
+                    }
+
                 </div>
 
                 <div class="detail-actions">
+
+                    @* Solo los clientes pueden agregar productos al carrito *@
+                    @if (!User.IsInRole("Admin"))
+                    {
+                        @if (Model.Stock > 0)
+                        {
+                            <form asp-controller="Cart"
+                                  asp-action="Add"
+                                  method="post"
+                                  class="d-flex align-items-center gap-2">
+
+                                @Html.AntiForgeryToken()
+
+                                <input type="hidden"
+                                       name="productId"
+                                       value="@Model.Id" />
+
+                                <input type="number"
+                                       name="quantity"
+                                       value="1"
+                                       min="1"
+                                       max="@Model.Stock"
+                                       class="form-control"
+                                       style="width: 80px; height: 46px;" />
+
+                                <button type="submit"
+                                        class="detail-button detail-primary">
+                                    <i class="bi bi-cart-plus"></i>
+                                    Agregar al carrito
+                                </button>
+
+                            </form>
+                        }
+                        else
+                        {
+                            <span class="detail-button"
+                                  style="background:#e8ddd4; color:#806d60;">
+                                Producto agotado
+                            </span>
+                        }
+                    }
 
                     <a asp-action="Index"
                        class="detail-button detail-secondary">
                         <i class="bi bi-arrow-left"></i>
                         Seguir viendo
                     </a>
-
-                    @if (Model.Stock > 0)
-                    {
-                        <a href="#"
-                           class="detail-button detail-primary">
-                            <i class="bi bi-cart-plus"></i>
-                            Agregar al carrito
-                        </a>
-                    }
 
                 </div>
 

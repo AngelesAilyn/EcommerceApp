@@ -28,6 +28,14 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromHours(2);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 var app = builder.Build();
 
@@ -40,27 +48,14 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Account}/{action=Login}/{id?}");
-
-// Crear roles por defecto solo si no existen (evita errores al reiniciar la app)
-/*using (var scope = app.Services.CreateScope())
-{
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    string[] roles = { "Admin", "User" };
-    foreach (var role in roles)
-    {
-        if (!await roleManager.RoleExistsAsync(role))
-            await roleManager.CreateAsync(new IdentityRole(role));
-    }
-}
-
-app.Run();*/
+    pattern: "{controller=Products}/{action=Index}/{id?}");
 
 // Crear roles y usuario administrador por defecto
 using (var scope = app.Services.CreateScope())
@@ -79,32 +74,36 @@ using (var scope = app.Services.CreateScope())
         }
     }
 
-    // Crear usuario administrador
-    var adminEmail = "admin@reposteria.com";
-    var adminPassword = "Admin123!";
+    // Crear un administrador únicamente cuando las credenciales se proporcionan por configuración.
+    // Nunca se guardan credenciales reales dentro del código fuente.
+    var adminEmail = builder.Configuration["ADMIN_EMAIL"];
+    var adminPassword = builder.Configuration["ADMIN_PASSWORD"];
 
-    var adminUser = await userManager.FindByEmailAsync(adminEmail);
-
-    if (adminUser == null)
+    if (!string.IsNullOrWhiteSpace(adminEmail) && !string.IsNullOrWhiteSpace(adminPassword))
     {
-        adminUser = new ApplicationUser
+        var adminUser = await userManager.FindByEmailAsync(adminEmail);
+
+        if (adminUser == null)
         {
-            UserName = adminEmail,
-            Email = adminEmail,
-            EmailConfirmed = true,
-            FullName = "Administrador"
-        };
+            adminUser = new ApplicationUser
+            {
+                UserName = adminEmail,
+                Email = adminEmail,
+                EmailConfirmed = true,
+                FullName = "Administrador"
+            };
 
-        var result = await userManager.CreateAsync(adminUser, adminPassword);
+            var result = await userManager.CreateAsync(adminUser, adminPassword);
 
-        if (result.Succeeded)
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(adminUser, "Admin");
+            }
+        }
+        else if (!await userManager.IsInRoleAsync(adminUser, "Admin"))
         {
             await userManager.AddToRoleAsync(adminUser, "Admin");
         }
-    }
-    else if (!await userManager.IsInRoleAsync(adminUser, "Admin"))
-    {
-        await userManager.AddToRoleAsync(adminUser, "Admin");
     }
 }
 app.Run();

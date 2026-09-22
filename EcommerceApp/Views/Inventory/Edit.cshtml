@@ -1,0 +1,71 @@
+﻿@model EcommerceApp.Models.Inventory
+
+@{
+    ViewData["Title"] = "Editar inventario";
+}
+
+<div class="container py-4">
+    <div class="mb-4">
+        <h1 class="fw-bold mb-1">Editar inventario</h1>
+        <p class="text-muted mb-0">Actualiza las existencias del producto</p>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+            <div class="mb-4">
+                <h4 class="fw-bold">@Model.Product?.Name</h4>
+
+                @if (Model.Product?.CategoryNavigation != null)
+                {
+                    <span class="text-muted">
+                        @Model.Product.CategoryNavigation.Name
+                    </span>
+                }
+            </div>
+
+            <form asp-action="Edit" method="post">
+                <input type="hidden" name="id" value="@Model.Id" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">
+                        Stock actual
+                    </label>
+
+                    <input type="number"
+                           name="currentQuantity"
+                           value="@Model.CurrentQuantity"
+                           min="0"
+                           class="form-control"
+                           required />
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">
+                        Stock mínimo
+                    </label>
+
+                    <input type="number"
+                           name="minimumStock"
+                           value="@Model.MinimumStock"
+                           min="0"
+                           class="form-control"
+                           required />
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-dark">
+                        Guardar cambios
+                    </button>
+
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

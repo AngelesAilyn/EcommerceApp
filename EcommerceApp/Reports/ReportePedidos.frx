@@ -1,0 +1,410 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp"
+ReportInfo.Created="09/22/2026 00:00:00"
+ReportInfo.Modified="09/22/2026 00:00:00">
+
+	<Dictionary>
+		<TableDataSource Name="Pedidos"
+		   ReferenceName="PedidosData.Pedidos"
+		   TableName="Pedidos"
+		   DataType="System.Int32"
+		   Enabled="true">
+
+			<Column Name="Pedido" DataType="System.String"/>
+			<Column Name="Fecha" DataType="System.String"/>
+			<Column Name="Cliente" DataType="System.String"/>
+			<Column Name="Total" DataType="System.Decimal"/>
+			<Column Name="MetodoPago" DataType="System.String"/>
+			<Column Name="EstadoPago" DataType="System.String"/>
+			<Column Name="Entrega" DataType="System.String"/>
+			<Column Name="EstadoPedido" DataType="System.String"/>
+
+		</TableDataSource>
+
+	</Dictionary>
+	<ReportPage Name="Page1"
+Landscape="true"
+PaperWidth="297"
+PaperHeight="210"
+LeftMargin="8"
+RightMargin="8"
+TopMargin="8"
+BottomMargin="8">
+
+		<PageHeaderBand Name="PageHeader1"
+						Width="1000"
+						Height="145">
+
+			<TextObject Name="BusinessName"
+						Left="0"
+						Top="0"
+						Width="1000"
+						Height="30"
+						Text="DULCE ANTOJO"
+						HorzAlign="Center"
+						VertAlign="Center"
+						Font="Arial, 20pt, style=Bold"
+						TextFill.Color="4A3426"/>
+
+			<TextObject Name="ReportTitle"
+						Left="0"
+						Top="31"
+						Width="1000"
+						Height="24"
+						Text="REPORTE DE PEDIDOS Y VENTAS"
+						HorzAlign="Center"
+						VertAlign="Center"
+						Font="Arial, 13pt, style=Bold"
+						TextFill.Color="6F513B"/>
+
+			<TextObject Name="ReportDescription"
+						Left="0"
+						Top="56"
+						Width="1000"
+						Height="18"
+						Text="Detalle de pedidos registrados en el sistema"
+						HorzAlign="Center"
+						VertAlign="Center"
+						Font="Arial, 8.5pt"
+						TextFill.Color="756657"/>
+
+			<TextObject Name="TopLine"
+						Left="0"
+						Top="78"
+						Width="1000"
+						Height="2"
+						Fill.Color="8B6A4E"/>
+
+			<TextObject Name="GeneratedLabel"
+						Left="0"
+						Top="86"
+						Width="300"
+						Height="18"
+						Text="DOCUMENTO: REPORTE DE VENTAS"
+						VertAlign="Center"
+						Font="Arial, 8pt, style=Bold"
+						TextFill.Color="4A3426"/>
+
+			<TextObject Name="DateLabel"
+						Left="680"
+						Top="86"
+						Width="320"
+						Height="18"
+						Text="Generado: [Date]"
+						HorzAlign="Right"
+						VertAlign="Center"
+						Font="Arial, 8pt"
+						TextFill.Color="756657"/>
+
+			<!-- ENCABEZADOS -->
+
+			<TextObject Name="HeaderPedido"
+						Left="0"
+						Top="110"
+						Width="60"
+						Height="35"
+						Text="PEDIDO"
+						HorzAlign="Center"
+						VertAlign="Center"
+						Font="Arial, 8pt, style=Bold"
+						Fill.Color="4A3426"
+						TextFill.Color="White"
+						Border.Lines="All"/>
+
+			<TextObject Name="HeaderFecha"
+						Left="60"
+						Top="110"
+						Width="105"
+						Height="35"
+						Text="FECHA"
+						HorzAlign="Center"
+						VertAlign="Center"
+						Font="Arial, 8pt, style=Bold"
+						Fill.Color="4A3426"
+						TextFill.Color="White"
+						Border.Lines="All"/>
+
+			<TextObject Name="HeaderCliente"
+						Left="165"
+						Top="110"
+						Width="185"
+						Height="35"
+						Text="CLIENTE"
+						HorzAlign="Center"
+						VertAlign="Center"
+						Font="Arial, 8pt, style=Bold"
+						Fill.Color="4A3426"
+						TextFill.Color="White"
+						Border.Lines="All"/>
+
+			<TextObject Name="HeaderTotal"
+						Left="350"
+						Top="110"
+						Width="85"
+						Height="35"
+						Text="TOTAL"
+						HorzAlign="Center"
+						VertAlign="Center"
+						Font="Arial, 8pt, style=Bold"
+						Fill.Color="4A3426"
+						TextFill.Color="White"
+						Border.Lines="All"/>
+
+			<TextObject Name="HeaderPago"
+						Left="435"
+						Top="110"
+						Width="110"
+						Height="35"
+						Text="MÉTODO DE PAGO"
+						HorzAlign="Center"
+						VertAlign="Center"
+						Font="Arial, 7.5pt, style=Bold"
+						Fill.Color="4A3426"
+						TextFill.Color="White"
+						Border.Lines="All"/>
+
+			<TextObject Name="HeaderEstadoPago"
+						Left="545"
+						Top="110"
+						Width="100"
+						Height="35"
+						Text="PAGO"
+						HorzAlign="Center"
+						VertAlign="Center"
+						Font="Arial, 8pt, style=Bold"
+						Fill.Color="4A3426"
+						TextFill.Color="White"
+						Border.Lines="All"/>
+
+			<TextObject Name="HeaderEntrega"
+						Left="645"
+						Top="110"
+						Width="115"
+						Height="35"
+						Text="ENTREGA"
+						HorzAlign="Center"
+						VertAlign="Center"
+						Font="Arial, 8pt, style=Bold"
+						Fill.Color="4A3426"
+						TextFill.Color="White"
+						Border.Lines="All"/>
+
+			<TextObject Name="HeaderEstado"
+						Left="760"
+						Top="110"
+						Width="120"
+						Height="35"
+						Text="ESTADO"
+						HorzAlign="Center"
+						VertAlign="Center"
+						Font="Arial, 8pt, style=Bold"
+						Fill.Color="4A3426"
+						TextFill.Color="White"
+						Border.Lines="All"/>
+
+			<TextObject Name="HeaderObservacion"
+						Left="880"
+						Top="110"
+						Width="120"
+						Height="35"
+						Text="REGISTRO"
+						HorzAlign="Center"
+						VertAlign="Center"
+						Font="Arial, 8pt, style=Bold"
+						Fill.Color="4A3426"
+						TextFill.Color="White"
+						Border.Lines="All"/>
+
+		</PageHeaderBand>
+
+
+		<DataBand Name="Data1"
+				  Top="145"
+				  Width="1000"
+				  Height="32"
+				  DataSource="Pedidos">
+
+			<TextObject Name="DataPedido"
+						Left="0"
+						Top="0"
+						Width="60"
+						Height="32"
+						Text="[Pedidos.Pedido]"
+						HorzAlign="Center"
+						VertAlign="Center"
+						Font="Arial, 8.5pt, style=Bold"
+						Border.Lines="All"/>
+
+			<TextObject Name="DataFecha"
+						Left="60"
+						Top="0"
+						Width="105"
+						Height="32"
+						Text="[Pedidos.Fecha]"
+						HorzAlign="Center"
+						VertAlign="Center"
+						Font="Arial, 7.8pt"
+						Border.Lines="All"/>
+
+			<TextObject Name="DataCliente"
+						Left="165"
+						Top="0"
+						Width="185"
+						Height="32"
+						Text="[Pedidos.Cliente]"
+						VertAlign="Center"
+						Font="Arial, 8.5pt"
+						Border.Lines="All"/>
+
+			<TextObject Name="DataTotal"
+						Left="350"
+						Top="0"
+						Width="85"
+						Height="32"
+						Text="[Pedidos.Total]"
+						Format="Currency"
+						HorzAlign="Right"
+						VertAlign="Center"
+						Font="Arial, 8.5pt, style=Bold"
+						Border.Lines="All"/>
+
+			<TextObject Name="DataPago"
+						Left="435"
+						Top="0"
+						Width="110"
+						Height="32"
+						Text="[Pedidos.MetodoPago]"
+						HorzAlign="Center"
+						VertAlign="Center"
+						Font="Arial, 8.5pt"
+						Border.Lines="All"/>
+
+			<TextObject Name="DataEstadoPago"
+						Left="545"
+						Top="0"
+						Width="100"
+						Height="32"
+						Text="[Pedidos.EstadoPago]"
+						HorzAlign="Center"
+						VertAlign="Center"
+						Font="Arial, 8.5pt"
+						Border.Lines="All"/>
+
+			<TextObject Name="DataEntrega"
+						Left="645"
+						Top="0"
+						Width="115"
+						Height="32"
+						Text="[Pedidos.Entrega]"
+						HorzAlign="Center"
+						VertAlign="Center"
+						Font="Arial, 8.5pt"
+						Border.Lines="All"/>
+
+			<TextObject Name="DataEstado"
+						Left="760"
+						Top="0"
+						Width="120"
+						Height="32"
+						Text="[Pedidos.EstadoPedido]"
+						HorzAlign="Center"
+						VertAlign="Center"
+						Font="Arial, 8.5pt"
+						Border.Lines="All"/>
+
+			<TextObject Name="DataObservacion"
+						Left="880"
+						Top="0"
+						Width="120"
+						Height="32"
+						Text="Registrado"
+						HorzAlign="Center"
+						VertAlign="Center"
+						Font="Arial, 8pt"
+						TextFill.Color="756657"
+						Border.Lines="All"/>
+
+		</DataBand>
+
+
+		<ReportSummaryBand Name="ReportSummary1"
+						   Width="1000"
+						   Height="75">
+
+			<TextObject Name="SummaryLine"
+						Left="0"
+						Top="10"
+						Width="1000"
+						Height="2"
+						Fill.Color="8B6A4E"/>
+
+			<TextObject Name="SummaryTitle"
+						Left="0"
+						Top="20"
+						Width="300"
+						Height="22"
+						Text="RESUMEN DEL REPORTE"
+						VertAlign="Center"
+						Font="Arial, 10pt, style=Bold"
+						TextFill.Color="4A3426"/>
+
+			<TextObject Name="SummaryText"
+						Left="0"
+						Top="45"
+						Width="700"
+						Height="20"
+						Text="Información correspondiente a los pedidos registrados en el sistema."
+						VertAlign="Center"
+						Font="Arial, 8.5pt"
+						TextFill.Color="756657"/>
+
+			<TextObject Name="SummaryStatus"
+						Left="700"
+						Top="20"
+						Width="300"
+						Height="25"
+						Text="Documento generado automáticamente"
+						HorzAlign="Right"
+						VertAlign="Center"
+						Font="Arial, 8pt, style=Italic"
+						TextFill.Color="756657"/>
+
+		</ReportSummaryBand>
+
+
+		<PageFooterBand Name="PageFooter1"
+						Width="1000"
+						Height="30">
+
+			<TextObject Name="FooterLine"
+						Left="0"
+						Top="0"
+						Width="1000"
+						Height="1"
+						Fill.Color="8B6A4E"/>
+
+			<TextObject Name="FooterText"
+						Left="0"
+						Top="6"
+						Width="600"
+						Height="20"
+						Text="Dulce Antojo • Sistema de gestión de pedidos"
+						VertAlign="Center"
+						Font="Arial, 8pt"
+						TextFill.Color="756657"/>
+
+			<TextObject Name="PageNumber"
+						Left="750"
+						Top="6"
+						Width="250"
+						Height="20"
+						Text="Página [PageN] de [TotalPages]"
+						HorzAlign="Right"
+						VertAlign="Center"
+						Font="Arial, 8pt"
+						TextFill.Color="756657"/>
+
+		</PageFooterBand>
+
+	</ReportPage>
+</Report>

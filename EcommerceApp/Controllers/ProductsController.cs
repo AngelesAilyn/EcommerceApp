@@ -14,31 +14,36 @@ namespace EcommerceApp.Controllers
         {
             var products = context.Products
                 .AsNoTracking()
-                .Where(p => !p.IsArchived);
+                .Include(p => p.CategoryNavigation)
+                .Where(p => !p.IsArchived && p.IsAvailable && p.Stock > 0);
 
-            if (!string.IsNullOrEmpty(category))
+            if (!string.IsNullOrWhiteSpace(category))
             {
-                products = products.Where(p => p.Category == category);
+                products = products.Where(p =>
+                    p.CategoryNavigation != null &&
+                    p.CategoryNavigation.Name == category);
             }
 
-            ViewBag.Categories = await context.Products
-                .Where(p => !p.IsArchived &&
-                            p.Category != null &&
-                            p.Category != "")
-                .Select(p => p.Category!)
-                .Distinct()
+            ViewBag.Categories = await context.Categories
+                .AsNoTracking()
+                .Where(c => c.IsActive)
+                .Select(c => c.Name)
                 .OrderBy(c => c)
                 .ToListAsync();
 
             ViewBag.SelectedCategory = category;
 
-            return View(await products.ToListAsync());
+            return View(await products
+                .OrderBy(p => p.CategoryNavigation!.Name)
+                .ThenBy(p => p.Name)
+                .ToListAsync());
         }
 
         [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var product = await context.Products
+                .Include(p => p.CategoryNavigation)
                 .FirstOrDefaultAsync(p => p.Id == id && !p.IsArchived);
 
             if (product == null)
@@ -48,8 +53,13 @@ namespace EcommerceApp.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ViewBag.Categories = await context.Categories
+                .Where(c => c.IsActive)
+                .OrderBy(c => c.Name)
+                .ToListAsync();
+
             return View();
         }
 
@@ -58,14 +68,64 @@ namespace EcommerceApp.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(Product product)
         {
-            if (!ModelState.IsValid)
-                return View(product);
+            if (!product.CategoryId.HasValue)
+            {
+                ModelState.AddModelError(
+                    "CategoryId",
+                    "Debe seleccionar una categoría.");
+            }
 
-            product.IsArchived = false;
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Categories = await context.Categories
+                    .Where(c => c.IsActive)
+                    .OrderBy(c => c.Name)
+                    .ToListAsync();
+
+                return View(product);
+            }
+
+            var category = await context.Categories
+                .FirstOrDefaultAsync(c =>
+                    c.Id == product.CategoryId &&
+                    c.IsActive);
+
+            if (category == null)
+            {
+                ModelState.AddModelError(
+                    "CategoryId",
+                    "La categoría seleccionada no es válida.");
+
+                ViewBag.Categories = await context.Categories
+                    .Where(c => c.IsActive)
+                    .OrderBy(c => c.Name)
+                    .ToListAsync();
+
+                return View(product);
+            }
+
+            product.Category = category.Name;
+            product.IsAvailable = product.Stock > 0;
+            product.IsArchived = product.Stock <= 0;
             product.CreatedAt = DateTime.UtcNow;
 
             context.Products.Add(product);
             await context.SaveChangesAsync();
+
+            var inventory = new Inventory
+            {
+                ProductId = product.Id,
+                CurrentQuantity = product.Stock,
+                MinimumStock = 5,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            context.Inventories.Add(inventory);
+            await context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = product.IsArchived
+                ? "Producto creado y archivado porque su stock es 0."
+                : "Producto creado correctamente.";
 
             return RedirectToAction(nameof(Index));
         }
@@ -78,6 +138,11 @@ namespace EcommerceApp.Controllers
             if (product == null)
                 return NotFound();
 
+            ViewBag.Categories = await context.Categories
+                .Where(c => c.IsActive)
+                .OrderBy(c => c.Name)
+                .ToListAsync();
+
             return View(product);
         }
 
@@ -89,23 +154,85 @@ namespace EcommerceApp.Controllers
             if (id != product.Id)
                 return NotFound();
 
+            if (!product.CategoryId.HasValue)
+            {
+                ModelState.AddModelError(
+                    "CategoryId",
+                    "Debe seleccionar una categoría.");
+            }
+
             if (!ModelState.IsValid)
+            {
+                ViewBag.Categories = await context.Categories
+                    .Where(c => c.IsActive)
+                    .OrderBy(c => c.Name)
+                    .ToListAsync();
+
                 return View(product);
+            }
 
             var existingProduct = await context.Products.FindAsync(id);
 
             if (existingProduct == null)
                 return NotFound();
 
+            var category = await context.Categories
+                .FirstOrDefaultAsync(c =>
+                    c.Id == product.CategoryId &&
+                    c.IsActive);
+
+            if (category == null)
+            {
+                ModelState.AddModelError(
+                    "CategoryId",
+                    "La categoría seleccionada no es válida.");
+
+                ViewBag.Categories = await context.Categories
+                    .Where(c => c.IsActive)
+                    .OrderBy(c => c.Name)
+                    .ToListAsync();
+
+                return View(product);
+            }
+
             existingProduct.Name = product.Name;
             existingProduct.Description = product.Description;
             existingProduct.Price = product.Price;
             existingProduct.Stock = product.Stock;
             existingProduct.ImageUrl = product.ImageUrl;
-            existingProduct.Category = product.Category;
+            existingProduct.CategoryId = product.CategoryId;
+            existingProduct.Category = category.Name;
+            existingProduct.ExpirationDate = product.ExpirationDate;
+            existingProduct.IsAvailable = product.Stock > 0;
+            existingProduct.IsArchived = product.Stock <= 0;
             existingProduct.UpdatedAt = DateTime.UtcNow;
 
+            var inventory = await context.Inventories
+                .FirstOrDefaultAsync(i => i.ProductId == existingProduct.Id);
+
+            if (inventory == null)
+            {
+                inventory = new Inventory
+                {
+                    ProductId = existingProduct.Id,
+                    CurrentQuantity = product.Stock,
+                    MinimumStock = 5,
+                    UpdatedAt = DateTime.UtcNow
+                };
+
+                context.Inventories.Add(inventory);
+            }
+            else
+            {
+                inventory.CurrentQuantity = product.Stock;
+                inventory.UpdatedAt = DateTime.UtcNow;
+            }
+
             await context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = existingProduct.IsArchived
+                ? "Producto actualizado y archivado automáticamente porque su stock llegó a 0."
+                : "Producto actualizado correctamente.";
 
             return RedirectToAction(nameof(Index));
         }
@@ -134,12 +261,15 @@ namespace EcommerceApp.Controllers
                 return NotFound();
 
             product.IsArchived = true;
+            product.IsAvailable = false;
             product.UpdatedAt = DateTime.UtcNow;
 
             await context.SaveChangesAsync();
 
+            TempData["SuccessMessage"] = "Producto archivado correctamente.";
             return RedirectToAction(nameof(Index));
         }
+
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Archived()
         {
@@ -174,13 +304,22 @@ namespace EcommerceApp.Controllers
             if (product == null)
                 return NotFound();
 
+            if (product.Stock <= 0)
+            {
+                TempData["ErrorMessage"] = "No se puede desarchivar un producto sin stock. Primero actualiza su inventario.";
+                return RedirectToAction(nameof(Archived));
+            }
+
             product.IsArchived = false;
+            product.IsAvailable = true;
             product.UpdatedAt = DateTime.UtcNow;
 
             await context.SaveChangesAsync();
 
+            TempData["SuccessMessage"] = "Producto recuperado correctamente.";
             return RedirectToAction(nameof(Archived));
         }
+
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -206,6 +345,7 @@ namespace EcommerceApp.Controllers
                 await context.SaveChangesAsync();
             }
 
+            TempData["SuccessMessage"] = "Producto eliminado correctamente.";
             return RedirectToAction(nameof(Index));
         }
     }

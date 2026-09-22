@@ -1,0 +1,72 @@
+﻿@model EcommerceApp.Models.Category
+
+@{
+    ViewData["Title"] = "Editar categoría";
+}
+
+<div class="container py-5">
+
+    <div class="mb-4">
+        <h1 class="fw-bold">Editar categoría</h1>
+        <p class="text-muted">
+            Modifica los datos de la categoría.
+        </p>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-4">
+
+            <form asp-action="Edit" method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" asp-for="Id" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+
+                    <input asp-for="Name"
+                           class="form-control" />
+
+                    <span asp-validation-for="Name"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description"
+                           class="form-label"></label>
+
+                    <textarea asp-for="Description"
+                              class="form-control"
+                              rows="4"></textarea>
+
+                    <span asp-validation-for="Description"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="d-flex gap-2">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Guardar cambios
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        Cancelar
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

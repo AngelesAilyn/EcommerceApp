@@ -19,4 +19,4 @@ ENV ASPNETCORE_HTTP_PORTS=8080
 EXPOSE 8080
 
 # Reemplaza "NombreDeTuProyecto" por el nombre exacto de tu archivo .csproj
-ENTRYPOINT ["dotnet", "NombreDeTuProyecto.dll"]
+ENTRYPOINT ["dotnet", "EcommerceApp.dll"]

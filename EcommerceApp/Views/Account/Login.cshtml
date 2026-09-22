@@ -1,7 +1,7 @@
 ﻿@model EcommerceApp.Models.LoginViewModel
 
 @{
-    ViewData["Title"] = "Iniciar sesión";
+ViewData["Title"] = "Iniciar sesión";
 }
 
 <style>
@@ -161,92 +161,91 @@
             font-size: 29px;
         }
     }
-</style>
+</style><div class="auth-page"><div class="auth-card">
 
-<div class="auth-page">
-
-    <div class="auth-card">
-
-        <div class="auth-header">
-            <div class="auth-brand">
-                Dulce Antojo
-            </div>
-
-            <h1>
-                Bienvenido
-            </h1>
-
-            <p>
-                Inicia sesión para continuar.
-            </p>
+    <div class="auth-header">
+        <div class="auth-brand">
+            Dulce Antojo
         </div>
 
-        <form asp-action="Login" method="post">
+        <h1>
+            Bienvenido
+        </h1>
 
-            <div asp-validation-summary="ModelOnly"
-                 class="auth-summary"></div>
+        <p>
+            Inicia sesión para continuar.
+        </p>
+    </div>
 
-            <div class="auth-field">
+    <form asp-action="Login" method="post">
 
-                <label asp-for="Email"></label>
+        <input type="hidden"
+               name="returnUrl"
+               value="@ViewData["ReturnUrl"]" />
 
-                <input asp-for="Email"
-                       class="auth-control"
-                       type="email"
-                       placeholder="correo@ejemplo.com"
-                       autocomplete="email" />
+        <div asp-validation-summary="ModelOnly"
+             class="auth-summary"></div>
 
-                <span asp-validation-for="Email"
-                      class="auth-validation"></span>
+        <div class="auth-field">
 
-            </div>
+            <label asp-for="Email"></label>
 
-            <div class="auth-field">
+            <input asp-for="Email"
+                   class="auth-control"
+                   type="email"
+                   placeholder="correo@ejemplo.com"
+                   autocomplete="email" />
 
-                <label asp-for="Password"></label>
-
-                <input asp-for="Password"
-                       class="auth-control"
-                       type="password"
-                       placeholder="Ingresa tu contraseña"
-                       autocomplete="current-password" />
-
-                <span asp-validation-for="Password"
-                      class="auth-validation"></span>
-
-            </div>
-
-            <label class="auth-check">
-
-                <input asp-for="RememberMe" />
-
-                <span>
-                    Recordarme
-                </span>
-
-            </label>
-
-            <button type="submit"
-                    class="auth-button">
-                Iniciar sesión
-            </button>
-
-        </form>
-
-        <div class="auth-footer">
-
-            ¿No tienes una cuenta?
-            <a asp-controller="Account"
-               asp-action="Register">
-                Regístrate aquí
-            </a>
+            <span asp-validation-for="Email"
+                  class="auth-validation"></span>
 
         </div>
+
+        <div class="auth-field">
+
+            <label asp-for="Password"></label>
+
+            <input asp-for="Password"
+                   class="auth-control"
+                   type="password"
+                   placeholder="Ingresa tu contraseña"
+                   autocomplete="current-password" />
+
+            <span asp-validation-for="Password"
+                  class="auth-validation"></span>
+
+        </div>
+
+        <label class="auth-check">
+
+            <input asp-for="RememberMe" />
+
+            <span>
+                Recordarme
+            </span>
+
+        </label>
+
+        <button type="submit"
+                class="auth-button">
+            Iniciar sesión
+        </button>
+
+    </form>
+
+    <div class="auth-footer">
+
+        ¿No tienes una cuenta?
+        <a asp-controller="Account"
+           asp-action="Register"
+           asp-route-returnUrl="@ViewData["ReturnUrl"]">
+            Regístrate aquí
+        </a>
 
     </div>
 
 </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+</div>@@section Scripts {
+<partial name="_ValidationScriptsPartial" />
 }
