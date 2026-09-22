@@ -1,0 +1,537 @@
+﻿@model IEnumerable<EcommerceApp.Models.Category>
+
+@{
+    ViewData["Title"] = "Categorías";
+}
+
+<style>
+
+    .categories-page {
+        position: relative;
+        min-height: calc(100vh - 120px);
+        padding: 45px 25px 70px;
+        overflow: hidden;
+        background: radial-gradient(circle at 10% 15%, rgba(255,255,255,.75) 0 45px, transparent 46px), radial-gradient(circle at 90% 20%, rgba(255,255,255,.55) 0 65px, transparent 66px), linear-gradient(135deg, #f3eadf 0%, #ead8c5 48%, #f7eee5 100%);
+    }
+
+    .decor {
+        position: absolute;
+        pointer-events: none;
+        opacity: .35;
+        animation: floatDecor 6s ease-in-out infinite;
+    }
+
+        .decor.one {
+            top: 80px;
+            left: 5%;
+            font-size: 42px;
+        }
+
+        .decor.two {
+            top: 230px;
+            right: 6%;
+            font-size: 35px;
+            animation-delay: 1s;
+        }
+
+        .decor.three {
+            bottom: 80px;
+            left: 10%;
+            font-size: 30px;
+            animation-delay: 2s;
+        }
+
+        .decor.four {
+            bottom: 120px;
+            right: 12%;
+            font-size: 42px;
+            animation-delay: 3s;
+        }
+
+    @@keyframes floatDecor {
+
+        0%, 100% {
+            transform: translateY(0) rotate(-3deg);
+        }
+
+        50% {
+            transform: translateY(-12px) rotate(4deg);
+        }
+    }
+
+    .categories-header {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        margin-bottom: 38px;
+        animation: fadeDown .7s ease both;
+    }
+
+        .categories-header span {
+            display: block;
+            margin-bottom: 7px;
+            color: #8b5e3c;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .categories-header h1 {
+            margin: 0;
+            color: #35241b;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 42px;
+            font-weight: 700;
+        }
+
+        .categories-header p {
+            margin: 10px auto 20px;
+            max-width: 600px;
+            color: #786960;
+            font-size: 15px;
+        }
+
+    .btn-new-category {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 11px 20px;
+        border-radius: 12px;
+        background: #4a3426;
+        color: white;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        box-shadow: 0 8px 18px rgba(74, 52, 38, .18);
+        transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+    }
+
+        .btn-new-category:hover {
+            background: #6f513b;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(74, 52, 38, .22);
+        }
+
+    .category-message {
+        position: relative;
+        z-index: 3;
+        max-width: 650px;
+        margin: 0 auto 25px;
+        padding: 13px 18px;
+        border-radius: 13px;
+        background: #fffdf9;
+        border: 1px solid #d8c4ae;
+        color: #4a3426;
+        text-align: center;
+        box-shadow: 0 8px 20px rgba(74, 52, 38, .10);
+        animation: messageIn .5s ease both;
+    }
+
+        .category-message strong {
+            color: #6f513b;
+        }
+
+    .categories-grid {
+        position: relative;
+        z-index: 2;
+        max-width: 1100px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+    }
+
+    .category-card {
+        position: relative;
+        min-height: 230px;
+        padding: 28px;
+        overflow: hidden;
+        border-radius: 24px;
+        border: 1px solid rgba(255,255,255,.7);
+        box-shadow: 0 12px 30px rgba(74, 52, 38, .12);
+        animation: cardAppear .65s ease both;
+        transition: transform .3s ease, box-shadow .3s ease;
+    }
+
+        .category-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 18px 35px rgba(74, 52, 38, .18);
+        }
+
+        .category-card::before {
+            content: "";
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            right: -55px;
+            top: -55px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.30);
+        }
+
+        .category-card::after {
+            content: "";
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            left: -35px;
+            bottom: -45px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.22);
+        }
+
+    .category-rolls {
+        background: linear-gradient(135deg, #d8b18b, #f1dfcb);
+    }
+
+    .category-cookies {
+        background: linear-gradient(135deg, #b98b68, #ead0b8);
+    }
+
+    .category-navidad {
+        background: linear-gradient(135deg, #c7a27b, #eadbc8);
+    }
+
+    .category-tortas {
+        background: linear-gradient(135deg, #e7c5bd, #f5e4df);
+    }
+
+    .category-default {
+        background: linear-gradient(135deg, #d8c4ae, #f4e9dc);
+    }
+
+    .category-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .category-icon {
+        width: 58px;
+        height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 18px;
+        border-radius: 18px;
+        background: rgba(255,255,255,.55);
+        font-size: 28px;
+        box-shadow: 0 6px 15px rgba(74, 52, 38, .10);
+    }
+
+    .category-card h2 {
+        margin: 0 0 8px;
+        color: #35241b;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 25px;
+        font-weight: 700;
+    }
+
+    .category-description {
+        min-height: 40px;
+        margin-bottom: 15px;
+        color: #604d40;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .category-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 18px;
+        padding: 6px 10px;
+        border-radius: 20px;
+        background: rgba(255,255,255,.55);
+        color: #5c4739;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #6c9565;
+    }
+
+        .status-dot.inactive {
+            background: #8d8179;
+        }
+
+    .category-actions {
+        display: flex;
+        gap: 9px;
+        align-items: center;
+    }
+
+        .category-actions a,
+        .category-actions button {
+            border: none;
+            border-radius: 9px;
+            padding: 8px 13px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: .2s ease;
+        }
+
+    .btn-edit-category {
+        background: #4a3426;
+        color: white;
+    }
+
+        .btn-edit-category:hover {
+            background: #6f513b;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+    .btn-toggle-category {
+        background: rgba(255,255,255,.65);
+        color: #594638;
+    }
+
+        .btn-toggle-category:hover {
+            background: white;
+            transform: translateY(-2px);
+        }
+
+    .empty-category {
+        position: relative;
+        z-index: 2;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 40px;
+        text-align: center;
+        border-radius: 24px;
+        background: rgba(255,253,249,.85);
+        box-shadow: 0 12px 30px rgba(74,52,38,.10);
+    }
+
+    .empty-category-icon {
+        font-size: 45px;
+        margin-bottom: 10px;
+    }
+
+    .empty-category h2 {
+        color: #35241b;
+        font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .empty-category p {
+        color: #786960;
+    }*/
+
+    @@keyframes fadeDown {
+
+        from {
+            opacity: 0;
+            transform: translateY(-18px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes cardAppear {
+
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes messageIn {
+
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@media (max-width: 750px) {
+
+        .categories-page {
+            padding: 35px 15px 55px;
+        }
+
+        .categories-header h1 {
+            font-size: 34px;
+        }
+
+        .categories-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .category-card {
+            min-height: 210px;
+        }
+    }
+
+</style>
+
+<div class="categories-page">
+
+    <div class="decor one">🍪</div>
+    <div class="decor two">🍰</div>
+    <div class="decor three">✨</div>
+    <div class="decor four">🍥</div>
+
+    <div class="categories-header">
+
+        <span>Dulce Antojo</span>
+
+        <h1>Categorías</h1>
+
+        <p>
+            Organiza tus productos y mantén tu catálogo
+            de repostería siempre en orden.
+        </p>
+
+        <a asp-action="Create"
+           class="btn-new-category">
+            <span>＋</span>
+            Nueva categoría
+        </a>
+
+    </div>
+
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="category-message">
+            ✓ <strong>@TempData["SuccessMessage"]</strong>
+        </div>
+    }
+
+
+    @if (!Model.Any())
+    {
+        <div class="empty-category">
+
+            <div class="empty-category-icon">
+                🍰
+            </div>
+
+            <h2>Aún no hay categorías</h2>
+
+            <p>
+                Crea la primera categoría para comenzar
+                a organizar tus productos.
+            </p>
+
+            <a asp-action="Create"
+               class="btn-new-category">
+                Crear primera categoría
+            </a>
+
+        </div>
+    }
+    else
+    {
+        <div class="categories-grid">
+
+            @foreach (var category in Model)
+            {
+                var categoryClass = "category-default";
+                var categoryIcon = "🍰";
+
+                if (category.Name == "Rolls de canela")
+                {
+                    categoryClass = "category-rolls";
+                    categoryIcon = "🍥";
+                }
+                else if (category.Name == "Cookies")
+                {
+                    categoryClass = "category-cookies";
+                    categoryIcon = "🍪";
+                }
+                else if (category.Name == "Navideña")
+                {
+                    categoryClass = "category-navidad";
+                    categoryIcon = "🎄";
+                }
+                else if (category.Name == "Tortas por porción")
+                {
+                    categoryClass = "category-tortas";
+                    categoryIcon = "🍰";
+                }
+
+                <div class="category-card @categoryClass">
+
+                    <div class="category-content">
+
+                        <div class="category-icon">
+                            @categoryIcon
+                        </div>
+
+                        <h2>
+                            @category.Name
+                        </h2>
+
+                        <div class="category-description">
+                            @(string.IsNullOrWhiteSpace(category.Description)
+                                                ? "Sin descripción"
+                                                : category.Description)
+                        </div>
+
+                        <div class="category-status">
+
+                            <span class="status-dot @(category.IsActive ? "" : "inactive")">
+                            </span>
+
+                            @(category.IsActive ? "Categoría activa" : "Categoría inactiva")
+
+                        </div>
+
+                        <div class="category-actions">
+
+                            <a asp-action="Edit"
+                               asp-route-id="@category.Id"
+                               class="btn-edit-category">
+                                Editar
+                            </a>
+
+                            <form asp-action="ToggleStatus"
+                                  asp-route-id="@category.Id"
+                                  method="post">
+
+                                @Html.AntiForgeryToken()
+
+                                <button type="submit"
+                                        class="btn-toggle-category">
+
+                                    @(category.IsActive
+                                                                ? "Desactivar"
+                                                                : "Activar")
+
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+
+</div>

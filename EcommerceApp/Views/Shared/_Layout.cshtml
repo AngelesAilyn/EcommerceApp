@@ -1,6 +1,4 @@
 ﻿@using EcommerceApp.Models
-@using Microsoft.AspNetCore.Identity
-@inject UserManager<ApplicationUser> UserManager
 
 <!DOCTYPE html>
 <html lang="es">
@@ -29,219 +27,317 @@
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 
     <style>
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                min-height: 100%;
+            }
 
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            min-height: 100%;
-        }
+            body {
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                padding-top: 70px;
+            }
 
-        body {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding-top: 70px;
-        }
+            header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                z-index: 1000;
+            }
 
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            z-index: 1000;
-        }
+            main {
+                flex: 1;
+                width: 100%;
+            }
 
-        .main-navbar {
-            background-color: #111;
-            min-height: 70px;
-            margin: 0 !important;
-            padding: 0 30px;
-        }
-
-            .main-navbar .container-fluid {
+            .page-content {
+                width: 100%;
+                margin: 0;
                 padding: 0;
             }
 
-            .main-navbar .navbar-brand {
-                color: white !important;
-                font-size: 25px;
-                font-weight: 700;
-                margin-right: 30px;
+            .main-navbar {
+                background-color: #111;
+                min-height: 70px;
+                margin: 0 !important;
+                padding: 0 30px;
             }
 
-            .main-navbar .nav-link {
-                color: #dddddd !important;
-                font-size: 16px;
+                .main-navbar .container-fluid {
+                    padding: 0;
+                }
+
+                .main-navbar .navbar-brand {
+                    color: white !important;
+                    font-size: 25px;
+                    font-weight: 700;
+                    margin-right: 30px;
+                }
+
+                .main-navbar .nav-link {
+                    color: #dddddd !important;
+                    font-size: 16px;
+                    font-weight: 500;
+                    padding: 10px 15px !important;
+                    border-radius: 8px;
+                    transition: 0.2s ease;
+                }
+
+                    .main-navbar .nav-link:hover {
+                        color: white !important;
+                        background-color: #2b2b2b;
+                    }
+
+                    .main-navbar .nav-link.active {
+                        color: white !important;
+                        background-color: #555;
+                    }
+
+                .main-navbar .navbar-nav {
+                    align-items: center;
+                }
+
+            .header-user {
+                color: white;
+                font-size: 15px;
                 font-weight: 500;
-                padding: 10px 15px !important;
-                border-radius: 8px;
-                transition: 0.2s ease;
+                margin-right: 15px;
             }
 
-                .main-navbar .nav-link:hover {
-                    color: white !important;
-                    background-color: #2b2b2b;
-                }
-
-                .main-navbar .nav-link.active {
-                    color: white !important;
-                    background-color: #555;
-                }
-
-            .main-navbar .navbar-nav {
-                align-items: center;
+            .header-logout {
+                color: #dddddd !important;
             }
 
-        .header-user {
-            color: white;
-            font-size: 15px;
-            font-weight: 500;
-            margin-right: 15px;
-        }
-
-        .header-logout {
-            color: #dddddd !important;
-        }
-
-        main {
-            flex: 1;
-            width: 100%;
-        }
-
-        .page-content {
-            width: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
-        .main-footer {
-            width: 100%;
-            margin: 0;
-            background-color: #111;
-            color: white;
-            padding: 38px 30px;
-        }
-
-        .footer-content {
-            max-width: 1250px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1.3fr 1fr 1fr;
-            gap: 45px;
-        }
-
-        .footer-brand {
-            font-size: 23px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .footer-description {
-            color: #bbbbbb;
-            font-size: 14px;
-            line-height: 1.6;
-            margin: 0;
-        }
-
-        .footer-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .footer-social {
-            display: flex;
-            flex-direction: column;
-            gap: 11px;
-        }
-
-            .footer-social a {
-                color: #dddddd;
-                text-decoration: none;
-                font-size: 14px;
+            .sweet-toast {
+                position: fixed;
+                top: 90px;
+                right: 25px;
+                z-index: 10000;
+                width: min(380px, calc(100% - 40px));
                 display: flex;
                 align-items: center;
-                gap: 10px;
-                transition: 0.2s ease;
+                gap: 12px;
+                padding: 14px 16px;
+                border-radius: 16px;
+                background: #fffaf4;
+                border: 1px solid #eadbca;
+                box-shadow: 0 10px 30px rgba(74, 52, 38, 0.16);
+                color: #4a3426;
+                animation: sweetToastIn 0.3s ease;
             }
 
-                .footer-social a:hover {
-                    color: white;
-                    transform: translateX(3px);
-                }
-
-            .footer-social i {
-                font-size: 18px;
+            .success-toast {
+                border-left: 4px solid #b89470;
             }
 
-        .footer-location {
-            color: #dddddd;
-            text-decoration: none;
-            font-size: 14px;
-            line-height: 1.5;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-        }
-
-            .footer-location:hover {
-                color: white;
+            .error-toast {
+                border-left: 4px solid #c78f83;
             }
 
-            .footer-location i {
+            .sweet-toast-icon {
+                width: 38px;
+                height: 38px;
+                flex-shrink: 0;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #f1e2d2;
+                color: #8b6a4e;
                 font-size: 19px;
             }
 
-        .footer-bottom {
-            max-width: 1250px;
-            margin: 30px auto 0;
-            padding-top: 20px;
-            border-top: 1px solid #333;
-            text-align: center;
-        }
-
-        .footer-copy {
-            color: #888;
-            font-size: 13px;
-            margin: 0;
-        }
-
-        @@media (max-width: 768px) {
-
-            body {
-                padding-top: 65px;
+            .error-toast .sweet-toast-icon {
+                background: #f2dfda;
+                color: #a66d62;
             }
 
-            .main-navbar {
-                min-height: 65px;
-                padding: 0 15px;
+            .sweet-toast-content {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+                flex: 1;
+                min-width: 0;
             }
 
-                .main-navbar .navbar-brand {
-                    font-size: 21px;
-                    margin-right: 10px;
+                .sweet-toast-content strong {
+                    font-size: 0.92rem;
+                    color: #4a3426;
                 }
 
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 30px;
+                .sweet-toast-content span {
+                    font-size: 0.84rem;
+                    color: #806d60;
+                    line-height: 1.4;
+                    word-break: break-word;
+                }
+
+            .sweet-toast-close {
+                border: none;
+                background: transparent;
+                color: #8b6a4e;
+                font-size: 22px;
+                line-height: 1;
+                cursor: pointer;
+                padding: 0 4px;
+                transition: 0.2s ease;
+            }
+
+                .sweet-toast-close:hover {
+                    color: #4a3426;
+                    transform: scale(1.1);
+                }
+
+            @@keyframes sweetToastIn {
+
+                from {
+                    opacity: 0;
+                    transform: translateX(30px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
             }
 
             .main-footer {
-                padding: 30px 20px;
+                width: 100%;
+                margin: 0;
+                background-color: #111;
+                color: white;
+                padding: 38px 30px;
             }
-        }
 
+            .footer-content {
+                max-width: 1250px;
+                margin: 0 auto;
+                display: grid;
+                grid-template-columns: 1.3fr 1fr 1fr;
+                gap: 45px;
+            }
+
+            .footer-brand {
+                font-size: 23px;
+                font-weight: 700;
+                margin-bottom: 8px;
+            }
+
+            .footer-description {
+                color: #bbbbbb;
+                font-size: 14px;
+                line-height: 1.6;
+                margin: 0;
+            }
+
+            .footer-title {
+                font-size: 16px;
+                font-weight: 600;
+                margin-bottom: 15px;
+            }
+
+            .footer-social {
+                display: flex;
+                flex-direction: column;
+                gap: 11px;
+            }
+
+                .footer-social a {
+                    color: #dddddd;
+                    text-decoration: none;
+                    font-size: 14px;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    transition: 0.2s ease;
+                }
+
+                    .footer-social a:hover {
+                        color: white;
+                        transform: translateX(3px);
+                    }
+
+                .footer-social i {
+                    font-size: 18px;
+                }
+
+            .footer-location {
+                color: #dddddd;
+                text-decoration: none;
+                font-size: 14px;
+                line-height: 1.5;
+                display: flex;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+                .footer-location:hover {
+                    color: white;
+                }
+
+                .footer-location i {
+                    font-size: 19px;
+                }
+
+            .footer-bottom {
+                max-width: 1250px;
+                margin: 30px auto 0;
+                padding-top: 20px;
+                border-top: 1px solid #333;
+                text-align: center;
+            }
+
+            .footer-copy {
+                color: #888;
+                font-size: 13px;
+                margin: 0;
+            }
+
+            @@media (max-width: 768px) {
+
+                body {
+                    padding-top: 65px;
+                }
+
+                .main-navbar {
+                    min-height: 65px;
+                    padding: 0 15px;
+                }
+
+                    .main-navbar .navbar-brand {
+                        font-size: 21px;
+                        margin-right: 10px;
+                    }
+
+                .footer-content {
+                    grid-template-columns: 1fr;
+                    gap: 30px;
+                }
+
+                .main-footer {
+                    padding: 30px 20px;
+                }
+            }
+
+            @@media (max-width: 576px) {
+
+                .sweet-toast {
+                    top: 75px;
+                    right: 15px;
+                    width: calc(100% - 30px);
+                }
+            }
     </style>
 
 </head>
 
-
 <body>
-
 
     <header>
 
@@ -249,16 +345,14 @@
 
             <div class="container-fluid">
 
-
                 <a class="navbar-brand"
                    asp-area=""
-                   asp-controller="Home"
+                   asp-controller="Reports"
                    asp-action="Index">
 
                     Dulce Antojo
 
                 </a>
-
 
                 <button class="navbar-toggler"
                         type="button"
@@ -272,26 +366,38 @@
 
                 </button>
 
-
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-
 
                     <ul class="navbar-nav flex-grow-1">
 
+                        <!-- INICIO -->
 
                         <li class="nav-item">
 
-                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")"
-                               asp-area=""
-                               asp-controller="Home"
-                               asp-action="Index">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Admin" ? "active" : "")"
+                                   asp-controller="Admin"
+                                   asp-action="Index">
 
-                                Inicio
+                                    Inicio
 
-                            </a>
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active" : "")"
+                                   asp-controller="Home"
+                                   asp-action="Index">
+
+                                    Inicio
+
+                                </a>
+                            }
 
                         </li>
 
+                        <!-- PRODUCTOS -->
 
                         <li class="nav-item">
 
@@ -306,6 +412,116 @@
 
                         </li>
 
+                        <!-- CATEGORÍAS - SOLO ADMIN -->
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Categories" ? "active" : "")"
+                                   asp-area=""
+                                   asp-controller="Categories"
+                                   asp-action="Index">
+
+                                    Categorías
+
+                                </a>
+
+                            </li>
+                        }
+
+                        <!-- INVENTARIO - SOLO ADMIN -->
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Inventory" ? "active" : "")"
+                                   asp-area=""
+                                   asp-controller="Inventory"
+                                   asp-action="Index">
+
+                                    Inventario
+
+                                </a>
+
+                            </li>
+                        }
+
+                        <!-- PEDIDOS - SOLO ADMIN -->
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" && ViewContext.RouteData.Values["action"]?.ToString() == "Orders" ? "active" : "")"
+                                   asp-area=""
+                                   asp-controller="Admin"
+                                   asp-action="Orders">
+
+                                    <i class="bi bi-box-seam"></i>
+                                    Pedidos
+
+                                </a>
+
+                            </li>
+                        }
+                        <!-- REPORTES - SOLO ADMIN -->
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Reports" ? "active" : "")"
+                                   asp-area=""
+                                   asp-controller="Reports"
+                                   asp-action="Index">
+
+                                    <i class="bi bi-bar-chart-line"></i>
+                                    Reportes
+
+                                </a>
+
+                            </li>
+                        }
+
+                        <!-- CARRITO - SOLO CLIENTES -->
+                        @if (User.Identity != null &&
+                             User.Identity.IsAuthenticated &&
+                             !User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Cart" ? "active" : "")"
+                                   asp-area=""
+                                   asp-controller="Cart"
+                                   asp-action="Index">
+
+                                    <i class="bi bi-cart3"></i>
+                                    Carrito
+
+                                </a>
+
+                            </li>
+                        }
+
+                        <!-- MIS COMPRAS - SOLO CLIENTES -->
+                        @if (User.Identity != null &&
+                             User.Identity.IsAuthenticated &&
+                             !User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Orders" ? "active" : "")"
+                                   asp-area=""
+                                   asp-controller="Orders"
+                                   asp-action="MyOrders">
+
+                                    <i class="bi bi-bag-check"></i>
+                                    Mis compras
+
+                                </a>
+
+                            </li>
+                        }
+
+                        <!-- ACERCA DE NOSOTROS -->
 
                         <li class="nav-item">
 
@@ -320,31 +536,12 @@
 
                         </li>
 
-
                     </ul>
-
 
                     <ul class="navbar-nav align-items-center">
 
-
                         @if (User.Identity != null && User.Identity.IsAuthenticated)
                         {
-
-                            var usuarioActual = await UserManager.GetUserAsync(User);
-
-                            <li class="nav-item">
-
-                                <span class="header-user">
-
-                                    Hola,
-                                    @(string.IsNullOrWhiteSpace(usuarioActual?.FullName)
-                                                                    ? "usuario"
-                                                                    : usuarioActual.FullName)
-
-                            </span>
-
-                            </li>
-
 
                             <li class="nav-item">
 
@@ -365,7 +562,7 @@
 
                             </li>
 
-                                                }
+                        }
                         else
                         {
 
@@ -380,7 +577,6 @@
                                 </a>
 
                             </li>
-
 
                             <li class="nav-item">
 
@@ -398,7 +594,6 @@
 
                     </ul>
 
-
                 </div>
 
             </div>
@@ -406,7 +601,6 @@
         </nav>
 
     </header>
-
 
     <main role="main">
 
@@ -418,16 +612,84 @@
 
     </main>
 
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div id="successToast"
+             class="sweet-toast success-toast"
+             role="alert">
+
+            <div class="sweet-toast-icon">
+
+                <i class="bi bi-check-lg"></i>
+
+            </div>
+
+            <div class="sweet-toast-content">
+
+                <strong>¡Listo!</strong>
+
+                <span>
+                    @TempData["SuccessMessage"]
+                </span>
+
+            </div>
+
+            <button type="button"
+                    class="sweet-toast-close"
+                    onclick="closeSweetToast()"
+                    aria-label="Cerrar">
+
+                ×
+
+            </button>
+
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div id="errorToast"
+             class="sweet-toast error-toast"
+             role="alert">
+
+            <div class="sweet-toast-icon">
+
+                <i class="bi bi-exclamation-lg"></i>
+
+            </div>
+
+            <div class="sweet-toast-content">
+
+                <strong>Algo salió mal</strong>
+
+                <span>
+                    @TempData["ErrorMessage"]
+                </span>
+
+            </div>
+
+            <button type="button"
+                    class="sweet-toast-close"
+                    onclick="closeErrorToast()"
+                    aria-label="Cerrar">
+
+                ×
+
+            </button>
+
+        </div>
+    }
 
     <footer class="main-footer">
 
         <div class="footer-content">
 
-
             <div>
 
                 <div class="footer-brand">
+
                     Dulce Antojo
+
                 </div>
 
                 <p class="footer-description">
@@ -440,70 +702,78 @@
 
             </div>
 
-
             <div>
 
                 <div class="footer-title">
+
                     Síguenos
+
                 </div>
 
                 <div class="footer-social">
 
                     <a href="https://wa.me/59162639590"
-                       target="_blank">
+                       target="_blank"
+                       rel="noopener noreferrer">
 
                         <i class="bi bi-whatsapp"></i>
 
                         WhatsApp
+
                     </a>
 
-
                     <a href="https://www.instagram.com/aylen_kss?stkn=MWFseDY1bWprdWI4Zg=="
-                       target="_blank">
+                       target="_blank"
+                       rel="noopener noreferrer">
 
                         <i class="bi bi-instagram"></i>
 
                         Instagram
+
                     </a>
 
-
                     <a href="https://www.tiktok.com/@@rollitos.de.canel65?_r=1&_t=ZS-99ezFbc09Wn"
-                       target="_blank">
+                       target="_blank"
+                       rel="noopener noreferrer">
 
                         <i class="bi bi-tiktok"></i>
 
                         TikTok
+
                     </a>
 
                 </div>
 
             </div>
 
-
             <div>
 
                 <div class="footer-title">
+
                     Encuéntranos
+
                 </div>
 
                 <a class="footer-location"
                    href="https://maps.app.goo.gl/tWSpvduiKeZFSvnQ6?g_st=ac"
-                   target="_blank">
+                   target="_blank"
+                   rel="noopener noreferrer">
 
                     <i class="bi bi-geo-alt-fill"></i>
 
                     <span>
+
                         Visita nuestra repostería<br />
+
                         Ver ubicación en Google Maps
+
                     </span>
 
                 </a>
 
             </div>
 
-
         </div>
-
 
         <div class="footer-bottom">
 
@@ -517,13 +787,66 @@
 
     </footer>
 
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="~/js/site.js"
             asp-append-version="true">
+    </script>
+
+    <script>
+
+            function closeSweetToast() {
+
+                const toast = document.getElementById("successToast");
+
+                if (toast) {
+                    toast.remove();
+                }
+
+            }
+
+            function closeErrorToast() {
+
+                const toast = document.getElementById("errorToast");
+
+                if (toast) {
+                    toast.remove();
+                }
+
+            }
+
+            document.addEventListener("DOMContentLoaded", function() {
+
+                const successToast =
+                    document.getElementById("successToast");
+
+                const errorToast =
+                    document.getElementById("errorToast");
+
+                if (successToast) {
+
+                    setTimeout(function() {
+
+                        successToast.remove();
+
+                    }, 4500);
+
+                }
+
+                if (errorToast) {
+
+                    setTimeout(function() {
+
+                        errorToast.remove();
+
+                    }, 5000);
+
+                }
+
+            });
+
     </script>
 
     @await RenderSectionAsync("Scripts", required: false)

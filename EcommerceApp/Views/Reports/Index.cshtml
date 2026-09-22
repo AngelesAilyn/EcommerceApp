@@ -1,0 +1,1109 @@
+﻿
+@model EcommerceApp.Models.AdminDashboardViewModel
+
+@{
+    ViewData["Title"] = "Reportes";
+
+    decimal porcentajePagados = Model.TotalPedidos > 0
+        ? (decimal)Model.PedidosPagados / Model.TotalPedidos * 100
+        : 0;
+
+    decimal porcentajePendientes = Model.TotalPedidos > 0
+        ? (decimal)Model.PedidosPendientes / Model.TotalPedidos * 100
+        : 0;
+
+    decimal maxVenta = Model.VentasPorMes.Any()
+        ? Model.VentasPorMes.Max(x => x.Total)
+        : 0;
+
+    int maxProducto = Model.ProductosMasSolicitados.Any()
+        ? Model.ProductosMasSolicitados.Max(x => x.Cantidad)
+        : 0;
+}
+
+<style>
+
+    .report-page {
+        background: #f8f3ee;
+        min-height: calc(100vh - 70px);
+        padding: 30px;
+        color: #38251d;
+    }
+
+    .report-container {
+        max-width: 1400px;
+        margin: auto;
+    }
+
+    /* ENCABEZADO */
+
+    .report-header {
+        background: #fffaf5;
+        border-radius: 20px;
+        padding: 28px 32px;
+        margin-bottom: 25px;
+        border: 1px solid #eadbd0;
+        box-shadow: 0 5px 20px rgba(70, 40, 25, .07);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .report-brand {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .report-logo {
+        width: 55px;
+        height: 55px;
+        border-radius: 15px;
+        background: #6f4634;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 25px;
+    }
+
+    .report-title h1 {
+        margin: 0;
+        font-size: 27px;
+        font-weight: 800;
+        color: #4e2d20;
+    }
+
+    .report-title p {
+        margin: 5px 0 0;
+        color: #88766d;
+        font-size: 14px;
+    }
+
+    .report-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .report-btn {
+        border: none;
+        border-radius: 10px;
+        padding: 11px 17px;
+        text-decoration: none;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        cursor: pointer;
+        transition: .2s;
+    }
+
+    .report-btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .btn-pdf {
+        background: #6f4634;
+        color: white;
+    }
+
+    .btn-print {
+        background: #ead1c2;
+        color: #4e2d20;
+    }
+
+    /* TARJETAS */
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        margin-bottom: 25px;
+    }
+
+    .stat-card {
+        background: #fffaf5;
+        border-radius: 18px;
+        padding: 22px;
+        border: 1px solid #eadbd0;
+        box-shadow: 0 5px 18px rgba(70, 40, 25, .06);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stat-card::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 5px;
+        background: #6f4634;
+    }
+
+    .stat-card.orange::before {
+        background: #e08943;
+    }
+
+    .stat-card.green::before {
+        background: #759752;
+    }
+
+    .stat-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        background: #f4e1d6;
+        color: #6f4634;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 19px;
+        margin-bottom: 15px;
+    }
+
+    .stat-card.orange .stat-icon {
+        background: #fae8cf;
+        color: #d5792e;
+    }
+
+    .stat-card.green .stat-icon {
+        background: #e0ebcf;
+        color: #668342;
+    }
+
+    .stat-label {
+        color: #88766d;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .stat-value {
+        margin-top: 5px;
+        font-size: 25px;
+        font-weight: 800;
+        color: #38251d;
+    }
+
+    /* SECCIONES */
+
+    .report-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 20px;
+        margin-bottom: 25px;
+    }
+
+    .report-card {
+        background: #fffaf5;
+        border: 1px solid #eadbd0;
+        border-radius: 18px;
+        padding: 22px;
+        box-shadow: 0 5px 18px rgba(70, 40, 25, .06);
+    }
+
+    .section-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .section-title h2 {
+        font-size: 17px;
+        margin: 0;
+        font-weight: 800;
+        color: #4e2d20;
+    }
+
+    .section-title span {
+        font-size: 12px;
+        color: #9a887e;
+    }
+
+    /* VENTAS POR MES */
+
+    .sales-chart {
+        height: 230px;
+        display: flex;
+        align-items: end;
+        justify-content: space-around;
+        gap: 15px;
+        padding: 10px 5px 0;
+        border-bottom: 1px solid #e5d9d1;
+    }
+
+    .month-column {
+        flex: 1;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: end;
+        gap: 7px;
+    }
+
+    .month-value {
+        font-size: 11px;
+        color: #6f4634;
+        font-weight: 700;
+    }
+
+    .month-bar-area {
+        width: 100%;
+        max-width: 55px;
+        height: 170px;
+        display: flex;
+        align-items: end;
+    }
+
+    .month-bar {
+        width: 100%;
+        min-height: 4px;
+        background: #d99d80;
+        border-radius: 9px 9px 2px 2px;
+        transition: .3s;
+    }
+
+    .month-bar:hover {
+        background: #6f4634;
+    }
+
+    .month-name {
+        font-size: 12px;
+        font-weight: 700;
+        color: #76665e;
+        text-transform: capitalize;
+    }
+
+    /* PAGOS */
+
+    .payment-item {
+        margin-bottom: 22px;
+    }
+
+    .payment-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 7px;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .payment-bar {
+        height: 12px;
+        background: #eee2da;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .payment-fill {
+        height: 100%;
+        border-radius: 20px;
+    }
+
+    .payment-paid {
+        background: #759752;
+    }
+
+    .payment-pending {
+        background: #e08943;
+    }
+
+    .payment-percentage {
+        margin-top: 5px;
+        color: #938179;
+        font-size: 11px;
+    }
+
+    .payment-summary {
+        background: #f8eee7;
+        border-radius: 14px;
+        padding: 15px;
+        margin-top: 25px;
+        text-align: center;
+    }
+
+    .payment-summary strong {
+        display: block;
+        font-size: 23px;
+        color: #4e2d20;
+    }
+
+    .payment-summary span {
+        font-size: 12px;
+        color: #88766d;
+    }
+
+    /* PRODUCTOS */
+
+    .products-list {
+        display: flex;
+        flex-direction: column;
+        gap: 13px;
+    }
+
+    .product-row {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        padding: 13px;
+        border-radius: 12px;
+        background: #faf3ee;
+    }
+
+    .product-number {
+        width: 30px;
+        height: 30px;
+        flex-shrink: 0;
+        border-radius: 9px;
+        background: #ead1c2;
+        color: #5d392b;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 12px;
+    }
+
+    .product-info {
+        flex: 1;
+    }
+
+    .product-name {
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .product-bar {
+        height: 6px;
+        background: #e7dbd3;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .product-fill {
+        height: 100%;
+        background: #b8795d;
+        border-radius: 10px;
+    }
+
+    .product-quantity {
+        font-weight: 800;
+        font-size: 13px;
+        color: #6f4634;
+    }
+
+    /* TABLA */
+
+    .orders-card {
+        background: #fffaf5;
+        border: 1px solid #eadbd0;
+        border-radius: 18px;
+        box-shadow: 0 5px 18px rgba(70, 40, 25, .06);
+        overflow: hidden;
+        margin-bottom: 25px;
+    }
+
+    .orders-header {
+        padding: 22px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .orders-header h2 {
+        margin: 0;
+        font-size: 17px;
+        font-weight: 800;
+        color: #4e2d20;
+    }
+
+    .orders-header span {
+        font-size: 12px;
+        color: #938179;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+    .orders-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 900px;
+    }
+
+    .orders-table thead {
+        background: #6f4634;
+        color: white;
+    }
+
+    .orders-table th {
+        padding: 13px 12px;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: .3px;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    .orders-table td {
+        padding: 13px 12px;
+        border-bottom: 1px solid #eee3dc;
+        font-size: 12px;
+        color: #59483f;
+    }
+
+    .orders-table tbody tr:hover {
+        background: #fff5ef;
+    }
+
+    .order-id {
+        font-weight: 800;
+        color: #5f3b2c;
+    }
+
+    .order-total {
+        font-weight: 800;
+        color: #6f4634;
+    }
+
+    .badge-report {
+        display: inline-block;
+        padding: 5px 9px;
+        border-radius: 20px;
+        font-size: 10px;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .badge-paid {
+        background: #e0ebcf;
+        color: #5e783d;
+    }
+
+    .badge-pending {
+        background: #fae8cf;
+        color: #a96020;
+    }
+
+    .badge-delivery {
+        background: #eadfd8;
+        color: #6a5145;
+    }
+
+    /* PIE */
+
+    .report-footer {
+        background: #6f4634;
+        color: white;
+        border-radius: 16px;
+        padding: 17px 22px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 12px;
+    }
+
+    .report-footer strong {
+        font-size: 14px;
+    }
+
+    /* RESPONSIVE */
+
+    @@media (max-width: 1100px) {
+
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .report-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @@media (max-width: 700px) {
+
+        .report-page {
+            padding: 15px;
+        }
+
+        .report-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .report-actions {
+            width: 100%;
+        }
+
+        .report-btn {
+            flex: 1;
+            justify-content: center;
+        }
+
+        .sales-chart {
+            gap: 7px;
+        }
+
+        .month-bar-area {
+            max-width: 35px;
+        }
+
+        .report-footer {
+            flex-direction: column;
+            gap: 7px;
+            text-align: center;
+        }
+    }
+
+    /* IMPRESIÓN */
+
+    @@media print {
+
+        body {
+            padding-top: 0 !important;
+            background: white !important;
+        }
+
+        header,
+        footer,
+        .navbar,
+        .report-actions {
+            display: none !important;
+        }
+
+        .report-page {
+            padding: 0;
+            background: white;
+        }
+
+        .report-container {
+            max-width: none;
+        }
+
+        .report-card,
+        .stat-card,
+        .orders-card {
+            box-shadow: none;
+        }
+    }
+
+</style>
+
+<div class="report-page">
+
+    <div class="report-container">
+
+        <!-- ENCABEZADO -->
+
+        <div class="report-header">
+
+            <div class="report-brand">
+
+                <div class="report-logo">
+                    <i class="bi bi-bar-chart-line-fill"></i>
+                </div>
+
+                <div class="report-title">
+
+                    <h1>Reporte de ventas</h1>
+
+                    <p>
+                        Dulce Antojo · Resumen de pedidos y ventas
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="report-actions">
+
+                <a asp-controller="Reports"
+                   asp-action="Orders"
+                   target="_blank"
+                   class="report-btn btn-pdf">
+
+                    <i class="bi bi-file-earmark-pdf"></i>
+
+                    Generar PDF
+
+                </a>
+
+                <button type="button"
+                        class="report-btn btn-print"
+                        onclick="window.print()">
+
+                    <i class="bi bi-printer"></i>
+
+                    Imprimir
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- TARJETAS -->
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    <i class="bi bi-cart-check"></i>
+                </div>
+
+                <div class="stat-label">
+                    Total de pedidos
+                </div>
+
+                <div class="stat-value">
+                    @Model.TotalPedidos
+                </div>
+
+            </div>
+
+
+            <div class="stat-card orange">
+
+                <div class="stat-icon">
+                    <i class="bi bi-cash-stack"></i>
+                </div>
+
+                <div class="stat-label">
+                    Ventas totales
+                </div>
+
+                <div class="stat-value">
+                    Bs @Model.VentasTotales.ToString("N2")
+                </div>
+
+            </div>
+
+
+            <div class="stat-card green">
+
+                <div class="stat-icon">
+                    <i class="bi bi-check-circle"></i>
+                </div>
+
+                <div class="stat-label">
+                    Pedidos pagados
+                </div>
+
+                <div class="stat-value">
+                    @Model.PedidosPagados
+                </div>
+
+            </div>
+
+
+            <div class="stat-card orange">
+
+                <div class="stat-icon">
+                    <i class="bi bi-hourglass-split"></i>
+                </div>
+
+                <div class="stat-label">
+                    Pedidos pendientes
+                </div>
+
+                <div class="stat-value">
+                    @Model.PedidosPendientes
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RESUMEN VISUAL -->
+
+        <div class="report-grid">
+
+            <!-- VENTAS POR MES -->
+
+            <div class="report-card">
+
+                <div class="section-title">
+
+                    <h2>
+                        <i class="bi bi-graph-up"></i>
+                        Ventas por mes
+                    </h2>
+
+                    <span>
+                        Últimos 5 meses
+                    </span>
+
+                </div>
+
+                <div class="sales-chart">
+
+                    @foreach (var venta in Model.VentasPorMes)
+                    {
+                        decimal porcentajeVenta = maxVenta > 0
+                            ? venta.Total / maxVenta * 100
+                            : 0;
+
+                        <div class="month-column">
+
+                            <div class="month-value">
+                                Bs @venta.Total.ToString("N0")
+                            </div>
+
+                            <div class="month-bar-area">
+
+                                <div class="month-bar"
+                                     style="height:@porcentajeVenta%;">
+                                </div>
+
+                            </div>
+
+                            <div class="month-name">
+                                @venta.Mes
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+
+            <!-- ESTADO DE PAGOS -->
+
+            <div class="report-card">
+
+                <div class="section-title">
+
+                    <h2>
+                        <i class="bi bi-credit-card"></i>
+                        Estado de pagos
+                    </h2>
+
+                    <span>
+                        Pedidos registrados
+                    </span>
+
+                </div>
+
+
+                <div class="payment-item">
+
+                    <div class="payment-header">
+
+                        <span>
+                            Pagados
+                        </span>
+
+                        <span>
+                            @Model.PedidosPagados
+                        </span>
+
+                    </div>
+
+                    <div class="payment-bar">
+
+                        <div class="payment-fill payment-paid"
+                             style="width:@porcentajePagados%;">
+                        </div>
+
+                    </div>
+
+                    <div class="payment-percentage">
+                        @porcentajePagados.ToString("0.0")% del total
+                    </div>
+
+                </div>
+
+
+                <div class="payment-item">
+
+                    <div class="payment-header">
+
+                        <span>
+                            Pendientes
+                        </span>
+
+                        <span>
+                            @Model.PedidosPendientes
+                        </span>
+
+                    </div>
+
+                    <div class="payment-bar">
+
+                        <div class="payment-fill payment-pending"
+                             style="width:@porcentajePendientes%;">
+                        </div>
+
+                    </div>
+
+                    <div class="payment-percentage">
+                        @porcentajePendientes.ToString("0.0")% del total
+                    </div>
+
+                </div>
+
+
+                <div class="payment-summary">
+
+                    <strong>
+                        @Model.TotalPedidos
+                    </strong>
+
+                    <span>
+                        pedidos registrados en total
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRODUCTOS MÁS SOLICITADOS -->
+
+        <div class="report-card" style="margin-bottom:25px;">
+
+            <div class="section-title">
+
+                <h2>
+                    <i class="bi bi-star"></i>
+                    Productos más solicitados
+                </h2>
+
+                <span>
+                    Según cantidad vendida
+                </span>
+
+            </div>
+
+
+            @if (Model.ProductosMasSolicitados.Any())
+            {
+                <div class="products-list">
+
+                    @{
+                        int posicion = 1;
+                    }
+
+                    @foreach (var producto in Model.ProductosMasSolicitados)
+                    {
+                        decimal porcentajeProducto = maxProducto > 0
+                            ? (decimal)producto.Cantidad / maxProducto * 100
+                            : 0;
+
+                        <div class="product-row">
+
+                            <div class="product-number">
+                                @posicion
+                            </div>
+
+                            <div class="product-info">
+
+                                <div class="product-name">
+                                    @producto.Nombre
+                                </div>
+
+                                <div class="product-bar">
+
+                                    <div class="product-fill"
+                                         style="width:@porcentajeProducto%;">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="product-quantity">
+                                @producto.Cantidad
+                            </div>
+
+                        </div>
+
+                        posicion++;
+                    }
+
+                </div>
+            }
+            else
+            {
+                <p style="color:#88766d; margin:0;">
+                    Todavía no existen productos vendidos.
+                </p>
+            }
+
+        </div>
+
+
+        <!-- TABLA DE PEDIDOS -->
+
+        <div class="orders-card">
+
+            <div class="orders-header">
+
+                <div>
+
+                    <h2>
+                        <i class="bi bi-receipt"></i>
+                        Detalle de pedidos
+                    </h2>
+
+                </div>
+
+                <span>
+                    @Model.Pedidos.Count pedido(s)
+                </span>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table class="orders-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>N.º Pedido</th>
+                            <th>Fecha</th>
+                            <th>Cliente</th>
+                            <th>Total</th>
+                            <th>Método de pago</th>
+                            <th>Estado de pago</th>
+                            <th>Entrega</th>
+                            <th>Estado</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @if (Model.Pedidos.Any())
+                        {
+                            foreach (var pedido in Model.Pedidos)
+                            {
+                                bool pagado =
+                                    pedido.EstadoPago
+                                        ?.Equals(
+                                            "Pagado",
+                                            StringComparison.OrdinalIgnoreCase)
+                                    == true;
+
+                                <tr>
+
+                                    <td class="order-id">
+                                        #@pedido.Id
+                                    </td>
+
+                                    <td>
+                                        @pedido.Fecha.ToLocalTime().ToString("dd/MM/yyyy HH:mm")
+                                    </td>
+
+                                    <td>
+                                        @pedido.Cliente
+                                    </td>
+
+                                    <td class="order-total">
+                                        Bs @pedido.Total.ToString("N2")
+                                    </td>
+
+                                    <td>
+                                        @pedido.MetodoPago
+                                    </td>
+
+                                    <td>
+
+                                        <span class="badge-report @(pagado ? "badge-paid" : "badge-pending")">
+
+                                            @(pagado ? "Pagado" : pedido.EstadoPago)
+
+                                        </span>
+
+                                    </td>
+
+                                    <td>
+
+                                        <span class="badge-report badge-delivery">
+                                            @pedido.Entrega
+                                        </span>
+
+                                    </td>
+
+                                    <td>
+
+                                        <span class="badge-report badge-delivery">
+                                            @pedido.EstadoPedido
+                                        </span>
+
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+
+                                <td colspan="8"
+                                    style="text-align:center; padding:35px;">
+
+                                    No existen pedidos registrados.
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- PIE -->
+
+        <div class="report-footer">
+
+            <div>
+
+                <strong>
+                    DULCE ANTOJO
+                </strong>
+
+                <div>
+                    Reporte administrativo de ventas
+                </div>
+
+            </div>
+
+            <div>
+                Generado el
+                @Model.FechaGeneracion.ToString("dd/MM/yyyy HH:mm")
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

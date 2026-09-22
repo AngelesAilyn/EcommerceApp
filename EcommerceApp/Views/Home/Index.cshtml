@@ -2,6 +2,12 @@
 
 @{
     ViewData["Title"] = "Inicio";
+
+    var categorias = Model
+        .Where(p => !string.IsNullOrWhiteSpace(p.Category))
+        .GroupBy(p => p.Category!)
+        .Select(g => g.First())
+        .ToList();
 }
 
 <style>
@@ -10,20 +16,19 @@
         width: 100%;
         margin: 0;
         padding: 0;
+        background: #f7f1e8;
+        color: #3d2b20;
     }
-
-
 
     .hero {
         position: relative;
         width: 100%;
-        min-height: 650px;
+        min-height: 720px;
         display: flex;
         align-items: center;
         justify-content: center;
-        text-align: center;
         overflow: hidden;
-        background-image: linear-gradient( rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0.38) ), url("https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=2000&q=90");
+        background-image: linear-gradient(rgba(48, 31, 21, 0.28), rgba(48, 31, 21, 0.42)), url("https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=2200&q=90");
         background-size: cover;
         background-position: center;
     }
@@ -31,106 +36,118 @@
     .hero-content {
         position: relative;
         z-index: 2;
-        max-width: 800px;
-        padding: 30px;
+        width: min(900px, 90%);
+        padding: 50px 30px;
+        text-align: center;
         color: white;
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
     }
 
     .hero-small {
-        margin-bottom: 14px;
-        font-size: 14px;
-        font-weight: 500;
+        margin-bottom: 22px;
+        font-size: 12px;
+        font-weight: 600;
         letter-spacing: 5px;
         text-transform: uppercase;
-        color: white;
+        color: #f8eee1;
     }
 
     .hero h1 {
         margin: 0;
-        font-size: 72px;
-        line-height: 1;
-        font-weight: 700;
-        letter-spacing: -1px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(65px, 9vw, 120px);
+        line-height: 0.95;
+        font-weight: 400;
+        letter-spacing: -3px;
         color: white;
     }
 
     .hero p {
-        margin: 22px 0 32px;
-        font-size: 20px;
-        color: white;
+        max-width: 600px;
+        margin: 28px auto 38px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 22px;
+        font-style: italic;
+        line-height: 1.5;
+        color: #fffaf4;
     }
 
     .hero-button {
-        display: inline-block;
-        padding: 13px 30px;
-        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 190px;
+        padding: 15px 30px;
+        border: 1px solid white;
+        border-radius: 0;
         background: white;
-        color: #222;
+        color: #3d2b20;
         text-decoration: none;
-        font-size: 14px;
-        font-weight: 600;
-        transition: all 0.25s ease;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1.8px;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
     }
 
         .hero-button:hover {
-            background: #222;
+            background: transparent;
             color: white;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
         }
 
 
     .products-section {
-        padding: 90px 30px;
-        background: white;
+        padding: 105px 40px 115px;
+        background: #f7f1e8;
     }
 
     .products-title {
+        max-width: 750px;
+        margin: 0 auto 60px;
         text-align: center;
-        margin-bottom: 48px;
     }
 
         .products-title span {
             display: block;
-            margin-bottom: 10px;
-            color: #999;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 3px;
+            margin-bottom: 16px;
+            color: #96775d;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 4px;
             text-transform: uppercase;
         }
 
         .products-title h2 {
-            margin: 0 0 12px;
-            color: #222;
-            font-size: 36px;
-            font-weight: 700;
+            margin: 0 0 18px;
+            color: #3d2b20;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(38px, 5vw, 58px);
+            font-weight: 400;
+            line-height: 1.05;
         }
 
         .products-title p {
-            margin: 0;
-            color: #777;
-            font-size: 15px;
+            margin: 0 auto;
+            color: #79675a;
+            font-size: 16px;
+            line-height: 1.7;
         }
 
     .category-grid {
-        max-width: 1150px;
+        max-width: 1250px;
         margin: 0 auto;
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 22px;
+        gap: 20px;
     }
 
     .category-card {
         position: relative;
         display: block;
-        height: 320px;
+        height: 390px;
         overflow: hidden;
-        border-radius: 12px;
         text-decoration: none;
-        background: #eee;
+        background: #ded5c9;
     }
 
         .category-card img {
@@ -138,190 +155,237 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            transition: transform 0.5s ease;
+            transition: transform 0.7s ease;
         }
 
-        .category-card::after {
+        .category-card::before {
             content: "";
             position: absolute;
             inset: 0;
-            background: linear-gradient( transparent 35%, rgba(0, 0, 0, 0.75) );
+            z-index: 1;
+            background: linear-gradient( to top, rgba(39, 25, 17, 0.82) 0%, rgba(39, 25, 17, 0.22) 45%, rgba(39, 25, 17, 0) 72% );
         }
 
         .category-card:hover img {
-            transform: scale(1.07);
+            transform: scale(1.08);
         }
 
     .category-info {
         position: absolute;
         z-index: 2;
-        left: 22px;
-        right: 22px;
-        bottom: 22px;
+        left: 25px;
+        right: 25px;
+        bottom: 25px;
         color: white;
     }
 
         .category-info h3 {
-            margin: 0 0 7px;
+            margin: 0 0 9px;
             color: white;
-            font-size: 21px;
-            font-weight: 600;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 26px;
+            font-weight: 400;
+            line-height: 1.1;
         }
 
         .category-info span {
-            color: rgba(255,255,255,0.9);
-            font-size: 13px;
+            color: rgba(255,255,255,0.88);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
         }
 
     .no-products {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 50px;
         text-align: center;
-        color: #777;
+        color: #79675a;
+        background: #fffaf4;
     }
 
 
     .why-section {
         position: relative;
-        min-height: 540px;
+        min-height: 610px;
         display: flex;
         align-items: center;
         justify-content: center;
-        text-align: center;
         overflow: hidden;
-        background-image: linear-gradient( rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55) ), url("https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=2000&q=90");
+        background-image: linear-gradient(rgba(50, 31, 21, 0.63), rgba(50, 31, 21, 0.63)), url("https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=2200&q=90");
         background-size: cover;
         background-position: center;
     }
 
     .why-content {
-        max-width: 750px;
-        padding: 40px 25px;
+        width: min(780px, 90%);
+        padding: 70px 30px;
+        text-align: center;
         color: white;
     }
 
         .why-content small {
             display: block;
-            margin-bottom: 15px;
-            color: white;
-            font-size: 12px;
-            font-weight: 600;
+            margin-bottom: 20px;
+            color: #ead7c4;
+            font-size: 11px;
+            font-weight: 700;
             letter-spacing: 4px;
             text-transform: uppercase;
         }
 
         .why-content h2 {
-            margin: 0 0 20px;
+            margin: 0 0 25px;
             color: white;
-            font-size: 46px;
-            font-weight: 700;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(42px, 6vw, 66px);
+            font-weight: 400;
+            line-height: 1.05;
         }
 
         .why-content p {
-            max-width: 620px;
-            margin: 0 auto 30px;
-            color: rgba(255,255,255,0.92);
+            max-width: 650px;
+            margin: 0 auto 32px;
+            color: rgba(255,255,255,0.91);
             font-size: 17px;
-            line-height: 1.8;
+            line-height: 1.9;
         }
 
     .why-values {
-        margin-bottom: 35px;
-        color: white;
-        font-size: 14px;
-        letter-spacing: 1px;
+        margin-bottom: 38px;
+        color: #f2dfcb;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
     }
 
         .why-values span {
-            margin: 0 10px;
+            margin: 0 12px;
         }
 
     .about-button {
-        display: inline-block;
-        padding: 13px 29px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 15px 32px;
         border: 1px solid white;
-        border-radius: 6px;
+        border-radius: 0;
         background: white;
-        color: #222;
+        color: #3d2b20;
         text-decoration: none;
-        font-size: 14px;
-        font-weight: 600;
-        transition: all 0.25s ease;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.8px;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
     }
 
         .about-button:hover {
             background: transparent;
             color: white;
+            transform: translateY(-3px);
         }
 
 
-    @@media (max-width: 1000px) {
+    @@media (max-width: 1100px) {
 
         .category-grid {
             grid-template-columns: repeat(2, 1fr);
-            max-width: 750px;
+            max-width: 850px;
         }
 
-        .hero h1 {
-            font-size: 60px;
+        .category-card {
+            height: 360px;
         }
     }
+
 
     @@media (max-width: 600px) {
 
         .hero {
-            min-height: 570px;
+            min-height: 620px;
         }
 
-            .hero h1 {
-                font-size: 45px;
-            }
+        .hero-content {
+            padding: 40px 20px;
+        }
 
         .hero-small {
-            font-size: 11px;
+            font-size: 10px;
             letter-spacing: 3px;
         }
 
+        .hero h1 {
+            font-size: 57px;
+            letter-spacing: -2px;
+        }
+
         .hero p {
-            font-size: 17px;
+            font-size: 18px;
+            margin-top: 22px;
         }
 
         .products-section {
-            padding: 65px 20px;
+            padding: 75px 20px 85px;
         }
 
-        .products-title h2 {
-            font-size: 29px;
+        .products-title {
+            margin-bottom: 40px;
         }
+
+            .products-title h2 {
+                font-size: 40px;
+            }
+
+            .products-title p {
+                font-size: 15px;
+            }
 
         .category-grid {
             grid-template-columns: 1fr;
+            gap: 16px;
         }
 
         .category-card {
-            height: 280px;
+            height: 330px;
+        }
+
+        .category-info h3 {
+            font-size: 27px;
         }
 
         .why-section {
-            min-height: 500px;
+            min-height: 560px;
         }
 
-        .why-content h2 {
-            font-size: 34px;
+        .why-content {
+            padding: 60px 20px;
         }
 
-        .why-content p {
-            font-size: 15px;
-        }
+            .why-content h2 {
+                font-size: 43px;
+            }
+
+            .why-content p {
+                font-size: 15px;
+                line-height: 1.75;
+            }
 
         .why-values {
-            line-height: 2;
+            line-height: 2.4;
         }
+
+            .why-values span {
+                margin: 0 7px;
+            }
     }
 
 </style>
 
 
 <div class="home-page">
-
 
     <section class="hero">
 
@@ -336,13 +400,14 @@
             </h1>
 
             <p>
-                Pequeños momentos, grandes sabores.
+                Hecho para esos momentos en los que simplemente
+                se te antoja algo dulce.
             </p>
 
             <a asp-controller="Products"
                asp-action="Index"
                class="hero-button">
-                Ver productos
+                Descubre nuestros sabores
             </a>
 
         </div>
@@ -355,25 +420,26 @@
         <div class="products-title">
 
             <span>
-                Descubre nuestros sabores
+                Una elección difícil
             </span>
 
             <h2>
-                Productos destacados
+                ¿Qué se te antoja hoy?
             </h2>
 
             <p>
-                Encuentra algo especial para cada ocasión.
+                Explora nuestros sabores y encuentra algo que
+                quieras disfrutar.
             </p>
 
         </div>
 
 
-        @if (Model.Any())
+        @if (categorias.Any())
         {
             <div class="category-grid">
 
-                @foreach (var product in Model)
+                @foreach (var product in categorias)
                 {
                     <a asp-controller="Products"
                        asp-action="Index"
@@ -393,8 +459,8 @@
                                             display:flex;
                                             align-items:center;
                                             justify-content:center;
-                                            background:#eeeeee;
-                                            color:#777;">
+                                            background:#ded5c9;
+                                            color:#79675a;">
                                 Sin imagen
                             </div>
                         }
@@ -406,7 +472,7 @@
                             </h3>
 
                             <span>
-                                Ver productos →
+                                Explorar categoría →
                             </span>
 
                         </div>
@@ -435,14 +501,14 @@
             </small>
 
             <h2>
-                Hecho con dedicación
+                El gusto está en los pequeños detalles
             </h2>
 
             <p>
-                Creamos cada producto pensando en esos pequeños
-                momentos que merecen algo especial. Cuidamos el
-                sabor, la preparación y cada detalle para que
-                disfrutar sea parte de la experiencia.
+                Preparamos cada producto con dedicación para
+                convertir un simple antojo en un momento especial.
+                Queremos que elegir algo dulce también sea parte
+                de la experiencia.
             </p>
 
             <div class="why-values">

@@ -1,0 +1,368 @@
+﻿@model EcommerceApp.Controllers.CheckoutViewModel
+
+@{
+    ViewData["Title"] = "Confirmar compra";
+}
+
+<div class="checkout-page">
+
+    <div class="checkout-header">
+        <h1>Confirmar compra</h1>
+        <p>Revisa tu pedido y selecciona cómo deseas realizar el pago y recibirlo.</p>
+    </div>
+
+    <div class="checkout-container">
+
+        <div class="checkout-products">
+
+            <h2>Resumen de tu compra</h2>
+
+            @foreach (var item in Model.Items)
+            {
+                <div class="checkout-item">
+
+                    <div class="checkout-item-info">
+
+                        <h3>@item.Name</h3>
+
+                        <span>
+                            Cantidad: @item.Quantity
+                        </span>
+
+                    </div>
+
+                    <div class="checkout-item-price">
+
+                        <span>
+                            Bs. @item.Price.ToString("F2") c/u
+                        </span>
+
+                        <strong>
+                            Bs. @item.Subtotal.ToString("F2")
+                        </strong>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+        <div class="checkout-summary">
+
+            <h2>Total del pedido</h2>
+
+            <div class="checkout-total">
+
+                <span>Total</span>
+
+                <strong>
+                    Bs. @Model.Total.ToString("F2")
+                </strong>
+
+            </div>
+
+            <form asp-action="Confirm"
+                  asp-controller="Orders"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div class="checkout-option-section">
+
+                    <h3>Método de pago</h3>
+
+                    <label class="checkout-option">
+
+                        <input type="radio"
+                               name="paymentMethod"
+                               value="Efectivo"
+                               required />
+
+                        <span>
+                            Efectivo
+                        </span>
+
+                    </label>
+
+                    <label class="checkout-option">
+
+                        <input type="radio"
+                               name="paymentMethod"
+                               value="QR"
+                               required />
+
+                        <span>
+                            QR
+                        </span>
+
+                    </label>
+
+                    <label class="checkout-option">
+
+                        <input type="radio"
+                               name="paymentMethod"
+                               value="Transferencia"
+                               required />
+
+                        <span>
+                            Transferencia
+                        </span>
+
+                    </label>
+
+                </div>
+
+                <div class="checkout-option-section">
+
+                    <h3>Forma de entrega</h3>
+
+                    <label class="checkout-option">
+
+                        <input type="radio"
+                               name="deliveryMethod"
+                               value="Delivery"
+                               required />
+
+                        <span>
+                            Delivery
+                        </span>
+
+                    </label>
+
+                    <label class="checkout-option">
+
+                        <input type="radio"
+                               name="deliveryMethod"
+                               value="Recojo en tienda"
+                               required />
+
+                        <span>
+                            Recojo en tienda
+                        </span>
+
+                    </label>
+
+                </div>
+
+                <button type="submit"
+                        class="checkout-confirm-button">
+                    Confirmar pedido
+                </button>
+
+            </form>
+
+            <a asp-controller="Cart"
+               asp-action="Index"
+               class="checkout-back-button">
+                Volver al carrito
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+
+    .checkout-page {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 55px 20px 80px;
+    }
+
+    .checkout-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+        .checkout-header h1 {
+            margin: 0;
+            color: #35241b;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 34px;
+        }
+
+        .checkout-header p {
+            margin: 10px 0 0;
+            color: #786960;
+            font-size: 14px;
+        }
+
+    .checkout-container {
+        display: grid;
+        grid-template-columns: 1.6fr 1fr;
+        gap: 25px;
+        align-items: start;
+    }
+
+    .checkout-products,
+    .checkout-summary {
+        background: #fffdf9;
+        border: 1px solid #e4d5c5;
+        border-radius: 20px;
+        padding: 28px;
+        box-shadow: 0 10px 28px rgba(73, 51, 40, 0.08);
+    }
+
+        .checkout-products h2,
+        .checkout-summary h2 {
+            margin: 0 0 22px;
+            color: #35241b;
+            font-size: 21px;
+        }
+
+    .checkout-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 17px 0;
+        border-bottom: 1px solid #eee3d8;
+    }
+
+        .checkout-item:last-child {
+            border-bottom: none;
+        }
+
+    .checkout-item-info h3 {
+        margin: 0 0 6px;
+        color: #493328;
+        font-size: 15px;
+    }
+
+    .checkout-item-info span {
+        color: #8a7a70;
+        font-size: 13px;
+    }
+
+    .checkout-item-price {
+        text-align: right;
+        white-space: nowrap;
+    }
+
+        .checkout-item-price span {
+            display: block;
+            margin-bottom: 4px;
+            color: #8a7a70;
+            font-size: 12px;
+        }
+
+        .checkout-item-price strong {
+            color: #493328;
+            font-size: 15px;
+        }
+
+    .checkout-total {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 17px 0 22px;
+        margin-bottom: 5px;
+        border-bottom: 1px solid #eaded2;
+        color: #493328;
+    }
+
+        .checkout-total strong {
+            color: #8b5e3c;
+            font-size: 23px;
+        }
+
+    .checkout-option-section {
+        margin-top: 23px;
+    }
+
+        .checkout-option-section h3 {
+            margin: 0 0 12px;
+            color: #493328;
+            font-size: 15px;
+        }
+
+    .checkout-option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 11px 13px;
+        margin-bottom: 8px;
+        border: 1px solid #e4d5c5;
+        border-radius: 10px;
+        background: #fff;
+        color: #5c4332;
+        font-size: 13px;
+        cursor: pointer;
+    }
+
+        .checkout-option:hover {
+            border-color: #c9ad92;
+        }
+
+        .checkout-option input {
+            accent-color: #8b5e3c;
+        }
+
+    .checkout-confirm-button {
+        width: 100%;
+        margin-top: 25px;
+        padding: 13px;
+        border: none;
+        border-radius: 10px;
+        background: #4a3426;
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: .2s ease;
+    }
+
+        .checkout-confirm-button:hover {
+            background: #6f513b;
+            transform: translateY(-1px);
+        }
+
+    .checkout-back-button {
+        display: block;
+        margin-top: 12px;
+        padding: 11px;
+        border-radius: 10px;
+        background: #f4eadf;
+        color: #5c4332;
+        text-align: center;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+        .checkout-back-button:hover {
+            background: #ead9c8;
+        }
+
+    @@media (max-width: 800px) {
+
+        .checkout-container {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @@media (max-width: 600px) {
+
+        .checkout-page {
+            padding: 40px 15px 65px;
+        }
+
+        .checkout-products,
+        .checkout-summary {
+            padding: 22px;
+        }
+
+        .checkout-item {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .checkout-item-price {
+            text-align: left;
+        }
+    }
+
+</style>

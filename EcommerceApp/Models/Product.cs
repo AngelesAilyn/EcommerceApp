@@ -32,12 +32,33 @@ namespace EcommerceApp.Models
         [Display(Name = "URL de imagen")]
         public string? ImageUrl { get; set; }
 
+
+        // Categoria, Se conserva temporalmente para migrar los productos existentes.
         [StringLength(50, ErrorMessage = "La categoría no puede superar los 50 caracteres.")]
-        [Display(Name = "Categoría")]
+        [Display(Name = "Categoría anterior")]
         public string? Category { get; set; }
+
+        // Nueva relación con Category.
+        // Se mantiene nullable durante esta primera
+        // etapa para no romper los productos existentes.
+        [Display(Name = "Categoría")]
+        public int? CategoryId { get; set; }
+
+        public Category? CategoryNavigation { get; set; }
+
+
+        public Inventory? Inventory { get; set; }
+
+        [Display(Name = "Disponible")]
+        public bool IsAvailable { get; set; } = true;
 
         [Display(Name = "Archivado")]
         public bool IsArchived { get; set; } = false;
+
+        [Display(Name = "Fecha de vencimiento")]
+        [DataType(DataType.Date)]
+        public DateTime? ExpirationDate { get; set; }
+
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
