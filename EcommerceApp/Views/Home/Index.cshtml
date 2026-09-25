@@ -12,34 +12,54 @@
 
 <style>
 
+
     .home-page {
         width: 100%;
         margin: 0;
         padding: 0;
         background: #f7f1e8;
         color: #3d2b20;
+        overflow-x: hidden;
     }
+
 
     .hero {
         position: relative;
         width: 100%;
-        min-height: 720px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        height: auto;
+        min-height: 0;
         overflow: hidden;
-        background-image: linear-gradient(rgba(48, 31, 21, 0.28), rgba(48, 31, 21, 0.42)), url("https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=2200&q=90");
-        background-size: cover;
-        background-position: center;
+        background: #3d2b20;
+    }
+
+    .hero-image {
+        display: block;
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+        object-fit: contain;
+    }
+
+    .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background: linear-gradient( rgba(48, 31, 21, 0.28), rgba(40, 27, 18, 0.38) );
+        pointer-events: none;
     }
 
     .hero-content {
-        position: relative;
+        position: absolute;
         z-index: 2;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         width: min(900px, 90%);
         padding: 50px 30px;
         text-align: center;
         color: white;
+        box-sizing: border-box;
     }
 
     .hero-small {
@@ -133,28 +153,35 @@
             line-height: 1.7;
         }
 
+
     .category-grid {
+        width: 100%;
         max-width: 1250px;
         margin: 0 auto;
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 20px;
     }
+
 
     .category-card {
         position: relative;
         display: block;
-        height: 390px;
+        width: 100%;
+        min-width: 0;
+        aspect-ratio: 4 / 5;
         overflow: hidden;
         text-decoration: none;
         background: #ded5c9;
+        box-sizing: border-box;
     }
 
         .category-card img {
+            display: block;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: block;
+            object-position: center;
             transition: transform 0.7s ease;
         }
 
@@ -169,6 +196,7 @@
         .category-card:hover img {
             transform: scale(1.08);
         }
+
 
     .category-info {
         position: absolute;
@@ -196,6 +224,8 @@
             text-transform: uppercase;
         }
 
+
+
     .no-products {
         max-width: 700px;
         margin: 0 auto;
@@ -213,7 +243,7 @@
         align-items: center;
         justify-content: center;
         overflow: hidden;
-        background-image: linear-gradient(rgba(50, 31, 21, 0.63), rgba(50, 31, 21, 0.63)), url("https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=2200&q=90");
+        background-image: url("https://tse2.mm.bing.net/th/id/OIP.WkgctQPwITB5nl-SnAytngHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3");
         background-size: cover;
         background-position: center;
     }
@@ -292,12 +322,12 @@
     @@media (max-width: 1100px) {
 
         .category-grid {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             max-width: 850px;
         }
 
         .category-card {
-            height: 360px;
+            aspect-ratio: 4 / 5;
         }
     }
 
@@ -305,81 +335,161 @@
     @@media (max-width: 600px) {
 
         .hero {
-            min-height: 620px;
+            width: 100%;
+            height: auto;
+            min-height: 0;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            display: block;
+            object-fit: contain;
         }
 
         .hero-content {
-            padding: 40px 20px;
+            width: 92%;
+            padding: 15px;
         }
 
         .hero-small {
-            font-size: 10px;
-            letter-spacing: 3px;
+            margin-bottom: 12px;
+            font-size: 8px;
+            letter-spacing: 2px;
         }
 
         .hero h1 {
-            font-size: 57px;
+            font-size: 48px;
+            line-height: 1;
             letter-spacing: -2px;
         }
 
         .hero p {
-            font-size: 18px;
-            margin-top: 22px;
+            max-width: 300px;
+            margin: 16px auto 22px;
+            font-size: 15px;
+            line-height: 1.4;
         }
 
+        .hero-button {
+            min-width: 0;
+            padding: 12px 18px;
+            font-size: 9px;
+            letter-spacing: 1px;
+        }
+
+     
         .products-section {
-            padding: 75px 20px 85px;
+            padding: 55px 10px 65px;
         }
 
         .products-title {
-            margin-bottom: 40px;
+            margin-bottom: 30px;
+            padding: 0 10px;
         }
 
+            .products-title span {
+                margin-bottom: 12px;
+                font-size: 9px;
+                letter-spacing: 2.5px;
+            }
+
             .products-title h2 {
-                font-size: 40px;
+                margin-bottom: 12px;
+                font-size: 34px;
+                line-height: 1.1;
             }
 
             .products-title p {
-                font-size: 15px;
+                font-size: 14px;
+                line-height: 1.5;
             }
 
+ 
         .category-grid {
-            grid-template-columns: 1fr;
-            gap: 16px;
+            width: 100%;
+            max-width: none;
+            margin: 0;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            padding: 0;
         }
 
         .category-card {
-            height: 330px;
+            width: 100%;
+            height: auto;
+            min-width: 0;
+            aspect-ratio: 4 / 5;
         }
 
-        .category-info h3 {
-            font-size: 27px;
+            .category-card img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: center;
+            }
+
+        .category-info {
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
         }
+
+            .category-info h3 {
+                margin-bottom: 5px;
+                font-size: 19px;
+                line-height: 1.05;
+            }
+
+            .category-info span {
+                font-size: 8px;
+                letter-spacing: 0.8px;
+            }
 
         .why-section {
-            min-height: 560px;
+            min-height: 500px;
         }
 
         .why-content {
-            padding: 60px 20px;
+            width: 92%;
+            padding: 50px 15px;
         }
 
+            .why-content small {
+                margin-bottom: 15px;
+                font-size: 9px;
+                letter-spacing: 2.5px;
+            }
+
             .why-content h2 {
-                font-size: 43px;
+                margin-bottom: 18px;
+                font-size: 38px;
+                line-height: 1.1;
             }
 
             .why-content p {
-                font-size: 15px;
-                line-height: 1.75;
+                margin-bottom: 25px;
+                font-size: 14px;
+                line-height: 1.65;
             }
 
         .why-values {
-            line-height: 2.4;
+            margin-bottom: 28px;
+            font-size: 9px;
+            line-height: 2;
+            letter-spacing: 1.2px;
         }
 
             .why-values span {
-                margin: 0 7px;
+                margin: 0 5px;
             }
+
+        .about-button {
+            padding: 13px 22px;
+            font-size: 10px;
+            letter-spacing: 1.3px;
+        }
     }
 
 </style>
@@ -387,7 +497,12 @@
 
 <div class="home-page">
 
+
     <section class="hero">
+
+        <img class="hero-image"
+             src="https://img.freepik.com/premium-photo/assorted-delicious-mousse-cakes-with-fruit-jam-cream-table-created-with-generative-ai_124507-94309.jpg"
+             alt="Dulce Antojo" />
 
         <div class="hero-content">
 
@@ -407,7 +522,9 @@
             <a asp-controller="Products"
                asp-action="Index"
                class="hero-button">
+
                 Descubre nuestros sabores
+
             </a>
 
         </div>
@@ -454,14 +571,16 @@
                         else
                         {
                             <div style="
-                                            width:100%;
-                                            height:100%;
-                                            display:flex;
-                                            align-items:center;
-                                            justify-content:center;
-                                            background:#ded5c9;
-                                            color:#79675a;">
+                                width:100%;
+                                height:100%;
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                                background:#ded5c9;
+                                color:#79675a;">
+
                                 Sin imagen
+
                             </div>
                         }
 
@@ -485,7 +604,9 @@
         else
         {
             <div class="no-products">
+
                 No hay productos disponibles actualmente.
+
             </div>
         }
 
@@ -512,17 +633,25 @@
             </p>
 
             <div class="why-values">
+
                 <span>Artesanal</span>
+
                 ·
+
                 <span>Calidad</span>
+
                 ·
+
                 <span>Dedicación</span>
+
             </div>
 
             <a asp-controller="Home"
                asp-action="Privacy"
                class="about-button">
+
                 Conócenos
+
             </a>
 
         </div>

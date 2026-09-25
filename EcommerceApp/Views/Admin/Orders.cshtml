@@ -4,18 +4,18 @@
     ViewData["Title"] = "Gestión de pedidos";
 }
 
-<div class="admin-orders-page">
+<div class="orders-page admin-orders-page">
 
     <div class="orders-header">
         <div>
-            <span class="section-label">Administración</span>
-            <h1>Gestión de pedidos</h1>
-            <p>Consulta y administra los pedidos realizados por los clientes.</p>
+            <span class="eyebrow">Administración</span>
+            <h1>Pedidos</h1>
+            <p>Consulta y administra las compras realizadas por tus clientes.</p>
         </div>
 
         <a asp-controller="Admin"
            asp-action="Index"
-           class="back-button">
+           class="btn-outline-bakery">
             <i class="bi bi-arrow-left"></i>
             Volver al panel
         </a>
@@ -24,36 +24,46 @@
     @if (!Model.Any())
     {
         <div class="empty-orders">
-            <i class="bi bi-bag-x"></i>
+            <div class="empty-orders-icon">
+                <i class="bi bi-bag-x"></i>
+            </div>
+
             <h2>No hay pedidos registrados</h2>
-            <p>Cuando un cliente realice una compra, aparecerá aquí.</p>
+
+            <p>
+                Cuando un cliente realice una compra, aparecerá aquí.
+            </p>
         </div>
     }
     else
     {
-        <div class="orders-container">
+        <div class="orders-list">
 
             @foreach (var order in Model)
             {
-                <article class="admin-order-card">
+                <article class="order-card admin-order-card">
 
-                    <div class="order-top">
+                    <div class="order-card-header">
 
                         <div>
                             <span class="order-label">Pedido</span>
-                            <h2>#@order.Id</h2>
+
+                            <h2>
+                                #@order.Id
+                            </h2>
                         </div>
 
-                        <span class="status-badge">
+                        <span class="order-status">
                             @order.Status
                         </span>
 
                     </div>
 
-                    <div class="customer-info">
+                    <div class="order-info admin-order-info">
 
                         <div>
                             <span>Cliente</span>
+
                             <strong>
                                 @(order.User?.FullName ?? order.User?.Email ?? "Cliente")
                             </strong>
@@ -61,6 +71,7 @@
 
                         <div>
                             <span>Fecha</span>
+
                             <strong>
                                 @order.OrderDate.ToLocalTime().ToString("dd/MM/yyyy HH:mm")
                             </strong>
@@ -68,18 +79,18 @@
 
                         <div>
                             <span>Total</span>
+
                             <strong>
-                                Bs. @order.Total.ToString("F2")
+                                Bs @order.Total.ToString("N2")
                             </strong>
                         </div>
 
-                    </div>
-
-                    <div class="order-data">
-
                         <div>
-                            <span>Método de pago</span>
-                            <strong>@order.PaymentMethod</strong>
+                            <span>Pago</span>
+
+                            <strong>
+                                @order.PaymentMethod
+                            </strong>
                         </div>
 
                         <div>
@@ -87,14 +98,14 @@
 
                             @if (order.PaymentStatus == "Pagado")
                             {
-                                <strong class="paid">
+                                <strong class="payment-paid">
                                     <i class="bi bi-check-circle"></i>
                                     Pagado
                                 </strong>
                             }
                             else
                             {
-                                <strong class="pending">
+                                <strong class="payment-pending">
                                     <i class="bi bi-clock"></i>
                                     Pendiente
                                 </strong>
@@ -102,21 +113,25 @@
                         </div>
 
                         <div>
-                            <span>Forma de entrega</span>
-                            <strong>@order.DeliveryMethod</strong>
+                            <span>Entrega</span>
+
+                            <strong>
+                                @order.DeliveryMethod
+                            </strong>
                         </div>
 
                     </div>
 
-                    <div class="products-section">
+                    <div class="order-products">
 
                         <h3>Productos</h3>
 
                         @foreach (var detail in order.OrderDetails)
                         {
-                            <div class="product-row">
+                            <div class="order-product">
 
-                                <div>
+                                <div class="order-product-info">
+
                                     <strong>
                                         @(detail.Product?.Name ?? "Producto")
                                     </strong>
@@ -124,10 +139,11 @@
                                     <span>
                                         Cantidad: @detail.Quantity
                                     </span>
+
                                 </div>
 
                                 <strong>
-                                    Bs. @detail.Subtotal.ToString("F2")
+                                    Bs @detail.Subtotal.ToString("N2")
                                 </strong>
 
                             </div>
@@ -135,13 +151,14 @@
 
                     </div>
 
-                    <div class="order-actions">
+                    <div class="admin-order-actions">
 
                         @if (order.PaymentStatus != "Pagado")
                         {
                             <form asp-controller="Admin"
                                   asp-action="MarkAsPaid"
-                                  method="post">
+                                  method="post"
+                                  class="payment-form">
 
                                 @Html.AntiForgeryToken()
 
@@ -150,9 +167,9 @@
                                        value="@order.Id" />
 
                                 <button type="submit"
-                                        class="action-button payment-button">
+                                        class="btn-bakery">
                                     <i class="bi bi-check-circle"></i>
-                                    Marcar pago como pagado
+                                    Marcar como pagado
                                 </button>
 
                             </form>
@@ -161,7 +178,7 @@
                         <form asp-controller="Admin"
                               asp-action="UpdateOrderStatus"
                               method="post"
-                              class="status-form">
+                              class="admin-status-form">
 
                             @Html.AntiForgeryToken()
 
@@ -170,27 +187,39 @@
                                    value="@order.Id" />
 
                             <select name="status"
-                                    class="status-select">
+                                    class="admin-status-select">
 
-                                <option value="Pendiente"
-                                        selected="@(order.Status == "Pendiente")">
-                                    Pendiente
-                                </option>
+                                @if (order.Status == "Pendiente")
+                                {
+                                    <option value="Pendiente" selected>Pendiente</option>
+                                }
+                                else
+                                {
+                                    <option value="Pendiente">Pendiente</option>
+                                }
 
-                                <option value="Enviado"
-                                        selected="@(order.Status == "Enviado")">
-                                    Enviado
-                                </option>
+                                @if (order.Status == "Enviado")
+                                {
+                                    <option value="Enviado" selected>Enviado</option>
+                                }
+                                else
+                                {
+                                    <option value="Enviado">Enviado</option>
+                                }
 
-                                <option value="Entregado"
-                                        selected="@(order.Status == "Entregado")">
-                                    Entregado
-                                </option>
+                                @if (order.Status == "Entregado")
+                                {
+                                    <option value="Entregado" selected>Entregado</option>
+                                }
+                                else
+                                {
+                                    <option value="Entregado">Entregado</option>
+                                }
 
                             </select>
 
                             <button type="submit"
-                                    class="action-button status-button">
+                                    class="btn-outline-bakery update-status-btn">
                                 Actualizar estado
                             </button>
 
@@ -207,309 +236,391 @@
 </div>
 
 <style>
-
     .admin-orders-page {
-        max-width: 1150px;
+        min-height: 100vh;
+        background: #f5ede3;
+        padding: 42px 0 70px;
+    }
+
+    .admin-orders-container {
+        width: min(1180px, 92%);
         margin: 0 auto;
-        padding: 50px 25px 80px;
     }
 
-    .orders-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 25px;
-        margin-bottom: 35px;
+    .admin-orders-header {
+        margin-bottom: 28px;
     }
 
-    .section-label {
-        display: block;
-        margin-bottom: 6px;
-        color: #8b5e3c;
-        font-size: 12px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .orders-header h1 {
-        margin: 0;
-        color: #35241b;
-        font-family: Georgia, "Times New Roman", serif;
-        font-size: 34px;
-    }
-
-    .orders-header p {
-        margin: 8px 0 0;
-        color: #786960;
-    }
-
-    .back-button {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 17px;
-        border-radius: 10px;
-        background: #4a3426;
-        color: white;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 13px;
-    }
-
-        .back-button:hover {
-            background: #6f513b;
-            color: white;
+        .admin-orders-header h1 {
+            margin: 0 0 8px;
+            color: #4a3426;
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
         }
 
-    .orders-container {
+        .admin-orders-header p {
+            margin: 0;
+            color: #806b59;
+            font-size: .98rem;
+        }
+
+    .orders-list {
         display: flex;
         flex-direction: column;
-        gap: 22px;
+        gap: 18px;
     }
 
-    .admin-order-card {
-        background: #fffdf9;
-        border: 1px solid #e4d5c5;
+    .admin-orders-page .order-card {
+        background: #fcf7f0;
+        border: 1px solid #ddcdbb;
         border-radius: 18px;
-        padding: 25px;
-        box-shadow: 0 8px 25px rgba(73, 51, 40, 0.08);
+        overflow: hidden;
+        box-shadow: 0 8px 24px rgba(74, 52, 38, .08);
+        transition: transform .2s ease, box-shadow .2s ease;
     }
 
-    .order-top {
+        .admin-orders-page .order-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(74, 52, 38, .12);
+        }
+
+    .admin-orders-page .order-card-header {
         display: flex;
+        align-items: center;
         justify-content: space-between;
-        align-items: center;
-        gap: 20px;
-        padding-bottom: 20px;
-        border-bottom: 1px solid #eaded2;
+        gap: 16px;
+        padding: 15px 20px;
+        background: #eadccb;
+        border-bottom: 1px solid #d8c5b0;
     }
 
-    .order-label {
-        color: #8b5e3c;
-        font-size: 11px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .order-top h2 {
-        margin: 4px 0 0;
-        color: #35241b;
-        font-size: 23px;
-    }
-
-    .status-badge {
-        padding: 8px 15px;
-        border-radius: 20px;
-        background: #f4eadf;
-        color: #6f513b;
-        font-size: 13px;
-        font-weight: 600;
-    }
-
-    .customer-info,
-    .order-data {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-        padding: 20px 0;
-    }
-
-    .order-data {
-        border-top: 1px solid #eaded2;
-        border-bottom: 1px solid #eaded2;
-    }
-
-        .customer-info div,
-        .order-data div {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
+        .admin-orders-page .order-card-header strong {
+            color: #4a3426;
+            font-size: 1rem;
+            font-weight: 800;
         }
 
-        .customer-info span,
-        .order-data span {
-            color: #8a7a70;
-            font-size: 12px;
-        }
-
-        .customer-info strong,
-        .order-data strong {
-            color: #493328;
-            font-size: 14px;
-        }
-
-    .paid {
-        color: #4c7a4a !important;
-    }
-
-    .pending {
-        color: #9a6b35 !important;
-    }
-
-    .products-section {
-        padding: 22px 0;
-    }
-
-        .products-section h3 {
-            margin: 0 0 12px;
-            color: #35241b;
-            font-size: 18px;
-        }
-
-    .product-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 20px;
-        padding: 12px 0;
-        border-bottom: 1px solid #eee3d8;
-    }
-
-        .product-row:last-child {
-            border-bottom: none;
-        }
-
-        .product-row div {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .product-row strong {
-            color: #493328;
-            font-size: 14px;
-        }
-
-        .product-row span {
-            color: #8a7a70;
-            font-size: 12px;
-        }
-
-    .order-actions {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 12px;
-        padding-top: 20px;
-        border-top: 1px solid #eaded2;
-    }
-
-        .order-actions form {
-            margin: 0;
-        }
-
-    .status-form {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .status-select {
-        min-width: 140px;
-        padding: 10px 12px;
-        border: 1px solid #d8c7b7;
-        border-radius: 9px;
-        background: white;
-        color: #493328;
-        font-size: 13px;
-    }
-
-    .action-button {
-        border: none;
-        border-radius: 9px;
-        padding: 10px 15px;
-        font-size: 13px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: .2s ease;
-    }
-
-    .payment-button {
-        background: #e8f3e7;
-        color: #4c7a4a;
-    }
-
-        .payment-button:hover {
-            background: #d9ebd8;
-        }
-
-    .status-button {
-        background: #4a3426;
-        color: white;
-    }
-
-        .status-button:hover {
-            background: #6f513b;
-        }
-
-    .empty-orders {
-        text-align: center;
-        padding: 70px 20px;
-        background: #fffdf9;
-        border: 1px solid #e4d5c5;
-        border-radius: 18px;
-    }
-
-        .empty-orders i {
-            display: block;
-            margin-bottom: 15px;
-            color: #8b5e3c;
-            font-size: 45px;
-        }
-
-        .empty-orders h2 {
-            margin: 0 0 8px;
-            color: #35241b;
-        }
-
-        .empty-orders p {
-            margin: 0;
-            color: #786960;
-        }
-
-    @@media (max-width: 700px) {
-
-        .admin-orders-page {
-            padding: 35px 15px 60px;
-        }
-
-        .orders-header {
-            align-items: stretch;
-            flex-direction: column;
-        }
-
-        .back-button {
+        .admin-orders-page .order-card-header span {
+            display: inline-flex;
+            align-items: center;
             justify-content: center;
+            min-height: 30px;
+            padding: 5px 12px;
+            border-radius: 999px;
+            background: #8b6a4e;
+            color: #fff;
+            font-size: .76rem;
+            font-weight: 800;
+            white-space: nowrap;
         }
 
-        .customer-info,
-        .order-data {
+    .admin-orders-page .order-info {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1px;
+        background: #dfcfbd;
+        border-bottom: 1px solid #dfcfbd;
+    }
+
+        .admin-orders-page .order-info > div {
+            min-width: 0;
+            padding: 13px 17px;
+            background: #f8f0e7;
+        }
+
+        .admin-orders-page .order-info strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #917a66;
+            font-size: .7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .07em;
+        }
+
+        .admin-orders-page .order-info span,
+        .admin-orders-page .order-info p {
+            margin: 0;
+            color: #4a3426;
+            font-size: .9rem;
+            font-weight: 700;
+            overflow-wrap: anywhere;
+        }
+
+    .admin-orders-page .order-products {
+        padding: 14px 18px;
+        background: #f2e7da;
+        border-bottom: 1px solid #dfcfbd;
+    }
+
+        .admin-orders-page .order-products h3 {
+            margin: 0 0 9px;
+            color: #604735;
+            font-size: .78rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+        }
+
+    .admin-orders-page .order-product {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 9px 11px;
+        margin-top: 7px;
+        border: 1px solid #d7c3ad;
+        border-radius: 8px;
+        background: #fffaf4;
+    }
+
+    .admin-orders-page .order-product-info {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        min-width: 0;
+    }
+
+    .admin-orders-page .order-product strong {
+        color: #5b4433;
+        font-size: .82rem;
+        font-weight: 800;
+    }
+
+    .admin-orders-page .order-product span {
+        color: #806b59;
+        font-size: .76rem;
+        font-weight: 600;
+    }
+
+    .admin-orders-page .admin-order-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 13px 18px;
+        background: #e5d5c3;
+    }
+
+        .admin-orders-page .admin-order-actions form {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            flex: 0 0 auto;
+            width: auto;
+            min-width: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .admin-orders-page .admin-order-actions .payment-form {
+            flex: 0 0 auto;
+        }
+
+        .admin-orders-page .admin-order-actions .admin-status-form {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 0 0 auto;
+        }
+
+        .admin-orders-page .admin-order-actions button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            height: 40px;
+            min-height: 40px;
+            width: auto;
+            min-width: 145px;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0 16px;
+            border: none;
+            border-radius: 9px;
+            font-family: inherit;
+            font-size: .82rem;
+            font-weight: 800;
+            line-height: 1;
+            white-space: nowrap;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
+        }
+
+            .admin-orders-page .admin-order-actions button:hover {
+                transform: translateY(-1px);
+            }
+
+        .admin-orders-page .admin-order-actions .btn-bakery {
+            min-width: 155px;
+            background: #6f5138;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(74, 52, 38, .15);
+        }
+
+            .admin-orders-page .admin-order-actions .btn-bakery:hover {
+                background: #563a27;
+                box-shadow: 0 6px 14px rgba(74, 52, 38, .2);
+            }
+
+    .admin-orders-page .admin-status-select {
+        display: block;
+        width: 155px;
+        min-width: 155px;
+        max-width: 155px;
+        height: 40px;
+        min-height: 40px;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0 38px 0 13px;
+        border: 1px solid #c5ae97;
+        border-radius: 9px;
+        background-color: #fffaf4;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%234a3426' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 11px center;
+        background-size: 14px;
+        color: #4a3426;
+        font-family: inherit;
+        font-size: .82rem;
+        font-weight: 800;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        outline: none;
+        cursor: pointer;
+    }
+
+        .admin-orders-page .admin-status-select:hover {
+            border-color: #8b6a4e;
+            background-color: #fffdf9;
+        }
+
+        .admin-orders-page .admin-status-select:focus {
+            border-color: #8b6a4e;
+            box-shadow: 0 0 0 3px rgba(139, 106, 78, .15);
+        }
+
+    .admin-orders-page .update-status-btn {
+        min-width: 145px;
+        background: #b8865b !important;
+        color: #fff !important;
+        border: none !important;
+    }
+
+        .admin-orders-page .update-status-btn:hover {
+            background: #9f7048 !important;
+            color: #fff !important;
+        }
+
+    .admin-orders-page .text-muted {
+        color: #806b59 !important;
+    }
+
+    .admin-orders-page .badge {
+        border-radius: 999px;
+        padding: 5px 10px;
+        font-size: .72rem;
+        font-weight: 800;
+    }
+
+    @@media (max-width: 900px) {
+        .admin-orders-container {
+            width: min(94%, 760px);
+        }
+
+        .admin-orders-page .order-info {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .admin-orders-page .admin-order-actions {
+            overflow-x: auto;
+            scrollbar-width: thin;
+        }
+
+            .admin-orders-page .admin-order-actions form {
+                flex: 0 0 auto;
+            }
+    }
+
+    @@media (max-width: 650px) {
+        .admin-orders-page {
+            padding: 28px 0 50px;
+        }
+
+        .admin-orders-header {
+            margin-bottom: 20px;
+        }
+
+            .admin-orders-header h1 {
+                font-size: 2rem;
+            }
+
+        .admin-orders-page .order-card-header {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 8px;
+            padding: 14px 16px;
+        }
+
+        .admin-orders-page .order-info {
+            grid-template-columns: 1fr 1fr;
+        }
+
+            .admin-orders-page .order-info > div {
+                padding: 11px 13px;
+            }
+
+        .admin-orders-page .order-products {
+            padding: 12px 14px;
+        }
+
+        .admin-orders-page .admin-order-actions {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 9px;
+            overflow-x: visible;
+            padding: 12px 14px;
+        }
+
+            .admin-orders-page .admin-order-actions form,
+            .admin-orders-page .admin-order-actions .admin-status-form {
+                width: 100%;
+                flex: none;
+            }
+
+            .admin-orders-page .admin-order-actions .admin-status-form {
+                gap: 9px;
+            }
+
+            .admin-orders-page .admin-order-actions button,
+            .admin-orders-page .admin-status-select {
+                width: 100%;
+                min-width: 0;
+                max-width: none;
+            }
+    }
+
+    @@media (max-width: 430px) {
+        .admin-orders-page .order-info {
             grid-template-columns: 1fr;
-            gap: 15px;
         }
 
-        .order-top {
+            .admin-orders-page .order-info > div {
+                padding: 10px 14px;
+            }
+
+        .admin-orders-page .order-product {
             align-items: flex-start;
             flex-direction: column;
         }
-
-        .order-actions {
-            align-items: stretch;
-            flex-direction: column;
-        }
-
-        .status-form {
-            align-items: stretch;
-            flex-direction: column;
-        }
-
-        .status-select,
-        .action-button {
-            width: 100%;
-        }
     }
-
 </style>
