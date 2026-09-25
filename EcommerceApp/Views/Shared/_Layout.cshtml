@@ -9,7 +9,22 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>@ViewData["Title"] - Dulce Antojo</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="~/manifest.json" />
+    <meta name="theme-color" content="#3f291f" />
+
+    <!-- Configuración para dispositivos móviles -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Dulce Antojo" />
+
+    <!-- Icono PWA -->
+    <link rel="apple-touch-icon" href="~/icons/icon-192.png" />
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/EcommerceApp.styles.css" asp-append-version="true" />
@@ -126,6 +141,16 @@
                                 </a>
                             </li>
                         }
+                        <!-- INSTALAR PWA -->
+                        <li class="nav-item">
+                            <button id="installAppButton"
+                                    class="nav-link border-0 bg-transparent"
+                                    type="button"
+                                    style="display: none;">
+                                <i class="bi bi-download"></i>
+                                Instalar aplicación
+                            </button>
+                        </li>
 
                         <!-- NOSOTROS -->
                         <li class="nav-item">
@@ -214,7 +239,114 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
-<script>function closeSweetToast() { document.getElementById('successToast')?.remove() } function closeErrorToast() { document.getElementById('errorToast')?.remove() } setTimeout(() => { document.getElementById('successToast')?.remove(); document.getElementById('errorToast')?.remove() }, 6000);</script>
+
+<script>
+        function closeSweetToast() {
+            document.getElementById('successToast')?.remove();
+        }
+
+        function closeErrorToast() {
+            document.getElementById('errorToast')?.remove();
+        }
+
+        setTimeout(() => {
+            document.getElementById('successToast')?.remove();
+            document.getElementById('errorToast')?.remove();
+        }, 6000);
+</script>
+
+<!-- Registro del PWA -->
+<script>
+        if ("serviceWorker" in navigator) {
+
+            window.addEventListener("load", () => {
+
+                navigator.serviceWorker
+                    .register("/service-worker.js")
+                    .then(registration => {
+                        console.log(
+                            "Service Worker registrado correctamente:",
+                            registration.scope
+                        );
+                    })
+                    .catch(error => {
+                        console.error(
+                            "Error al registrar el Service Worker:",
+                            error
+                        );
+                    });
+
+            });
+
+        }
+</script>
+<!-- Instalación de la PWA -->
+<script>
+        let deferredInstallPrompt = null;
+
+        window.addEventListener("beforeinstallprompt", (event) => {
+
+            // Evita que Chrome muestre automáticamente el aviso
+            event.preventDefault();
+
+            // Guardamos el evento para utilizarlo desde nuestro botón
+            deferredInstallPrompt = event;
+
+            // Mostramos el botón
+            const installButton = document.getElementById("installAppButton");
+
+            if (installButton) {
+                installButton.style.display = "flex";
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const installButton = document.getElementById("installAppButton");
+
+            if (!installButton) {
+                return;
+            }
+
+            installButton.addEventListener("click", async () => {
+
+                if (!deferredInstallPrompt) {
+                    return;
+                }
+
+                // Mostramos el cuadro de instalación del navegador
+                deferredInstallPrompt.prompt();
+
+                // Esperamos la respuesta del usuario
+                const { outcome } = await deferredInstallPrompt.userChoice;
+
+                console.log("Resultado de instalación:", outcome);
+
+                // El evento solamente puede utilizarse una vez
+                deferredInstallPrompt = null;
+
+                // Ocultamos el botón después de utilizarlo
+                installButton.style.display = "none";
+            });
+
+        });
+
+        // Si la aplicación ya fue instalada,
+        // ocultamos el botón.
+        window.addEventListener("appinstalled", () => {
+
+            const installButton = document.getElementById("installAppButton");
+
+            if (installButton) {
+                installButton.style.display = "none";
+            }
+
+            deferredInstallPrompt = null;
+
+            console.log("Dulce Antojo fue instalada como aplicación.");
+        });
+</script>
+
 @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

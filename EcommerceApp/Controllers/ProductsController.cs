@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EcommerceApp.Data;
 using EcommerceApp.Models;
+using System.Globalization;
+using System.Text;
 
 namespace EcommerceApp.Controllers
 {
@@ -10,23 +12,119 @@ namespace EcommerceApp.Controllers
     public class ProductsController(ApplicationDbContext context) : Controller
     {
         [AllowAnonymous]
-        public async Task<IActionResult> Index(string? category)
+        public async Task<IActionResult> Index(
+            string? category,
+            string? search)
         {
-            var products = context.Products
+            /*
+             * ============================================================
+             * PRODUCTOS DISPONIBLES
+             * ============================================================
+             *
+             * Solo mostramos productos que:
+             *
+             * - No estén archivados.
+             * - Estén disponibles.
+             * - Tengan stock.
+             * - Pertenezcan a una categoría.
+             * - Su categoría esté activa.
+             */
+
+            var productsQuery = context.Products
                 .AsNoTracking()
                 .Include(p => p.CategoryNavigation)
-                .Where(p => !p.IsArchived &&
-                       p.IsAvailable &&
-                       p.Stock > 0 &&
-                       p.CategoryNavigation != null &&
-                       p.CategoryNavigation.IsActive);
+                .Where(p =>
+                    !p.IsArchived &&
+                    p.IsAvailable &&
+                    p.Stock > 0 &&
+                    p.CategoryNavigation != null &&
+                    p.CategoryNavigation.IsActive);
+
+
+            /*
+             * ============================================================
+             * LIMPIAR LA BÚSQUEDA
+             * ============================================================
+             *
+             * Esto permite que:
+             *
+             * Chocolate
+             * Chocolate.
+             * "Chocolate!"
+             * ¿Chocolate?
+             *
+             * sean tratados como:
+             *
+             * Chocolate
+             */
+
+            var cleanSearch = NormalizarTexto(search);
+
+
+            /*
+             * ============================================================
+             * FILTRO POR CATEGORÍA
+             * ============================================================
+             *
+             * Si el usuario seleccionó una categoría y todavía
+             * no está realizando una búsqueda, mostramos solamente
+             * esa categoría.
+             *
+             * Si existe una búsqueda, también respetamos la categoría
+             * actual para poder avisar si el producto no está allí.
+             */
 
             if (!string.IsNullOrWhiteSpace(category))
             {
-                products = products.Where(p =>
+                productsQuery = productsQuery.Where(p =>
                     p.CategoryNavigation != null &&
                     p.CategoryNavigation.Name == category);
             }
+
+
+            /*
+             * ============================================================
+             * BÚSQUEDA
+             * ============================================================
+             *
+             * Para poder buscar correctamente incluso cuando el usuario
+             * escribe palabras con acentos o cuando Web Speech API
+             * agrega signos de puntuación, hacemos la comparación
+             * después de cargar los productos.
+             */
+
+            List<Product> products;
+
+            if (!string.IsNullOrWhiteSpace(cleanSearch))
+            {
+                var allProductsForSearch = await productsQuery
+                    .OrderBy(p => p.CategoryNavigation!.Name)
+                    .ThenBy(p => p.Name)
+                    .ToListAsync();
+
+                products = allProductsForSearch
+                    .Where(p =>
+                        NormalizarTexto(p.Name)
+                            .Contains(cleanSearch)
+                        ||
+                        NormalizarTexto(p.Description)
+                            .Contains(cleanSearch))
+                    .ToList();
+            }
+            else
+            {
+                products = await productsQuery
+                    .OrderBy(p => p.CategoryNavigation!.Name)
+                    .ThenBy(p => p.Name)
+                    .ToListAsync();
+            }
+
+
+            /*
+             * ============================================================
+             * CATEGORÍAS ACTIVAS
+             * ============================================================
+             */
 
             ViewBag.Categories = await context.Categories
                 .AsNoTracking()
@@ -35,13 +133,105 @@ namespace EcommerceApp.Controllers
                 .OrderBy(c => c)
                 .ToListAsync();
 
-            ViewBag.SelectedCategory = category;
 
-            return View(await products
-                .OrderBy(p => p.CategoryNavigation!.Name)
-                .ThenBy(p => p.Name)
-                .ToListAsync());
+            /*
+             * ============================================================
+             * DATOS PARA LA VISTA
+             * ============================================================
+             */
+
+            ViewBag.SelectedCategory = category;
+            ViewBag.Search = cleanSearch;
+
+
+            /*
+             * Si estamos buscando y estamos dentro de una categoría
+             * pero no encontramos resultados, indicamos que no existe
+             * allí y permitimos buscar en todas las categorías.
+             */
+
+            if (!string.IsNullOrWhiteSpace(cleanSearch) &&
+                !string.IsNullOrWhiteSpace(category) &&
+                products.Count == 0)
+            {
+                ViewBag.SearchMessage =
+                    $"No encontramos \"{search}\" en la categoría \"{category}\".";
+
+                ViewBag.CanSearchAllCategories = true;
+            }
+            else if (!string.IsNullOrWhiteSpace(cleanSearch) &&
+                     products.Count == 0)
+            {
+                ViewBag.SearchMessage =
+                    $"No encontramos productos relacionados con \"{search}\".";
+
+                ViewBag.CanSearchAllCategories = false;
+            }
+            else if (!string.IsNullOrWhiteSpace(cleanSearch))
+            {
+                ViewBag.SearchMessage =
+                    $"Encontrados: {products.Count} producto(s).";
+
+                ViewBag.CanSearchAllCategories = false;
+            }
+
+
+            return View(products);
         }
+
+
+        /*
+         * ================================================================
+         * NORMALIZAR TEXTO
+         * ================================================================
+         *
+         * Esta función:
+         *
+         * - convierte a minúsculas;
+         * - elimina acentos;
+         * - elimina puntos;
+         * - elimina comas;
+         * - elimina signos de interrogación;
+         * - elimina signos de exclamación;
+         * - elimina otros signos;
+         * - elimina espacios innecesarios.
+         */
+
+        private static string NormalizarTexto(string? texto)
+        {
+            if (string.IsNullOrWhiteSpace(texto))
+                return string.Empty;
+
+            texto = texto
+                .Trim()
+                .ToLowerInvariant()
+                .Normalize(NormalizationForm.FormD);
+
+            var resultado = new StringBuilder();
+
+            foreach (var caracter in texto)
+            {
+                var categoria = CharUnicodeInfo.GetUnicodeCategory(caracter);
+
+                if (categoria == UnicodeCategory.NonSpacingMark)
+                    continue;
+
+                if (char.IsLetterOrDigit(caracter) ||
+                    char.IsWhiteSpace(caracter))
+                {
+                    resultado.Append(caracter);
+                }
+            }
+
+            return string.Join(
+                " ",
+                resultado
+                    .ToString()
+                    .Split(
+                        ' ',
+                        StringSplitOptions.RemoveEmptyEntries));
+        }
+
 
         [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
@@ -62,6 +252,7 @@ namespace EcommerceApp.Controllers
             return View(product);
         }
 
+
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create()
         {
@@ -72,6 +263,7 @@ namespace EcommerceApp.Controllers
 
             return View();
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -140,6 +332,7 @@ namespace EcommerceApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
@@ -155,6 +348,7 @@ namespace EcommerceApp.Controllers
 
             return View(product);
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -218,7 +412,8 @@ namespace EcommerceApp.Controllers
             existingProduct.UpdatedAt = DateTime.UtcNow;
 
             var inventory = await context.Inventories
-                .FirstOrDefaultAsync(i => i.ProductId == existingProduct.Id);
+                .FirstOrDefaultAsync(i =>
+                    i.ProductId == existingProduct.Id);
 
             if (inventory == null)
             {
@@ -247,6 +442,7 @@ namespace EcommerceApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Archive(int id)
@@ -258,6 +454,7 @@ namespace EcommerceApp.Controllers
 
             return View(product);
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -276,9 +473,12 @@ namespace EcommerceApp.Controllers
 
             await context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Producto archivado correctamente.";
+            TempData["SuccessMessage"] =
+                "Producto archivado correctamente.";
+
             return RedirectToAction(nameof(Index));
         }
+
 
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Archived()
@@ -286,11 +486,13 @@ namespace EcommerceApp.Controllers
             var products = await context.Products
                 .AsNoTracking()
                 .Where(p => p.IsArchived)
-                .OrderByDescending(p => p.UpdatedAt ?? p.CreatedAt)
+                .OrderByDescending(p =>
+                    p.UpdatedAt ?? p.CreatedAt)
                 .ToListAsync();
 
             return View(products);
         }
+
 
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Unarchive(int id)
@@ -302,6 +504,7 @@ namespace EcommerceApp.Controllers
 
             return View(product);
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -316,7 +519,9 @@ namespace EcommerceApp.Controllers
 
             if (product.Stock <= 0)
             {
-                TempData["ErrorMessage"] = "No se puede desarchivar un producto sin stock. Primero actualiza su inventario.";
+                TempData["ErrorMessage"] =
+                    "No se puede desarchivar un producto sin stock. Primero actualiza su inventario.";
+
                 return RedirectToAction(nameof(Archived));
             }
 
@@ -326,9 +531,12 @@ namespace EcommerceApp.Controllers
 
             await context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Producto recuperado correctamente.";
+            TempData["SuccessMessage"] =
+                "Producto recuperado correctamente.";
+
             return RedirectToAction(nameof(Archived));
         }
+
 
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
@@ -340,6 +548,7 @@ namespace EcommerceApp.Controllers
 
             return View(product);
         }
+
 
         [HttpPost]
         [ActionName("Delete")]
@@ -355,7 +564,9 @@ namespace EcommerceApp.Controllers
                 await context.SaveChangesAsync();
             }
 
-            TempData["SuccessMessage"] = "Producto eliminado correctamente.";
+            TempData["SuccessMessage"] =
+                "Producto eliminado correctamente.";
+
             return RedirectToAction(nameof(Index));
         }
     }

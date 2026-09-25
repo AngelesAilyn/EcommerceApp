@@ -4,10 +4,14 @@
     ViewData["Title"] = "Productos";
 
     var selectedCategory = ViewBag.SelectedCategory?.ToString();
+    var search = ViewBag.Search?.ToString() ?? "";
 
     var categories = ((IEnumerable<string>)ViewBag.Categories)
         .Where(c => !string.IsNullOrWhiteSpace(c))
         .ToList();
+
+    var searchMessage = ViewBag.SearchMessage?.ToString();
+    var canSearchAllCategories = ViewBag.CanSearchAllCategories == true;
 }
 
 <style>
@@ -39,7 +43,6 @@
         font-weight: 400;
         letter-spacing: -1px;
     }
-
 
     .products-content {
         width: 100%;
@@ -127,6 +130,117 @@
                 color: #fff;
             }
 
+
+    /* =========================
+           BUSCADOR
+           ========================= */
+
+    .voice-search {
+        max-width: 600px;
+        margin: 0 auto 35px;
+        text-align: center;
+    }
+
+    .voice-search-box {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px;
+        background: #fffaf4;
+        border: 1px solid #d9c9b8;
+        border-radius: 999px;
+        box-shadow: 0 5px 18px rgba(76, 52, 38, .07);
+    }
+
+    #voiceSearchInput {
+        flex: 1;
+        min-width: 0;
+        border: none;
+        outline: none;
+        background: transparent;
+        padding: 10px 15px;
+        color: #493327;
+        font-size: 13px;
+    }
+
+        #voiceSearchInput::placeholder {
+            color: #9a887a;
+        }
+
+    #voiceSearchButton {
+        width: 42px;
+        height: 42px;
+        border: none;
+        border-radius: 50%;
+        background: #60412f;
+        color: white;
+        cursor: pointer;
+        transition: all .25s ease;
+    }
+
+        #voiceSearchButton:hover {
+            background: #422c21;
+            transform: scale(1.05);
+        }
+
+        #voiceSearchButton.listening {
+            background: #9a5d52;
+            animation: voicePulse 1s infinite;
+        }
+
+    .voice-search-message {
+        min-height: 18px;
+        margin: 8px 0 0;
+        color: #806d60;
+        font-size: 11px;
+    }
+
+    .search-all-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        margin-top: 10px;
+        padding: 9px 15px;
+        border: none;
+        border-radius: 999px;
+        background: #60412f;
+        color: white;
+        text-decoration: none;
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: .7px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all .25s ease;
+    }
+
+        .search-all-button:hover {
+            background: #422c21;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+    @@keyframes voicePulse {
+
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.12);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+
+    /* =========================
+           CATEGORÍAS
+           ========================= */
+
     .category-section.category-chocolate {
         background: #b88b5c;
     }
@@ -150,7 +264,6 @@
     .category-section.category-terracota {
         background: #cf856b;
     }
-
 
     .category-section {
         scroll-margin-top: 110px;
@@ -202,6 +315,10 @@
     }
 
 
+    /* =========================
+           PRODUCTOS
+           ========================= */
+
     .products-grid {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -225,7 +342,6 @@
             transform: translateY(-6px);
             box-shadow: 0 18px 38px rgba(71, 48, 34, .14);
         }
-
 
     .product-image {
         position: relative;
@@ -252,9 +368,8 @@
         position: absolute;
         inset: 0;
         pointer-events: none;
-        background: linear-gradient( to bottom, transparent 72%, rgba(55, 37, 27, .08) );
+        background: linear-gradient(to bottom, transparent 72%, rgba(55, 37, 27, .08));
     }
-
 
     .product-status {
         position: absolute;
@@ -362,7 +477,6 @@
         transform: translateX(4px);
     }
 
-
     .unavailable {
         display: inline-flex;
         align-items: center;
@@ -442,6 +556,10 @@
             font-size: 13px;
         }
 
+
+    /* =========================
+           RESPONSIVE
+           ========================= */
 
     @@media (max-width: 1200px) {
 
@@ -553,7 +671,24 @@
             padding: 7px 8px;
             font-size: 7px;
         }
+
+        .voice-search {
+            margin-bottom: 25px;
+        }
+
+        .voice-search-box {
+            width: 100%;
+        }
+
+        #voiceSearchInput {
+            font-size: 12px;
+        }
+
+        .search-all-button {
+            width: 100%;
+        }
     }
+
 </style>
 
 
@@ -578,7 +713,6 @@
 
     <main class="products-content">
 
-        
         @if (User.IsInRole("Admin"))
         {
             <div class="products-heading">
@@ -607,7 +741,7 @@
         <nav class="category-navigation">
 
             <a asp-action="Index"
-               class="@(string.IsNullOrWhiteSpace(selectedCategory) ? "active" : "")">
+               class="@(string.IsNullOrWhiteSpace(selectedCategory) && string.IsNullOrWhiteSpace(search) ? "active" : "")">
 
                 Todos
 
@@ -621,7 +755,7 @@
                     .Replace(" ", "-");
 
                 <a href="@Url.Action("Index", new { category = category })#categoria-@categoryId"
-                   class="@(selectedCategory == category ? "active" : "")">
+                   class="@(selectedCategory == category && string.IsNullOrWhiteSpace(search) ? "active" : "")">
 
                     @category
 
@@ -629,6 +763,70 @@
             }
 
         </nav>
+
+
+        <!-- =========================
+             BUSCADOR POR VOZ Y TEXTO
+             ========================= -->
+
+        <div class="voice-search">
+
+            <form asp-action="Index"
+                  method="get"
+                  id="searchForm">
+
+                @if (!string.IsNullOrWhiteSpace(selectedCategory))
+                {
+                    <input type="hidden"
+                           name="category"
+                           value="@selectedCategory" />
+                }
+
+                <div class="voice-search-box">
+
+                    <input type="text"
+                           id="voiceSearchInput"
+                           name="search"
+                           value="@search"
+                           placeholder="Buscar producto..."
+                           autocomplete="off" />
+
+                    <button type="button"
+                            id="voiceSearchButton"
+                            title="Buscar producto por voz"
+                            aria-label="Buscar producto por voz">
+
+                        <i class="bi bi-mic-fill"></i>
+
+                    </button>
+
+                </div>
+
+            </form>
+
+            <p id="voiceSearchMessage"
+               class="voice-search-message">
+
+                @if (!string.IsNullOrWhiteSpace(searchMessage))
+                {
+                    @searchMessage
+                }
+            </p>
+
+            @if (canSearchAllCategories)
+            {
+                <a asp-action="Index"
+                   asp-route-search="@search"
+                   class="search-all-button">
+
+                    <i class="bi bi-search"></i>
+                    Buscar en todas las categorías
+
+                </a>
+            }
+
+        </div>
+
 
         @if (Model.Any())
         {
@@ -660,7 +858,6 @@
                 <section id="categoria-@categoryId"
                          class="category-section @categoryClass">
 
-
                     <div class="category-header">
 
                         <div class="category-title-area">
@@ -686,7 +883,6 @@
                         </span>
 
                     </div>
-
 
 
                     <div class="products-grid">
@@ -735,7 +931,7 @@
 
                                 </div>
 
-                              
+
                                 <div class="product-info">
 
                                     <div class="product-category">
@@ -779,6 +975,7 @@
                                         }
 
                                     </div>
+
 
                                     @if (User.IsInRole("Admin"))
                                     {
@@ -828,13 +1025,54 @@
         {
             <div class="empty-products">
 
-                <h3>
-                    No hay productos disponibles
-                </h3>
+                @if (!string.IsNullOrWhiteSpace(search))
+                {
+                    <h3>
+                        No encontramos el producto
+                    </h3>
 
-                <p>
-                    En este momento no tenemos productos para mostrar.
-                </p>
+                    <p>
+                        @if (!string.IsNullOrWhiteSpace(selectedCategory))
+                        {
+                            <span>
+                                No encontramos
+                                <strong>"@search"</strong>
+                                en la categoría
+                                <strong>@selectedCategory</strong>.
+                            </span>
+                        }
+                        else
+                        {
+                            <span>
+                                No encontramos productos relacionados con
+                                <strong>"@search"</strong>
+                                en ninguna categoría.
+                            </span>
+                        }
+                    </p>
+
+                    @if (!string.IsNullOrWhiteSpace(selectedCategory))
+                    {
+                        <a asp-action="Index"
+                           asp-route-search="@search"
+                           class="search-all-button">
+
+                            <i class="bi bi-search"></i>
+                            Buscar en todas las categorías
+
+                        </a>
+                    }
+                }
+                else
+                {
+                    <h3>
+                        No hay productos disponibles
+                    </h3>
+
+                    <p>
+                        En este momento no tenemos productos para mostrar.
+                    </p>
+                }
 
             </div>
         }
@@ -842,3 +1080,292 @@
     </main>
 
 </div>
+
+
+<!-- =========================
+     WEB SPEECH API
+     ========================= -->
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const input =
+            document.getElementById("voiceSearchInput");
+
+        const button =
+            document.getElementById("voiceSearchButton");
+
+        const message =
+            document.getElementById("voiceSearchMessage");
+
+        const form =
+            document.getElementById("searchForm");
+
+
+        /*
+         * ============================================================
+         * NORMALIZAR TEXTO
+         * ============================================================
+         *
+         * Elimina:
+         *
+         * Chocolate.
+         * Chocolate!
+         * ¿Chocolate?
+         *
+         * y convierte todo a:
+         *
+         * chocolate
+         */
+
+        function normalizarTexto(texto) {
+
+            if (!texto) {
+                return "";
+            }
+
+            return texto
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[.,!?¿¡;:]/g, "")
+                .replace(/\s+/g, " ")
+                .trim();
+        }
+
+
+        /*
+         * ============================================================
+         * WEB SPEECH API
+         * ============================================================
+         */
+
+        const SpeechRecognition =
+            window.SpeechRecognition ||
+            window.webkitSpeechRecognition;
+
+
+        if (!SpeechRecognition) {
+
+            button.style.display = "none";
+
+            message.textContent =
+                "Tu navegador no admite búsqueda por voz.";
+
+            return;
+        }
+
+
+        const recognition =
+            new SpeechRecognition();
+
+
+        recognition.lang = "es-ES";
+
+        recognition.continuous = false;
+
+        recognition.interimResults = false;
+
+
+        /*
+         * ============================================================
+         * COMIENZA A ESCUCHAR
+         * ============================================================
+         */
+
+        recognition.onstart = function () {
+
+            button.classList.add("listening");
+
+            message.textContent =
+                "🎙️ Escuchando... di el nombre del producto.";
+
+        };
+
+
+        /*
+         * ============================================================
+         * RESULTADO DE VOZ
+         * ============================================================
+         */
+
+        recognition.onresult = function (event) {
+
+            const textoReconocido =
+                event.results[0][0].transcript;
+
+            const textoLimpio =
+                normalizarTexto(textoReconocido);
+
+
+            /*
+             * Mostramos la versión limpia.
+             */
+
+            input.value = textoLimpio;
+
+
+            message.textContent =
+                "Buscando: " + textoLimpio;
+
+
+            /*
+             * Enviamos la búsqueda al controlador.
+             */
+
+            form.submit();
+
+        };
+
+
+        /*
+         * ============================================================
+         * TERMINA EL RECONOCIMIENTO
+         * ============================================================
+         */
+
+        recognition.onend = function () {
+
+            button.classList.remove("listening");
+
+        };
+
+
+        /*
+         * ============================================================
+         * ERRORES
+         * ============================================================
+         */
+
+        recognition.onerror = function (event) {
+
+            button.classList.remove("listening");
+
+            if (event.error === "not-allowed") {
+
+                message.textContent =
+                    "Debes permitir el acceso al micrófono.";
+
+            }
+            else if (event.error === "no-speech") {
+
+                message.textContent =
+                    "No se detectó ninguna palabra.";
+
+            }
+            else {
+
+                message.textContent =
+                    "No pude reconocer la voz. Intenta nuevamente.";
+
+            }
+
+        };
+
+
+        /*
+         * ============================================================
+         * BOTÓN DEL MICRÓFONO
+         * ============================================================
+         */
+
+        button.addEventListener("click", function () {
+
+            try {
+
+                recognition.start();
+
+            }
+            catch (error) {
+
+                console.log(
+                    "El reconocimiento ya estaba iniciado."
+                );
+
+            }
+
+        });
+
+
+        /*
+         * ============================================================
+         * BÚSQUEDA ESCRITA
+         * ============================================================
+         *
+         * Esperamos un pequeño momento después de que el usuario
+         * termine de escribir y enviamos el formulario.
+         */
+
+        let timeoutBusqueda;
+
+        input.addEventListener("input", function () {
+
+            clearTimeout(timeoutBusqueda);
+
+            timeoutBusqueda = setTimeout(function () {
+
+                const texto =
+                    normalizarTexto(input.value);
+
+
+                /*
+                 * Si está vacío, volvemos a mostrar
+                 * todos los productos.
+                 */
+
+                if (texto === "") {
+
+                    const url =
+                        new URL(
+                            window.location.href);
+
+                    url.searchParams.delete("search");
+
+                    window.location.href =
+                        url.toString();
+
+                    return;
+                }
+
+
+                /*
+                 * Actualizamos el valor limpio
+                 * y enviamos la búsqueda.
+                 */
+
+                input.value = texto;
+
+                form.submit();
+
+            }, 700);
+
+        });
+
+
+        /*
+         * ============================================================
+         * ENTER
+         * ============================================================
+         */
+
+        input.addEventListener("keydown", function (event) {
+
+            if (event.key === "Enter") {
+
+                event.preventDefault();
+
+                clearTimeout(timeoutBusqueda);
+
+                input.value =
+                    normalizarTexto(input.value);
+
+                form.submit();
+
+            }
+
+        });
+
+    });
+
+</script>
