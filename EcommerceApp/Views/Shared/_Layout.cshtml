@@ -1,856 +1,220 @@
 ﻿@using EcommerceApp.Models
-
+@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+    var action = ViewContext.RouteData.Values["action"]?.ToString();
+    var homeController = User.IsInRole("Admin") ? "Admin" : "Home";
+}
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
     <meta charset="utf-8" />
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Dulce Antojo</title>
-
-    <link rel="stylesheet"
-          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-
-    <link rel="stylesheet"
-          href="~/css/site.css"
-          asp-append-version="true" />
-
-    <link rel="stylesheet"
-          href="~/EcommerceApp.styles.css"
-          asp-append-version="true" />
-
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-
-    <style>
-            html,
-            body {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                min-height: 100%;
-            }
-
-            body {
-                min-height: 100vh;
-                display: flex;
-                flex-direction: column;
-                padding-top: 70px;
-            }
-
-            header {
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                width: 100%;
-                z-index: 1000;
-            }
-
-            main {
-                flex: 1;
-                width: 100%;
-            }
-
-            .page-content {
-                width: 100%;
-                margin: 0;
-                padding: 0;
-            }
-
-            .main-navbar {
-                background-color: #111;
-                min-height: 70px;
-                margin: 0 !important;
-                padding: 0 30px;
-            }
-
-                .main-navbar .container-fluid {
-                    padding: 0;
-                }
-
-                .main-navbar .navbar-brand {
-                    color: white !important;
-                    font-size: 25px;
-                    font-weight: 700;
-                    margin-right: 30px;
-                }
-
-                .main-navbar .nav-link {
-                    color: #dddddd !important;
-                    font-size: 16px;
-                    font-weight: 500;
-                    padding: 10px 15px !important;
-                    border-radius: 8px;
-                    transition: 0.2s ease;
-                }
-
-                    .main-navbar .nav-link:hover {
-                        color: white !important;
-                        background-color: #2b2b2b;
-                    }
-
-                    .main-navbar .nav-link.active {
-                        color: white !important;
-                        background-color: #555;
-                    }
-
-                .main-navbar .navbar-nav {
-                    align-items: center;
-                }
-
-            .header-user {
-                color: white;
-                font-size: 15px;
-                font-weight: 500;
-                margin-right: 15px;
-            }
-
-            .header-logout {
-                color: #dddddd !important;
-            }
-
-            .sweet-toast {
-                position: fixed;
-                top: 90px;
-                right: 25px;
-                z-index: 10000;
-                width: min(380px, calc(100% - 40px));
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                padding: 14px 16px;
-                border-radius: 16px;
-                background: #fffaf4;
-                border: 1px solid #eadbca;
-                box-shadow: 0 10px 30px rgba(74, 52, 38, 0.16);
-                color: #4a3426;
-                animation: sweetToastIn 0.3s ease;
-            }
-
-            .success-toast {
-                border-left: 4px solid #b89470;
-            }
-
-            .error-toast {
-                border-left: 4px solid #c78f83;
-            }
-
-            .sweet-toast-icon {
-                width: 38px;
-                height: 38px;
-                flex-shrink: 0;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background: #f1e2d2;
-                color: #8b6a4e;
-                font-size: 19px;
-            }
-
-            .error-toast .sweet-toast-icon {
-                background: #f2dfda;
-                color: #a66d62;
-            }
-
-            .sweet-toast-content {
-                display: flex;
-                flex-direction: column;
-                gap: 2px;
-                flex: 1;
-                min-width: 0;
-            }
-
-                .sweet-toast-content strong {
-                    font-size: 0.92rem;
-                    color: #4a3426;
-                }
-
-                .sweet-toast-content span {
-                    font-size: 0.84rem;
-                    color: #806d60;
-                    line-height: 1.4;
-                    word-break: break-word;
-                }
-
-            .sweet-toast-close {
-                border: none;
-                background: transparent;
-                color: #8b6a4e;
-                font-size: 22px;
-                line-height: 1;
-                cursor: pointer;
-                padding: 0 4px;
-                transition: 0.2s ease;
-            }
-
-                .sweet-toast-close:hover {
-                    color: #4a3426;
-                    transform: scale(1.1);
-                }
-
-            @@keyframes sweetToastIn {
-
-                from {
-                    opacity: 0;
-                    transform: translateX(30px);
-                }
-
-                to {
-                    opacity: 1;
-                    transform: translateX(0);
-                }
-            }
-
-            .main-footer {
-                width: 100%;
-                margin: 0;
-                background-color: #111;
-                color: white;
-                padding: 38px 30px;
-            }
-
-            .footer-content {
-                max-width: 1250px;
-                margin: 0 auto;
-                display: grid;
-                grid-template-columns: 1.3fr 1fr 1fr;
-                gap: 45px;
-            }
-
-            .footer-brand {
-                font-size: 23px;
-                font-weight: 700;
-                margin-bottom: 8px;
-            }
-
-            .footer-description {
-                color: #bbbbbb;
-                font-size: 14px;
-                line-height: 1.6;
-                margin: 0;
-            }
-
-            .footer-title {
-                font-size: 16px;
-                font-weight: 600;
-                margin-bottom: 15px;
-            }
-
-            .footer-social {
-                display: flex;
-                flex-direction: column;
-                gap: 11px;
-            }
-
-                .footer-social a {
-                    color: #dddddd;
-                    text-decoration: none;
-                    font-size: 14px;
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    transition: 0.2s ease;
-                }
-
-                    .footer-social a:hover {
-                        color: white;
-                        transform: translateX(3px);
-                    }
-
-                .footer-social i {
-                    font-size: 18px;
-                }
-
-            .footer-location {
-                color: #dddddd;
-                text-decoration: none;
-                font-size: 14px;
-                line-height: 1.5;
-                display: flex;
-                align-items: flex-start;
-                gap: 10px;
-            }
-
-                .footer-location:hover {
-                    color: white;
-                }
-
-                .footer-location i {
-                    font-size: 19px;
-                }
-
-            .footer-bottom {
-                max-width: 1250px;
-                margin: 30px auto 0;
-                padding-top: 20px;
-                border-top: 1px solid #333;
-                text-align: center;
-            }
-
-            .footer-copy {
-                color: #888;
-                font-size: 13px;
-                margin: 0;
-            }
-
-            @@media (max-width: 768px) {
-
-                body {
-                    padding-top: 65px;
-                }
-
-                .main-navbar {
-                    min-height: 65px;
-                    padding: 0 15px;
-                }
-
-                    .main-navbar .navbar-brand {
-                        font-size: 21px;
-                        margin-right: 10px;
-                    }
-
-                .footer-content {
-                    grid-template-columns: 1fr;
-                    gap: 30px;
-                }
-
-                .main-footer {
-                    padding: 30px 20px;
-                }
-            }
-
-            @@media (max-width: 576px) {
-
-                .sweet-toast {
-                    top: 75px;
-                    right: 15px;
-                    width: calc(100% - 30px);
-                }
-            }
-    </style>
-
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/EcommerceApp.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 </head>
-
 <body>
-
     <header>
-
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm main-navbar">
-
+        <nav class="navbar navbar-expand-lg main-navbar">
             <div class="container-fluid">
 
+                <!-- Logo / nombre de la tienda -->
                 <a class="navbar-brand"
-                   asp-area=""
-                   asp-controller="Reports"
+                   asp-controller="@homeController"
                    asp-action="Index">
-
                     Dulce Antojo
-
                 </a>
 
+                <!-- Botón menú móvil -->
                 <button class="navbar-toggler"
                         type="button"
                         data-bs-toggle="collapse"
-                        data-bs-target=".navbar-collapse"
-                        aria-controls="navbarSupportedContent"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation">
-
+                        data-bs-target="#mainNavigation"
+                        aria-label="Abrir menú">
                     <span class="navbar-toggler-icon"></span>
-
                 </button>
 
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <div class="collapse navbar-collapse" id="mainNavigation">
 
-                    <ul class="navbar-nav flex-grow-1">
+                    <!-- MENÚ PRINCIPAL -->
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
                         <!-- INICIO -->
-
                         <li class="nav-item">
-
-                            @if (User.IsInRole("Admin"))
-                            {
-                                <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Admin" ? "active" : "")"
-                                   asp-controller="Admin"
-                                   asp-action="Index">
-
-                                    Inicio
-
-                                </a>
-                            }
-                            else
-                            {
-                                <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active" : "")"
-                                   asp-controller="Home"
-                                   asp-action="Index">
-
-                                    Inicio
-
-                                </a>
-                            }
-
+                            <a class="nav-link @(controller == (User.IsInRole("Admin") ? "Admin" : "Home") && action == "Index" ? "active" : "")"
+                               asp-controller="@homeController"
+                               asp-action="Index">
+                                <i class="bi bi-house-door"></i>
+                                Inicio
+                            </a>
                         </li>
 
                         <!-- PRODUCTOS -->
-
                         <li class="nav-item">
-
-                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Products" ? "active" : "")"
-                               asp-area=""
+                            <a class="nav-link @(controller == "Products" ? "active" : "")"
                                asp-controller="Products"
                                asp-action="Index">
-
+                                <i class="bi bi-shop"></i>
                                 Productos
-
                             </a>
-
                         </li>
 
-                        <!-- CATEGORÍAS - SOLO ADMIN -->
                         @if (User.IsInRole("Admin"))
                         {
+                            <!-- CATEGORÍAS -->
                             <li class="nav-item">
-
-                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Categories" ? "active" : "")"
-                                   asp-area=""
+                                <a class="nav-link @(controller == "Categories" ? "active" : "")"
                                    asp-controller="Categories"
                                    asp-action="Index">
-
+                                    <i class="bi bi-tags"></i>
                                     Categorías
-
                                 </a>
-
                             </li>
-                        }
 
-                        <!-- INVENTARIO - SOLO ADMIN -->
-                        @if (User.IsInRole("Admin"))
-                        {
+                            <!-- INVENTARIO -->
                             <li class="nav-item">
-
-                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Inventory" ? "active" : "")"
-                                   asp-area=""
+                                <a class="nav-link @(controller == "Inventory" ? "active" : "")"
                                    asp-controller="Inventory"
                                    asp-action="Index">
-
+                                    <i class="bi bi-box-seam"></i>
                                     Inventario
-
                                 </a>
-
                             </li>
-                        }
 
-                        <!-- PEDIDOS - SOLO ADMIN -->
-                        @if (User.IsInRole("Admin"))
-                        {
+                            <!-- PEDIDOS -->
                             <li class="nav-item">
-
-                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" && ViewContext.RouteData.Values["action"]?.ToString() == "Orders" ? "active" : "")"
-                                   asp-area=""
+                                <a class="nav-link @(controller == "Admin" && action == "Orders" ? "active" : "")"
                                    asp-controller="Admin"
                                    asp-action="Orders">
-
-                                    <i class="bi bi-box-seam"></i>
+                                    <i class="bi bi-bag-check"></i>
                                     Pedidos
-
                                 </a>
-
                             </li>
-                        }
-                        <!-- REPORTES - SOLO ADMIN -->
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item">
 
-                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Reports" ? "active" : "")"
-                                   asp-area=""
+                            <!-- REPORTES -->
+                            <li class="nav-item">
+                                <a class="nav-link @(controller == "Reports" ? "active" : "")"
                                    asp-controller="Reports"
                                    asp-action="Index">
-
                                     <i class="bi bi-bar-chart-line"></i>
                                     Reportes
-
                                 </a>
-
                             </li>
                         }
 
-                        <!-- CARRITO - SOLO CLIENTES -->
-                        @if (User.Identity != null &&
-                             User.Identity.IsAuthenticated &&
-                             !User.IsInRole("Admin"))
+                        @if (User.Identity?.IsAuthenticated == true && !User.IsInRole("Admin"))
                         {
+                            <!-- CARRITO -->
                             <li class="nav-item">
-
-                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Cart" ? "active" : "")"
-                                   asp-area=""
+                                <a class="nav-link @(controller == "Cart" ? "active" : "")"
                                    asp-controller="Cart"
                                    asp-action="Index">
-
                                     <i class="bi bi-cart3"></i>
                                     Carrito
-
                                 </a>
-
                             </li>
-                        }
 
-                        <!-- MIS COMPRAS - SOLO CLIENTES -->
-                        @if (User.Identity != null &&
-                             User.Identity.IsAuthenticated &&
-                             !User.IsInRole("Admin"))
-                        {
+                            <!-- MIS COMPRAS -->
                             <li class="nav-item">
-
-                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Orders" ? "active" : "")"
-                                   asp-area=""
+                                <a class="nav-link @(controller == "Orders" ? "active" : "")"
                                    asp-controller="Orders"
                                    asp-action="MyOrders">
-
-                                    <i class="bi bi-bag-check"></i>
+                                    <i class="bi bi-receipt"></i>
                                     Mis compras
-
                                 </a>
-
                             </li>
                         }
 
-                        <!-- ACERCA DE NOSOTROS -->
-
+                        <!-- NOSOTROS -->
                         <li class="nav-item">
-
-                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Privacy" ? "active" : "")"
-                               asp-area=""
+                            <a class="nav-link @(controller == "Home" && action == "Privacy" ? "active" : "")"
                                asp-controller="Home"
                                asp-action="Privacy">
-
-                                Acerca de nosotros
-
+                                <i class="bi bi-info-circle"></i>
+                                Nosotros
                             </a>
-
                         </li>
 
                     </ul>
 
-                    <ul class="navbar-nav align-items-center">
+                    <!-- MENÚ DE CUENTA -->
+                    <ul class="navbar-nav align-items-lg-center">
 
-                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        @if (User.Identity?.IsAuthenticated == true)
                         {
-
+                            <!-- CERRAR SESIÓN -->
                             <li class="nav-item">
-
                                 <form asp-controller="Account"
                                       asp-action="Logout"
-                                      method="post"
-                                      class="form-inline">
+                                      method="post">
 
                                     <button type="submit"
-                                            class="btn btn-link nav-link header-logout"
-                                            style="border:none;">
-
+                                            class="nav-link header-logout border-0 bg-transparent">
+                                        <i class="bi bi-box-arrow-right"></i>
                                         Cerrar sesión
-
                                     </button>
 
                                 </form>
-
                             </li>
-
                         }
                         else
                         {
-
+                            <!-- INICIAR SESIÓN -->
                             <li class="nav-item">
-
                                 <a class="nav-link"
                                    asp-controller="Account"
                                    asp-action="Login">
-
+                                    <i class="bi bi-box-arrow-in-right"></i>
                                     Iniciar sesión
-
                                 </a>
-
                             </li>
 
+                            <!-- REGISTRARSE -->
                             <li class="nav-item">
-
                                 <a class="nav-link"
                                    asp-controller="Account"
                                    asp-action="Register">
-
+                                    <i class="bi bi-person-plus"></i>
                                     Registrarse
-
                                 </a>
-
                             </li>
-
                         }
 
                     </ul>
 
                 </div>
-
             </div>
-
         </nav>
-
     </header>
-
-    <main role="main">
-
-        <div class="page-content">
-
-            @RenderBody()
-
-        </div>
-
-    </main>
-
+    <main role="main"><div class="page-content">@RenderBody()</div></main>
     @if (TempData["SuccessMessage"] != null)
     {
-        <div id="successToast"
-             class="sweet-toast success-toast"
-             role="alert">
-
-            <div class="sweet-toast-icon">
-
-                <i class="bi bi-check-lg"></i>
-
-            </div>
-
-            <div class="sweet-toast-content">
-
-                <strong>¡Listo!</strong>
-
-                <span>
-                    @TempData["SuccessMessage"]
-                </span>
-
-            </div>
-
-            <button type="button"
-                    class="sweet-toast-close"
-                    onclick="closeSweetToast()"
-                    aria-label="Cerrar">
-
-                ×
-
-            </button>
-
-        </div>
+        <div id="successToast" class="sweet-toast success-toast" role="alert"><div class="sweet-toast-icon"><i class="bi bi-check-lg"></i></div><div class="sweet-toast-content"><strong>¡Listo!</strong><span>@TempData["SuccessMessage"]</span></div><button type="button" class="sweet-toast-close" onclick="closeSweetToast()">×</button></div>
     }
-
     @if (TempData["ErrorMessage"] != null)
     {
-        <div id="errorToast"
-             class="sweet-toast error-toast"
-             role="alert">
-
-            <div class="sweet-toast-icon">
-
-                <i class="bi bi-exclamation-lg"></i>
-
-            </div>
-
-            <div class="sweet-toast-content">
-
-                <strong>Algo salió mal</strong>
-
-                <span>
-                    @TempData["ErrorMessage"]
-                </span>
-
-            </div>
-
-            <button type="button"
-                    class="sweet-toast-close"
-                    onclick="closeErrorToast()"
-                    aria-label="Cerrar">
-
-                ×
-
-            </button>
-
-        </div>
+        <div id="errorToast" class="sweet-toast error-toast" role="alert"><div class="sweet-toast-icon"><i class="bi bi-exclamation-lg"></i></div><div class="sweet-toast-content"><strong>Algo salió mal</strong><span>@TempData["ErrorMessage"]</span></div><button type="button" class="sweet-toast-close" onclick="closeErrorToast()">×</button></div>
     }
-
     <footer class="main-footer">
-
         <div class="footer-content">
-
+            <div><div class="footer-brand">Dulce Antojo</div><p class="footer-description">Repostería artesanal hecha con amor. Rollos de canela, cookies, tortas y productos especiales para cada ocasión.</p></div>
             <div>
-
-                <div class="footer-brand">
-
-                    Dulce Antojo
-
-                </div>
-
-                <p class="footer-description">
-
-                    Repostería artesanal hecha con amor.
-                    Rollos, tortas, cookies y deliciosos
-                    productos especiales para cada ocasión.
-
-                </p>
-
+                <div class="footer-title">Síguenos</div><div class="footer-social">
+                <a href="https://wa.me/59162639590" target="_blank" rel="noopener noreferrer"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+                <a href="https://www.instagram.com/aylen_kss" target="_blank" rel="noopener noreferrer"><i class="bi bi-instagram"></i> Instagram</a>
+                <a href="https://www.tiktok.com/@@rollitos.de.canel65" target="_blank" rel="noopener noreferrer"><i class="bi bi-tiktok"></i> TikTok</a>
             </div>
-
-            <div>
-
-                <div class="footer-title">
-
-                    Síguenos
-
-                </div>
-
-                <div class="footer-social">
-
-                    <a href="https://wa.me/59162639590"
-                       target="_blank"
-                       rel="noopener noreferrer">
-
-                        <i class="bi bi-whatsapp"></i>
-
-                        WhatsApp
-
-                    </a>
-
-                    <a href="https://www.instagram.com/aylen_kss?stkn=MWFseDY1bWprdWI4Zg=="
-                       target="_blank"
-                       rel="noopener noreferrer">
-
-                        <i class="bi bi-instagram"></i>
-
-                        Instagram
-
-                    </a>
-
-                    <a href="https://www.tiktok.com/@@rollitos.de.canel65?_r=1&_t=ZS-99ezFbc09Wn"
-                       target="_blank"
-                       rel="noopener noreferrer">
-
-                        <i class="bi bi-tiktok"></i>
-
-                        TikTok
-
-                    </a>
-
-                </div>
-
-            </div>
-
-            <div>
-
-                <div class="footer-title">
-
-                    Encuéntranos
-
-                </div>
-
-                <a class="footer-location"
-                   href="https://maps.app.goo.gl/tWSpvduiKeZFSvnQ6?g_st=ac"
-                   target="_blank"
-                   rel="noopener noreferrer">
-
-                    <i class="bi bi-geo-alt-fill"></i>
-
-                    <span>
-
-                        Visita nuestra repostería<br />
-
-                        Ver ubicación en Google Maps
-
-                    </span>
-
-                </a>
-
-            </div>
-
         </div>
-
-        <div class="footer-bottom">
-
-            <p class="footer-copy">
-
-                © @DateTime.Now.Year Dulce Antojo · Todos los derechos reservados
-
-            </p>
-
-        </div>
-
-    </footer>
-
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script src="~/js/site.js"
-            asp-append-version="true">
-    </script>
-
-    <script>
-
-            function closeSweetToast() {
-
-                const toast = document.getElementById("successToast");
-
-                if (toast) {
-                    toast.remove();
-                }
-
-            }
-
-            function closeErrorToast() {
-
-                const toast = document.getElementById("errorToast");
-
-                if (toast) {
-                    toast.remove();
-                }
-
-            }
-
-            document.addEventListener("DOMContentLoaded", function() {
-
-                const successToast =
-                    document.getElementById("successToast");
-
-                const errorToast =
-                    document.getElementById("errorToast");
-
-                if (successToast) {
-
-                    setTimeout(function() {
-
-                        successToast.remove();
-
-                    }, 4500);
-
-                }
-
-                if (errorToast) {
-
-                    setTimeout(function() {
-
-                        errorToast.remove();
-
-                    }, 5000);
-
-                }
-
-            });
-
-    </script>
-
-    @await RenderSectionAsync("Scripts", required: false)
-
+        <div><div class="footer-title">Encuéntranos</div><a class="footer-location" href="https://maps.app.goo.gl/tWSpvduiKeZFSvnQ6?g_st=ac" target="_blank" rel="noopener noreferrer"><i class="bi bi-geo-alt-fill"></i><span>Visita nuestra repostería<br />Ver ubicación en Google Maps</span></a></div>
+    </div>
+    <div class="footer-bottom"><p class="footer-copy">© @DateTime.Now.Year Dulce Antojo · Todos los derechos reservados</p></div>
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script>function closeSweetToast() { document.getElementById('successToast')?.remove() } function closeErrorToast() { document.getElementById('errorToast')?.remove() } setTimeout(() => { document.getElementById('successToast')?.remove(); document.getElementById('errorToast')?.remove() }, 6000);</script>
+@await RenderSectionAsync("Scripts", required: false)
 </body>
-
 </html>

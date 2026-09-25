@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<EcommerceApp.Models.Product>
 
 @{
-    ViewData["Title"] = "Administración";
+    ViewData["Title"] = "Panel administrativo";
 
     var totalProductos = (int)(ViewBag.TotalProductos ?? 0);
     var categoriasActivas = (int)(ViewBag.CategoriasActivas ?? 0);
@@ -14,389 +14,322 @@
         .ToList()
         ?? new List<EcommerceApp.Models.Product>();
 }
-
 <style>
-    .admin-home {
+    .admin-page {
         width: 100%;
         min-height: calc(100vh - 70px);
-        background: linear-gradient(rgba(59,36,25,.018) 1px, transparent 1px), linear-gradient(90deg, rgba(59,36,25,.018) 1px, transparent 1px), #f9f7f3;
-        background-size: 32px 32px;
-        color: #3b2419;
-        padding: 0 0 45px;
+        background: #f5eee6;
+        color: #3d2a20;
+        padding-bottom: 60px;
+        overflow-x: hidden;
     }
 
-    .admin-container {
+    .admin-hero {
         width: 100%;
-        margin: 0;
-    }
-
-    .admin-top {
-        width: 100%;
-        padding: 32px 5% 28px;
-        background: #ffffff;
-        border-bottom: 1px solid #e5dfd8;
-    }
-
-    .admin-top-inner {
-        width: 100%;
+        min-height: 390px;
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        gap: 25px;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(90deg, rgba(61,42,32,.88) 0%, rgba(61,42,32,.72) 42%, rgba(61,42,32,.20) 100%), url('https://static.vecteezy.com/system/resources/thumbnails/042/392/323/small_2x/ai-generated-different-fruit-cakes-on-a-wooden-table-top-view-photo.jpg') center/cover;
     }
 
-    .admin-branding small {
-        display: block;
-        margin-bottom: 6px;
-        color: #8a674f;
-        font-size: .63rem;
+        .admin-hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 65%, rgba(61,42,32,.25));
+            pointer-events: none;
+        }
+
+    .admin-hero-content {
+        position: relative;
+        z-index: 2;
+        width: min(1180px, 90%);
+        margin: 0 auto;
+        padding: 55px 0;
+    }
+
+    .admin-eyebrow {
+        display: inline-block;
+        margin-bottom: 18px;
+        color: #ead8c5;
+        font-size: .68rem;
         font-weight: 800;
-        letter-spacing: .17em;
+        letter-spacing: .18em;
         text-transform: uppercase;
     }
 
-    .admin-branding h1 {
+    .admin-hero h1 {
+        max-width: 650px;
         margin: 0;
-        color: #3b2419;
+        color: #fffaf5;
         font-family: Georgia, "Times New Roman", serif;
-        font-size: clamp(1.9rem, 3.6vw, 2.8rem);
+        font-size: clamp(2.8rem, 6vw, 5.5rem);
         font-weight: 400;
-        line-height: 1;
+        line-height: .95;
+        letter-spacing: -.035em;
     }
 
-        .admin-branding h1 span {
-            color: #765039;
-            font-style: italic;
-        }
-
-    .admin-branding p {
-        margin: 8px 0 0;
-        color: #806f62;
-        font-size: .76rem;
+    .admin-hero p {
+        max-width: 520px;
+        margin: 22px 0 0;
+        color: rgba(255,250,245,.82);
+        font-size: .95rem;
+        line-height: 1.7;
     }
-
-    .admin-top-action {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        padding: 11px 18px;
-        background: #3b2419;
-        color: #ffffff;
-        text-decoration: none;
-        font-size: .65rem;
-        font-weight: 800;
-        letter-spacing: .08em;
-        text-transform: uppercase;
-        transition: .25s ease;
-    }
-
-        .admin-top-action:hover {
-            background: #654532;
-            color: #ffffff;
-            transform: translateY(-2px);
-        }
 
     .admin-content {
-        width: 100%;
-        padding: 32px 5% 0;
+        width: min(1180px, 90%);
+        margin: 0 auto;
     }
 
-    .admin-title {
-        margin-bottom: 16px;
+    .admin-shortcuts {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 0;
+        margin: 28px 0 0;
+        padding: 0;
+        background: transparent;
+        border: none;
+        box-shadow: none;
     }
 
-        .admin-title small {
+    .admin-shortcut {
+        min-width: 0;
+        min-height: 160px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 25px 23px;
+        background: #fffaf4;
+        color: #3d2a20;
+        text-decoration: none;
+        border-top: 1px solid #e1d6ca;
+        border-bottom: 1px solid #e1d6ca;
+        border-right: 1px solid #e1d6ca;
+        transition: transform .25s ease, background .25s ease, box-shadow .25s ease;
+    }
+
+        .admin-shortcut:first-child {
+            border-left: 1px solid #e1d6ca;
+            border-radius: 16px 0 0 16px;
+        }
+
+        .admin-shortcut:last-child {
+            border-radius: 0 16px 16px 0;
+        }
+
+        .admin-shortcut:hover {
+            background: #f1e5d8;
+            color: #3d2a20;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 24px rgba(61,42,32,.10);
+            position: relative;
+            z-index: 3;
+        }
+
+        .admin-shortcut i {
+            width: 43px;
+            height: 43px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 17px;
+            border-radius: 50%;
+            background: #eadccd;
+            color: #684936;
+            font-size: 1rem;
+        }
+
+        .admin-shortcut h3 {
+            margin: 0;
+            color: #3d2a20;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 1.25rem;
+            font-weight: 400;
+        }
+
+        .admin-shortcut span {
             display: block;
-            margin-bottom: 5px;
-            color: #96745d;
-            font-size: .6rem;
+            margin-top: 7px;
+            color: #8b796b;
+            font-size: .67rem;
+            line-height: 1.4;
+        }
+
+    .admin-section {
+        padding-top: 42px;
+    }
+
+    .admin-section-heading {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+        .admin-section-heading small {
+            display: block;
+            margin-bottom: 7px;
+            color: #98765d;
+            font-size: .62rem;
             font-weight: 800;
             letter-spacing: .16em;
             text-transform: uppercase;
         }
 
-        .admin-title h2 {
+        .admin-section-heading h2 {
             margin: 0;
-            color: #3b2419;
+            color: #3d2a20;
             font-family: Georgia, "Times New Roman", serif;
-            font-size: 1.7rem;
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
             font-weight: 400;
+            line-height: 1;
         }
 
-        .admin-title p {
-            margin: 5px 0 0;
-            color: #83766c;
+        .admin-section-heading p {
+            margin: 8px 0 0;
+            color: #8b796b;
             font-size: .74rem;
         }
 
-    .admin-actions {
+        .admin-section-heading a {
+            color: #654532;
+            text-decoration: none;
+            font-size: .65rem;
+            font-weight: 800;
+            letter-spacing: .07em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+    .admin-metrics {
         display: grid;
-        grid-template-columns: 1.35fr 1fr 1fr 1fr;
-        gap: 10px;
-        margin-bottom: 35px;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
     }
 
-    .admin-card {
-        position: relative;
-        min-height: 142px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        overflow: hidden;
-        padding: 19px;
-        color: #ffffff;
-        text-decoration: none;
-        border: 1px solid transparent;
-        transition: .25s ease;
+    .metric-card {
+        min-width: 0;
+        min-height: 145px;
+        padding: 24px;
+        background: #fffdf9;
+        border: 1px solid #e2d9cf;
+        transition: transform .25s ease, box-shadow .25s ease;
     }
 
-        .admin-card:hover {
-            color: #ffffff;
+        .metric-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 25px rgba(59,36,25,.13);
+            box-shadow: 0 12px 28px rgba(61,42,32,.08);
         }
 
-    .admin-card-products {
-        background: #3b2419;
-    }
-
-    .admin-card-inventory {
-        background: #654532;
-    }
-
-    .admin-card-categories {
-        background: #ffffff;
-        color: #3b2419;
-        border-color: #ded6ce;
-    }
-
-        .admin-card-categories:hover {
-            color: #3b2419;
-        }
-
-    .admin-card-reports {
-        background: #8a674f;
-    }
-
-    .admin-card-top {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .admin-card-number {
-        font-family: Georgia, "Times New Roman", serif;
-        font-size: .76rem;
-        opacity: .58;
-    }
-
-    .admin-card-arrow {
-        width: 30px;
-        height: 30px;
-        display: grid;
-        place-items: center;
-        border: 1px solid rgba(255,255,255,.3);
-        font-size: .82rem;
-        transition: .25s ease;
-    }
-
-    .admin-card-categories .admin-card-arrow {
-        border-color: #d8cec5;
-    }
-
-    .admin-card:hover .admin-card-arrow {
-        transform: translate(3px,-3px);
-    }
-
-    .admin-card h3 {
-        margin: 0;
-        font-family: Georgia, "Times New Roman", serif;
-        font-size: 1.4rem;
-        font-weight: 400;
-    }
-
-    .admin-card-products h3 {
-        font-size: 1.75rem;
-    }
-
-    .admin-card p {
-        margin: 5px 0 0;
-        color: rgba(255,255,255,.7);
-        font-size: .66rem;
-        line-height: 1.45;
-    }
-
-    .admin-card-categories p {
-        color: #817267;
-    }
-
-    .admin-card-products::after {
-        content: "☕";
-        position: absolute;
-        right: 20px;
-        bottom: -4px;
-        color: rgba(255,255,255,.055);
-        font-size: 5.5rem;
-    }
-
-    .admin-card-inventory::after {
-        content: "✦";
-        position: absolute;
-        right: 18px;
-        bottom: -12px;
-        color: rgba(255,255,255,.06);
-        font-size: 5rem;
-    }
-
-    .admin-stats-wrap {
-        margin-bottom: 35px;
-    }
-
-    .admin-stats {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        width: 100%;
-        background: #ffffff;
-        border: 1px solid #e1dad3;
-    }
-
-    .admin-stat {
-        min-height: 100px;
-        padding: 18px 21px;
-        border-right: 1px solid #e5dfd8;
-    }
-
-        .admin-stat:last-child {
-            border-right: none;
-        }
-
-    .admin-stat-label {
-        color: #806d5e;
-        font-size: .59rem;
+    .metric-label {
+        display: block;
+        color: #89786b;
+        font-size: .61rem;
         font-weight: 800;
         letter-spacing: .1em;
         text-transform: uppercase;
     }
 
-    .admin-stat-value {
-        margin-top: 7px;
-        color: #3b2419;
+    .metric-value {
+        display: block;
+        margin-top: 15px;
+        color: #3d2a20;
         font-family: Georgia, "Times New Roman", serif;
-        font-size: 2rem;
+        font-size: 2.65rem;
+        font-weight: 400;
         line-height: 1;
     }
 
-    .admin-stat-text {
-        margin-top: 5px;
-        color: #9a8b80;
-        font-size: .63rem;
+    .metric-card:nth-child(3) .metric-value {
+        color: #9a7252;
     }
 
-    .admin-stat-warning .admin-stat-value {
-        color: #8a674f;
-    }
-
-    .admin-stat-danger .admin-stat-value {
-        color: #754438;
+    .metric-card:nth-child(4) .metric-value {
+        color: #875847;
     }
 
     .admin-alert {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 20px;
-        margin-top: 9px;
-        padding: 13px 17px;
-        background: #ffffff;
-        border: 1px solid #ded5cc;
-        border-left: 4px solid #654532;
+        gap: 25px;
+        margin-top: 13px;
+        padding: 19px 22px;
+        background: #eee3d6;
+        border-left: 4px solid #745039;
     }
 
         .admin-alert strong {
             display: block;
-            color: #4a3021;
-            font-size: .73rem;
+            color: #4a3022;
+            font-size: .75rem;
         }
 
         .admin-alert span {
             display: block;
-            margin-top: 3px;
-            color: #817267;
-            font-size: .64rem;
+            margin-top: 4px;
+            color: #806e61;
+            font-size: .67rem;
         }
 
         .admin-alert a {
-            color: #654532;
+            color: #5e402e;
             text-decoration: none;
             font-size: .62rem;
             font-weight: 800;
+            letter-spacing: .05em;
             text-transform: uppercase;
             white-space: nowrap;
         }
 
-    .admin-products-section {
-        width: 100%;
-    }
-
-    .admin-products-header {
-        display: flex;
-        align-items: end;
-        justify-content: space-between;
-        gap: 20px;
-        margin-bottom: 16px;
-    }
-
-        .admin-products-header a {
-            color: #654532;
-            text-decoration: none;
-            font-size: .63rem;
-            font-weight: 800;
-            letter-spacing: .06em;
-            text-transform: uppercase;
-        }
-
-    .admin-products-grid {
+    .admin-products {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 10px;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
     }
 
     .admin-product {
+        min-width: 0;
         overflow: hidden;
-        background: #ffffff;
-        border: 1px solid #e1dad3;
-        transition: .25s ease;
+        background: #fffdf9;
+        border: 1px solid #e2d9cf;
+        transition: transform .28s ease, box-shadow .28s ease;
     }
 
         .admin-product:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 23px rgba(59,36,25,.1);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 30px rgba(61,42,32,.10);
         }
 
     .admin-product-image {
         width: 100%;
-        height: 210px;
+        height: 245px;
         display: block;
         object-fit: cover;
     }
 
     .admin-product-info {
-        padding: 14px 15px 16px;
+        padding: 17px 18px 20px;
     }
 
     .admin-product-category {
-        color: #96745d;
-        font-size: .56rem;
+        color: #9a765d;
+        font-size: .57rem;
         font-weight: 800;
-        letter-spacing: .1em;
+        letter-spacing: .11em;
         text-transform: uppercase;
     }
 
     .admin-product-name {
-        margin: 5px 0 9px;
+        margin: 7px 0 12px;
         color: #432c20;
         font-family: Georgia, "Times New Roman", serif;
-        font-size: 1.05rem;
+        font-size: 1.18rem;
         font-weight: 400;
     }
 
@@ -405,69 +338,203 @@
         text-decoration: none;
         font-size: .61rem;
         font-weight: 800;
+        letter-spacing: .05em;
         text-transform: uppercase;
     }
 
         .admin-product-link:hover {
-            color: #96465d;
+            color: #93604b;
         }
 
     .admin-empty {
         grid-column: 1 / -1;
-        padding: 42px;
+        padding: 55px 20px;
         text-align: center;
-        background: #ffffff;
-        border: 1px dashed #cfc7ba;
-        color: #88796e;
-        font-size: .76rem;
+        background: #fffdf9;
+        border: 1px dashed #cfc3b6;
+        color: #89796d;
+        font-size: .75rem;
     }
 
-    @@media (max-width: 1000px) {
-        .admin-actions {
-            grid-template-columns: 1fr 1fr;
+    @@media (max-width: 1050px) {
+        .admin-shortcuts {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
         }
 
-        .admin-card-products {
-            grid-column: 1 / 3;
+        .admin-shortcut:nth-child(3) {
+            border-right: 1px solid #e1d6ca;
         }
 
-        .admin-products-grid {
-            grid-template-columns: repeat(2, 1fr);
+        .admin-shortcut:nth-child(4) {
+            border-left: 1px solid #e1d6ca;
+            border-top: none;
+            border-radius: 0 0 0 16px;
+        }
+
+        .admin-shortcut:nth-child(5) {
+            border-top: none;
+            border-radius: 0 0 16px 0;
+        }
+
+        .admin-metrics {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .admin-products {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
     }
 
-    @@media (max-width: 650px) {
-        .admin-top {
-            padding: 27px 5% 23px;
+    @@media (max-width: 700px) {
+        .admin-hero {
+            min-height: 340px;
         }
 
-        .admin-top-inner {
-            align-items: flex-start;
-            flex-direction: column;
+        .admin-hero-content {
+            width: 88%;
+            padding: 45px 0;
+        }
+
+        .admin-hero h1 {
+            font-size: clamp(2.7rem, 12vw, 4rem);
+        }
+
+        .admin-hero p {
+            font-size: .84rem;
+            max-width: 430px;
         }
 
         .admin-content {
-            padding: 27px 4% 0;
+            width: 90%;
         }
 
-        .admin-actions {
+        .admin-shortcuts {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            margin-top: 24px;
+        }
+
+        .admin-shortcut {
+            min-height: 145px;
+            padding: 20px;
+        }
+
+            .admin-shortcut:first-child {
+                border-radius: 16px 0 0 0;
+            }
+
+            .admin-shortcut:nth-child(2) {
+                border-radius: 0 16px 0 0;
+            }
+
+            .admin-shortcut:nth-child(3) {
+                border-left: 1px solid #e1d6ca;
+                border-radius: 0;
+            }
+
+            .admin-shortcut:nth-child(4) {
+                border-left: none;
+                border-radius: 0;
+            }
+
+            .admin-shortcut:nth-child(5) {
+                grid-column: 1 / 3;
+                border-left: 1px solid #e1d6ca;
+                border-top: 1px solid #e1d6ca;
+                border-radius: 0 0 16px 16px;
+            }
+
+        .admin-section {
+            padding-top: 38px;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .admin-page {
+            padding-bottom: 45px;
+        }
+
+        .admin-content {
+            width: 92%;
+        }
+
+        .admin-hero {
+            min-height: 310px;
+        }
+
+        .admin-hero-content {
+            width: 92%;
+            padding: 40px 0;
+        }
+
+        .admin-hero h1 {
+            font-size: clamp(2.35rem, 13vw, 3.5rem);
+        }
+
+        .admin-hero p {
+            margin-top: 17px;
+            font-size: .8rem;
+            line-height: 1.55;
+        }
+
+        .admin-shortcuts {
             grid-template-columns: 1fr 1fr;
+            margin-top: 18px;
         }
 
-        .admin-card-products {
-            grid-column: 1 / 3;
+        .admin-shortcut {
+            min-height: 130px;
+            padding: 16px;
         }
 
-        .admin-stats {
+            .admin-shortcut i {
+                width: 36px;
+                height: 36px;
+                margin-bottom: 13px;
+                font-size: .9rem;
+            }
+
+            .admin-shortcut h3 {
+                font-size: 1rem;
+            }
+
+            .admin-shortcut span {
+                font-size: .6rem;
+            }
+
+        .admin-metrics {
             grid-template-columns: 1fr 1fr;
+            gap: 8px;
         }
 
-        .admin-stat:nth-child(2) {
-            border-right: none;
+        .metric-card {
+            min-height: 120px;
+            padding: 16px;
         }
 
-        .admin-stat:nth-child(-n+2) {
-            border-bottom: 1px solid #e3dfd4;
+        .metric-value {
+            font-size: 2rem;
+        }
+
+        .admin-products {
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .admin-product-image {
+            height: 165px;
+        }
+
+        .admin-product-info {
+            padding: 12px;
+        }
+
+        .admin-product-name {
+            font-size: .98rem;
+        }
+
+        .admin-section-heading {
+            align-items: flex-start;
+            flex-direction: column;
         }
 
         .admin-alert {
@@ -475,182 +542,121 @@
             flex-direction: column;
         }
     }
-
-    @@media (max-width: 440px) {
-        .admin-actions {
-            grid-template-columns: 1fr;
-        }
-
-        .admin-card-products {
-            grid-column: auto;
-        }
-
-        .admin-card {
-            min-height: 130px;
-        }
-
-        .admin-products-grid {
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-
-        .admin-product-image {
-            height: 150px;
-        }
-
-        .admin-product-info {
-            padding: 10px;
-        }
-
-        .admin-product-name {
-            font-size: .92rem;
-        }
-
-        .admin-stat {
-            padding: 15px;
-        }
-
-        .admin-stat-value {
-            font-size: 1.75rem;
-        }
-    }
 </style>
 
-<div class="admin-home">
+<div class="admin-page">
 
-    <div class="admin-container">
+    <section class="admin-hero">
+        <div class="admin-hero-content">
 
-        <section class="admin-top">
+            <span class="admin-eyebrow">
+                Panel de administración
+            </span>
 
-            <div class="admin-top-inner">
+            <h1>
+                Bienvenida a<br />
+                Dulce Antojo.
+            </h1>
 
-                <div class="admin-branding">
+            <p>
+                Gestiona tu catálogo, inventario, pedidos y reportes
+                desde un solo lugar.
+            </p>
 
-                    <small>
-                        Dulce Antojo · Administración
-                    </small>
+        </div>
+    </section>
 
-                    <h1>
-                        Hola, <span>bienvenida</span> ♡
-                    </h1>
+    <div class="admin-content">
 
-                    <p>
-                        Todo listo para seguir haciendo crecer tu tienda.
-                    </p>
+        <section class="admin-shortcuts">
 
-                </div>
+            <a class="admin-shortcut"
+               asp-controller="Products"
+               asp-action="Index">
 
-                <a asp-controller="Products"
-                   asp-action="Index"
-                   class="admin-top-action">
-                    Ver catálogo →
-                </a>
+                <i class="bi bi-box-seam"></i>
 
-            </div>
+                <h3>
+                    Productos
+                </h3>
+
+                <span>
+                    Catálogo y disponibilidad
+                </span>
+
+            </a>
+
+            <a class="admin-shortcut"
+               asp-controller="Categories"
+               asp-action="Index">
+
+                <i class="bi bi-grid"></i>
+
+                <h3>
+                    Categorías
+                </h3>
+
+                <span>
+                    Organiza tu catálogo
+                </span>
+
+            </a>
+
+            <a class="admin-shortcut"
+               asp-controller="Inventory"
+               asp-action="Index">
+
+                <i class="bi bi-clipboard-data"></i>
+
+                <h3>
+                    Inventario
+                </h3>
+
+                <span>
+                    Control de existencias
+                </span>
+
+            </a>
+
+            <a class="admin-shortcut"
+               asp-controller="Admin"
+               asp-action="Orders">
+
+                <i class="bi bi-receipt"></i>
+
+                <h3>
+                    Pedidos
+                </h3>
+
+                <span>
+                    Gestiona las compras
+                </span>
+
+            </a>
+
+            <a class="admin-shortcut"
+               asp-controller="Reports"
+               asp-action="Index">
+
+                <i class="bi bi-bar-chart-line"></i>
+
+                <h3>
+                    Reportes
+                </h3>
+
+                <span>
+                    Ventas y estadísticas
+                </span>
+
+            </a>
 
         </section>
 
-        <main class="admin-content">
+        <section class="admin-section">
 
-            <section>
+            <div class="admin-section-heading">
 
-                <div class="admin-title">
-
-                    <small>
-                        Espacio de trabajo
-                    </small>
-
-                    <h2>
-                        ¿Qué quieres administrar?
-                    </h2>
-
-                    <p>
-                        Elige una sección para comenzar.
-                    </p>
-
-                </div>
-
-                <div class="admin-actions">
-
-                    <a asp-controller="Products"
-                       asp-action="Index"
-                       class="admin-card admin-card-products">
-
-                        <div class="admin-card-top">
-                            <span class="admin-card-number">01</span>
-                            <span class="admin-card-arrow">↗</span>
-                        </div>
-
-                        <div>
-                            <h3>Productos</h3>
-                            <p>
-                                Crea, edita y administra los productos de tu catálogo.
-                            </p>
-                        </div>
-
-                    </a>
-
-                    <a asp-controller="Inventory"
-                       asp-action="Index"
-                       class="admin-card admin-card-inventory">
-
-                        <div class="admin-card-top">
-                            <span class="admin-card-number">02</span>
-                            <span class="admin-card-arrow">↗</span>
-                        </div>
-
-                        <div>
-                            <h3>Inventario</h3>
-                            <p>
-                                Controla existencias y disponibilidad.
-                            </p>
-                        </div>
-
-                    </a>
-
-                    <a asp-controller="Categories"
-                       asp-action="Index"
-                       class="admin-card admin-card-categories">
-
-                        <div class="admin-card-top">
-                            <span class="admin-card-number">03</span>
-                            <span class="admin-card-arrow">↗</span>
-                        </div>
-
-                        <div>
-                            <h3>Categorías</h3>
-                            <p>
-                                Organiza tu catálogo.
-                            </p>
-                        </div>
-
-                    </a>
-
-                    <a asp-controller="Reports"
-                       asp-action="Index"
-                       class="admin-card admin-card-reports">
-
-                        <div class="admin-card-top">
-                            <span class="admin-card-number">04</span>
-                            <span class="admin-card-arrow">↗</span>
-                        </div>
-
-                        <div>
-                            <h3>Reportes</h3>
-                            <p>
-                                Consulta información y resultados de tu tienda.
-                            </p>
-                        </div>
-
-                    </a>
-
-                </div>
-
-            </section>
-
-            <section class="admin-stats-wrap">
-
-                <div class="admin-title">
+                <div>
 
                     <small>
                         Vista general
@@ -660,171 +666,164 @@
                         Dulce Antojo hoy
                     </h2>
 
-                </div>
-
-                <div class="admin-stats">
-
-                    <div class="admin-stat">
-
-                        <div class="admin-stat-label">
-                            Productos
-                        </div>
-
-                        <div class="admin-stat-value">
-                            @totalProductos
-                        </div>
-
-                        <div class="admin-stat-text">
-                            En el catálogo
-                        </div>
-
-                    </div>
-
-                    <div class="admin-stat">
-
-                        <div class="admin-stat-label">
-                            Categorías
-                        </div>
-
-                        <div class="admin-stat-value">
-                            @categoriasActivas
-                        </div>
-
-                        <div class="admin-stat-text">
-                            Activas
-                        </div>
-
-                    </div>
-
-                    <div class="admin-stat admin-stat-warning">
-
-                        <div class="admin-stat-label">
-                            Stock bajo
-                        </div>
-
-                        <div class="admin-stat-value">
-                            @productosStockBajo
-                        </div>
-
-                        <div class="admin-stat-text">
-                            Para revisar
-                        </div>
-
-                    </div>
-
-                    <div class="admin-stat admin-stat-danger">
-
-                        <div class="admin-stat-label">
-                            Agotados
-                        </div>
-
-                        <div class="admin-stat-value">
-                            @productosSinStock
-                        </div>
-
-                        <div class="admin-stat-text">
-                            Sin disponibilidad
-                        </div>
-
-                    </div>
+                    <p>
+                        Consulta rápidamente el estado de tu tienda.
+                    </p>
 
                 </div>
 
-                @if (productosSinStock > 0 || productosStockBajo > 0)
-                {
-                    <div class="admin-alert">
+            </div>
 
-                        <div>
+            <div class="admin-metrics">
 
-                            <strong>
-                                Hay productos que necesitan atención.
-                            </strong>
+                <div class="metric-card">
 
-                            <span>
-                                @productosSinStock agotados · @productosStockBajo con stock bajo
-                            </span>
+                    <span class="metric-label">
+                        Productos activos
+                    </span>
 
-                        </div>
+                    <span class="metric-value">
+                        @totalProductos
+                    </span>
 
-                        <a asp-controller="Inventory"
-                           asp-action="Index">
-                            Revisar inventario →
-                        </a>
+                </div>
+
+                <div class="metric-card">
+
+                    <span class="metric-label">
+                        Categorías activas
+                    </span>
+
+                    <span class="metric-value">
+                        @categoriasActivas
+                    </span>
+
+                </div>
+
+                <div class="metric-card">
+
+                    <span class="metric-label">
+                        Stock bajo
+                    </span>
+
+                    <span class="metric-value">
+                        @productosStockBajo
+                    </span>
+
+                </div>
+
+                <div class="metric-card">
+
+                    <span class="metric-label">
+                        Sin stock
+                    </span>
+
+                    <span class="metric-value">
+                        @productosSinStock
+                    </span>
+
+                </div>
+
+            </div>
+
+            @if (productosSinStock > 0 || productosStockBajo > 0)
+            {
+                <div class="admin-alert">
+
+                    <div>
+
+                        <strong>
+                            Hay productos que necesitan atención.
+                        </strong>
+
+                        <span>
+                            @productosSinStock agotados ·
+                            @productosStockBajo con stock bajo
+                        </span>
 
                     </div>
-                }
 
-            </section>
-
-            <section class="admin-products-section">
-
-                <div class="admin-products-header">
-
-                    <div class="admin-title" style="margin-bottom:0;">
-
-                        <small>
-                            Tu vitrina
-                        </small>
-
-                        <h2>
-                            Productos recientes
-                        </h2>
-
-                    </div>
-
-                    <a asp-controller="Products"
+                    <a asp-controller="Inventory"
                        asp-action="Index">
-                        Ver todos →
+                        Revisar inventario →
                     </a>
 
                 </div>
+            }
 
-                <div class="admin-products-grid">
+        </section>
 
-                    @if (productosDestacados.Any())
-                    {
-                        foreach (var producto in productosDestacados)
-                        {
-                            <article class="admin-product">
+        <section class="admin-section">
 
-                                <img src="@producto.ImageUrl"
-                                     alt="@producto.Name"
-                                     class="admin-product-image" />
+            <div class="admin-section-heading">
 
-                                <div class="admin-product-info">
+                <div>
 
-                                    <div class="admin-product-category">
-                                        @producto.Category
-                                    </div>
+                    <small>
+                        Tu vitrina
+                    </small>
 
-                                    <h3 class="admin-product-name">
-                                        @producto.Name
-                                    </h3>
+                    <h2>
+                        Productos recientes
+                    </h2>
 
-                                    <a asp-controller="Products"
-                                       asp-action="Details"
-                                       asp-route-id="@producto.Id"
-                                       class="admin-product-link">
-                                        Ver producto →
-                                    </a>
-
-                                </div>
-
-                            </article>
-                        }
-                    }
-                    else
-                    {
-                        <div class="admin-empty">
-                            Todavía no tienes productos con imágenes para mostrar.
-                        </div>
-                    }
+                    <p>
+                        Una vista rápida de los productos de tu catálogo.
+                    </p>
 
                 </div>
 
-            </section>
+                <a asp-controller="Products"
+                   asp-action="Index">
+                    Ver todos →
+                </a>
 
-        </main>
+            </div>
+
+            <div class="admin-products">
+
+                @if (productosDestacados.Any())
+                {
+                    foreach (var producto in productosDestacados)
+                    {
+                        <article class="admin-product">
+
+                            <img src="@producto.ImageUrl"
+                                 alt="@producto.Name"
+                                 class="admin-product-image" />
+
+                            <div class="admin-product-info">
+
+                                <div class="admin-product-category">
+                                    @producto.Category
+                                </div>
+
+                                <h3 class="admin-product-name">
+                                    @producto.Name
+                                </h3>
+
+                                <a asp-controller="Products"
+                                   asp-action="Details"
+                                   asp-route-id="@producto.Id"
+                                   class="admin-product-link">
+                                    Ver producto →
+                                </a>
+
+                            </div>
+
+                        </article>
+                    }
+                }
+                else
+                {
+                    <div class="admin-empty">
+                        Todavía no tienes productos con imágenes para mostrar.
+                    </div>
+                }
+
+            </div>
+
+        </section>
 
     </div>
 

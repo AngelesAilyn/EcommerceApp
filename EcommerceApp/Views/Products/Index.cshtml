@@ -12,48 +12,31 @@
 
 <style>
 
-    .products-page {
-        min-height: 100vh;
-        background: #f5efe6;
-        color: #3e2b21;
-        padding-bottom: 0;
-    }
-
-
     .products-hero {
-        min-height: 150px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #eadcc9;
-        border-bottom: 1px solid #d4c2ad;
+        background-image: linear-gradient( to top, rgba(39, 25, 17, 0.82) 0%, rgba(39, 25, 17, 0.22) 45%, rgba(39, 25, 17, 0) 72%), url("https://img.freepik.com/premium-photo/fresh-various-desserts-seamless-background_1103100-1303.jpg");
+        border-bottom: 1px solid #e6d9ca;
     }
-
 
     .products-hero-content {
-        width: 100%;
+        padding: 55px 20px 50px;
         text-align: center;
-        padding: 22px 20px;
     }
 
-
     .products-hero-small {
-        margin-bottom: 10px;
-        color: #9a6c50;
+        margin-bottom: 12px;
+        color: #ffffff;
         font-size: 10px;
-        font-weight: 800;
+        font-weight: 700;
         letter-spacing: 3px;
         text-transform: uppercase;
     }
 
-
     .products-hero h1 {
         margin: 0;
-        color: #3d2a21;
+        color: #ffffff;
         font-family: Georgia, "Times New Roman", serif;
-        font-size: clamp(36px, 5vw, 52px);
+        font-size: clamp(40px, 5vw, 58px);
         font-weight: 400;
-        line-height: 1;
         letter-spacing: -1px;
     }
 
@@ -61,188 +44,159 @@
     .products-content {
         width: 100%;
         margin: 0 auto;
-        padding: 25px 0 0;
+        padding: 35px 34px 70px;
     }
-
 
     .products-heading {
         display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 0;
+        justify-content: flex-end;
+        margin-bottom: 20px;
     }
-
 
     .admin-buttons {
         display: flex;
-        align-items: center;
-        gap: 8px;
+        gap: 9px;
         flex-wrap: wrap;
     }
-
 
         .admin-buttons a {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
             gap: 7px;
-            padding: 11px 17px;
-            border: 1px solid #573c2d;
-            border-radius: 2px;
-            background: #573c2d;
-            color: white;
+            padding: 10px 16px;
+            border-radius: 999px;
+            background: #654633;
+            color: #fff !important;
             text-decoration: none;
             font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 1px;
+            font-weight: 700;
+            letter-spacing: .8px;
             text-transform: uppercase;
             transition: all .25s ease;
         }
 
-
             .admin-buttons a:hover {
-                background: #9a694e;
-                border-color: #9a694e;
+                background: #4a3426;
                 transform: translateY(-2px);
             }
 
-
         .admin-buttons .archived {
-            background: transparent;
-            color: #745543;
-            border-color: #b89b84;
+            background: #e8ddd1;
+            color: #604838 !important;
         }
 
-
             .admin-buttons .archived:hover {
-                background: #b89b84;
-                color: white;
+                background: #d8c8b8;
             }
-
 
     .category-navigation {
         display: flex;
         justify-content: center;
         align-items: center;
         flex-wrap: wrap;
-        gap: 6px;
-        padding: 10px 18px 23px;
+        gap: 9px;
+        margin-bottom: 38px;
     }
-
 
         .category-navigation a {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 11px 20px;
-            border: 1px solid #cdbbaa;
-            border-radius: 2px;
-            background: #fffaf3;
-            color: #634939;
+            padding: 10px 19px;
+            border: 1px solid #d9c9b8;
+            border-radius: 999px;
+            background: #fffaf4;
+            color: #684b3a;
             text-decoration: none;
             font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 1px;
+            font-weight: 700;
+            letter-spacing: .8px;
             text-transform: uppercase;
             transition: all .25s ease;
         }
 
-
             .category-navigation a:hover {
-                background: #8f6249;
-                border-color: #8f6249;
-                color: white;
+                background: #eadfd3;
+                border-color: #cdb9a5;
                 transform: translateY(-2px);
-                box-shadow: 0 6px 12px rgba(80, 52, 38, .12);
             }
-
 
             .category-navigation a.active {
-                background: #4d3427;
-                border-color: #4d3427;
-                color: white;
+                background: #5b3d2c;
+                border-color: #5b3d2c;
+                color: #fff;
             }
 
+    .category-section.category-chocolate {
+        background: #b88b5c;
+    }
 
-    
-    .category-section {
-        margin-bottom: 0;
-        padding: 42px 38px 45px;
-        
-        scroll-margin-top: 85px;
+    .category-section.category-caramel {
+        background: #f0c095;
+    }
+
+    .category-section.category-beige {
+        background: #aa7444;
+    }
+
+    .category-section.category-salvia {
+        background: #a06c3f;
+    }
+
+    .category-section.category-rosa {
+        background: #d0ab7a;
+    }
+
+    .category-section.category-terracota {
+        background: #cf856b;
     }
 
 
-        .category-section.category-chocolate {
-            background: #d8c1ad;
-        }
-
-
-        .category-section.category-caramel {
-            background: #e8d0a8;
-        }
-
-
-        .category-section.category-beige {
-            background: #eee4d2;
-        }
-
-
-        .category-section.category-salvia {
-            background: #d7ded2;
-        }
-
-
-        .category-section.category-rosa {
-            background: #e6ceca;
-        }
-
-
-        .category-section.category-terracota {
-            background: #dfc0ad;
-        }
-
+    .category-section {
+        scroll-margin-top: 110px;
+        margin-bottom: 34px;
+        padding: 38px;
+        border: 1px solid rgba(100, 72, 53, .10);
+        border-radius: 28px;
+        box-shadow: 0 8px 25px rgba(76, 52, 38, .05);
+    }
 
     .category-header {
         display: flex;
         align-items: flex-end;
         justify-content: space-between;
         gap: 20px;
-        padding-bottom: 20px;
-        margin-bottom: 30px;
-        border-bottom: 1px solid rgba(67, 46, 34, .25);
+        padding-bottom: 22px;
+        margin-bottom: 27px;
+        border-bottom: 1px solid rgba(88, 62, 46, .15);
     }
-
 
     .category-title-area {
         display: flex;
         align-items: baseline;
-        gap: 15px;
+        gap: 13px;
     }
 
-
     .category-number {
-        color: rgba(73, 49, 36, .55);
+        color: #9d806a;
         font-family: Georgia, "Times New Roman", serif;
-        font-size: 18px;
+        font-size: 17px;
         font-style: italic;
     }
 
-
     .category-header h2 {
         margin: 0;
-        color: #3b2920;
+        color: #493327;
         font-family: Georgia, "Times New Roman", serif;
-        font-size: clamp(32px, 4vw, 48px);
+        font-size: clamp(30px, 4vw, 44px);
         font-weight: 400;
         line-height: 1;
     }
 
-
     .category-count {
-        color: #705848;
-        font-size: 10px;
-        font-weight: 800;
+        color: #806653;
+        font-size: 9px;
+        font-weight: 700;
         letter-spacing: 1px;
         text-transform: uppercase;
     }
@@ -251,26 +205,25 @@
     .products-grid {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 22px;
+        gap: 20px;
     }
 
-
     .product-card {
+        position: relative;
         display: flex;
         flex-direction: column;
         min-width: 0;
         overflow: hidden;
         background: #fffaf4;
-        border: none;
-        border-radius: 0;
-        box-shadow: 0 7px 20px rgba(62, 42, 30, .10);
+        border: 1px solid rgba(91, 65, 48, .10);
+        border-radius: 20px;
+        box-shadow: 0 8px 24px rgba(71, 48, 34, .08);
         transition: transform .3s ease, box-shadow .3s ease;
     }
 
-
         .product-card:hover {
-            transform: translateY(-7px);
-            box-shadow: 0 16px 30px rgba(62, 42, 30, .17);
+            transform: translateY(-6px);
+            box-shadow: 0 18px 38px rgba(71, 48, 34, .14);
         }
 
 
@@ -279,84 +232,87 @@
         width: 100%;
         aspect-ratio: 1 / 1;
         overflow: hidden;
-        background: #e3d6c7;
+        background: #e4d6c7;
     }
 
-
         .product-image img {
+            display: block;
             width: 100%;
             height: 100%;
-            display: block;
             object-fit: cover;
-            transition: transform .6s ease;
+            transition: transform .55s ease;
         }
 
-
     .product-card:hover .product-image img {
-        transform: scale(1.06);
+        transform: scale(1.045);
+    }
+
+    .product-image::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient( to bottom, transparent 72%, rgba(55, 37, 27, .08) );
     }
 
 
     .product-status {
         position: absolute;
-        top: 14px;
-        left: 14px;
-        padding: 7px 10px;
+        top: 13px;
+        left: 13px;
+        z-index: 2;
+        padding: 7px 11px;
+        border-radius: 999px;
         background: rgba(255, 250, 244, .94);
-        color: #634635;
-        font-size: 9px;
+        color: #684937;
+        font-size: 8px;
         font-weight: 800;
         letter-spacing: 1px;
         text-transform: uppercase;
+        box-shadow: 0 4px 12px rgba(54, 36, 26, .08);
     }
 
-
         .product-status.out {
-            background: #4a3428;
+            background: #55392b;
             color: white;
         }
-
 
     .product-info {
         display: flex;
         flex-direction: column;
         flex: 1;
-        padding: 22px 20px 20px;
+        padding: 20px 19px 18px;
     }
 
-
     .product-category {
-        margin-bottom: 8px;
-        color: #a16f52;
-        font-size: 9px;
+        margin-bottom: 7px;
+        color: #9a6f54;
+        font-size: 8px;
         font-weight: 800;
-        letter-spacing: 1.7px;
+        letter-spacing: 1.5px;
         text-transform: uppercase;
     }
 
-
     .product-info h3 {
         margin: 0;
-        color: #3d2b21;
+        color: #3f2c22;
         font-family: Georgia, "Times New Roman", serif;
-        font-size: 22px;
+        font-size: 21px;
         font-weight: 400;
-        line-height: 1.2;
+        line-height: 1.25;
     }
-
 
     .product-description {
         display: -webkit-box;
+        min-height: 39px;
+        margin: 9px 0 18px;
         overflow: hidden;
-        min-height: 42px;
-        margin: 10px 0 22px;
         color: #806d60;
-        font-size: 12px;
-        line-height: 1.7;
+        font-size: 11.5px;
+        line-height: 1.6;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
     }
-
 
     .product-bottom {
         display: flex;
@@ -366,49 +322,41 @@
         margin-top: auto;
     }
 
-
     .product-price {
-        color: #633f2c;
-        font-size: 19px;
+        color: #5c3d2b;
+        font-size: 17px;
         font-weight: 800;
         white-space: nowrap;
     }
-
 
     .product-button {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
-        min-width: 110px;
-        padding: 11px 15px;
-        border: none;
-        border-radius: 2px;
-        background: #633f2c;
+        gap: 7px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: #60412f;
         color: white !important;
         text-decoration: none;
-        font-size: 9px;
+        font-size: 8px;
         font-weight: 800;
-        letter-spacing: 1px;
+        letter-spacing: .8px;
         text-transform: uppercase;
         transition: all .25s ease;
     }
 
-
         .product-button:hover {
-            background: #b47755;
+            background: #422c21;
             color: white !important;
             transform: translateY(-2px);
-            box-shadow: 0 7px 15px rgba(82, 50, 34, .20);
+            box-shadow: 0 7px 16px rgba(67, 44, 31, .18);
         }
 
-
     .product-arrow {
-        font-size: 15px;
-        line-height: 1;
+        font-size: 13px;
         transition: transform .25s ease;
     }
-
 
     .product-button:hover .product-arrow {
         transform: translateX(4px);
@@ -416,145 +364,116 @@
 
 
     .unavailable {
-        padding: 9px 11px;
-        background: #e6ddd3;
-        color: #806f63;
-        font-size: 9px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 9px 12px;
+        border-radius: 999px;
+        background: #e2d8ce;
+        color: #79695e;
+        font-size: 8px;
         font-weight: 800;
-        letter-spacing: 1px;
+        letter-spacing: .8px;
         text-transform: uppercase;
     }
 
-
     .admin-actions {
         display: flex;
-        gap: 5px;
         flex-wrap: wrap;
+        gap: 6px;
         padding-top: 13px;
         margin-top: 15px;
-        border-top: 1px solid rgba(80, 55, 41, .15);
+        border-top: 1px solid rgba(82, 57, 42, .12);
     }
-
 
         .admin-actions a {
             padding: 6px 9px;
-            border-radius: 2px;
+            border-radius: 999px;
             text-decoration: none;
             font-size: 8px;
             font-weight: 800;
             letter-spacing: .5px;
             text-transform: uppercase;
-            transition: all .2s ease;
         }
-
 
     .edit-button {
-        background: #e6ddd2;
-        color: #604a3b !important;
+        background: #e5dacf;
+        color: #604938 !important;
     }
 
-
-        .edit-button:hover {
-            background: #d4c5b7;
-        }
-
-
     .archive-button {
-        background: #a97a5c;
+        background: #a8795c;
         color: white !important;
     }
 
-
-        .archive-button:hover {
-            background: #8d6048;
-        }
-
-
     .delete-button {
-        background: #e3cfca;
-        color: #774d45 !important;
+        background: #dfccc6;
+        color: #754e46 !important;
     }
 
-
+        .edit-button:hover,
+        .archive-button:hover,
         .delete-button:hover {
-            background: #d3b7b0;
+            opacity: .82;
         }
-
 
     .empty-products {
-        max-width: 650px;
-        margin: 20px auto 70px;
-        padding: 75px 30px;
+        max-width: 600px;
+        margin: 30px auto;
+        padding: 70px 30px;
         text-align: center;
         background: #fffaf4;
+        border: 1px solid #dfd1c2;
+        border-radius: 22px;
+        box-shadow: 0 8px 25px rgba(76, 52, 38, .07);
     }
 
-
         .empty-products h3 {
-            margin: 0 0 12px;
-            color: #3d2b21;
+            margin: 0 0 10px;
+            color: #493327;
             font-family: Georgia, "Times New Roman", serif;
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 400;
         }
-
 
         .empty-products p {
             margin: 0;
             color: #806d60;
-            font-size: 14px;
+            font-size: 13px;
         }
 
 
-    @@media (max-width: 1100px) {
+    @@media (max-width: 1200px) {
 
         .products-grid {
             grid-template-columns: repeat(3, minmax(0, 1fr));
         }
     }
 
-
-    @@media (max-width: 850px) {
-
-        .products-hero {
-            min-height: 180px;
-        }
+    @@media (max-width: 900px) {
 
         .products-content {
-            padding: 45px 22px 0;
+            padding-left: 22px;
+            padding-right: 22px;
+        }
+
+        .category-section {
+            padding: 30px 25px;
         }
 
         .products-grid {
             grid-template-columns: repeat(2, minmax(0, 1fr));
         }
+    }
+
+    @@media (max-width: 600px) {
+
+        .products-content {
+            padding: 25px 10px 0;
+        }
 
         .products-heading {
             justify-content: center;
-        }
-    }
-
-
-    @@media (max-width: 560px) {
-
-        .products-hero {
-            min-height: 165px;
-        }
-
-        .products-hero-content {
-            padding: 28px 15px;
-        }
-
-        .products-hero h1 {
-            font-size: 42px;
-        }
-
-        .products-hero-small {
-            font-size: 9px;
-            letter-spacing: 2px;
-        }
-
-        .products-content {
-            padding: 35px 15px 0;
         }
 
         .admin-buttons {
@@ -563,13 +482,14 @@
 
             .admin-buttons a {
                 flex: 1;
+                justify-content: center;
             }
 
         .category-navigation {
             justify-content: flex-start;
             flex-wrap: nowrap;
             overflow-x: auto;
-            padding-bottom: 35px;
+            padding-bottom: 28px;
             scrollbar-width: none;
         }
 
@@ -583,7 +503,8 @@
             }
 
         .category-section {
-            padding: 28px 18px 30px;
+            padding: 26px 10px;
+            border-radius: 22px;
         }
 
         .category-header {
@@ -592,23 +513,47 @@
             gap: 8px;
         }
 
-        .category-title-area {
-            gap: 11px;
-        }
-
-        .category-header h2 {
-            font-size: 34px;
-        }
+            .category-header h2 {
+                font-size: 32px;
+            }
 
         .products-grid {
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
         }
 
         .product-image {
-            aspect-ratio: 1 / .88;
+            aspect-ratio: 1 / 1;
+        }
+
+        .product-info {
+            padding: 14px 12px 13px;
+        }
+
+            .product-info h3 {
+                font-size: 17px;
+            }
+
+        .product-description {
+            font-size: 10px;
+            min-height: 34px;
+            margin: 7px 0 12px;
+        }
+
+        .product-price {
+            font-size: 14px;
+        }
+
+        .product-button {
+            padding: 8px 9px;
+            font-size: 7px;
+        }
+
+        .unavailable {
+            padding: 7px 8px;
+            font-size: 7px;
         }
     }
-
 </style>
 
 
@@ -633,14 +578,16 @@
 
     <main class="products-content">
 
-        <div class="products-heading">
+        
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="products-heading">
 
-            @if (User.IsInRole("Admin"))
-            {
                 <div class="admin-buttons">
 
                     <a asp-action="Create">
-                        + Nuevo producto
+                        <i class="bi bi-plus-lg"></i>
+                        Nuevo producto
                     </a>
 
                     <a asp-action="Archived"
@@ -652,14 +599,13 @@
                     </a>
 
                 </div>
-            }
 
-        </div>
+            </div>
+        }
 
 
         <nav class="category-navigation">
 
-            <!-- TODOS -->
             <a asp-action="Index"
                class="@(string.IsNullOrWhiteSpace(selectedCategory) ? "active" : "")">
 
@@ -667,14 +613,12 @@
 
             </a>
 
-
-            <!-- CATEGORÍAS -->
             @foreach (var category in categories)
             {
                 var categoryId = category
-                .Trim()
-                .ToLower()
-                .Replace(" ", "-");
+                    .Trim()
+                    .ToLower()
+                    .Replace(" ", "-");
 
                 <a href="@Url.Action("Index", new { category = category })#categoria-@categoryId"
                    class="@(selectedCategory == category ? "active" : "")">
@@ -686,12 +630,13 @@
 
         </nav>
 
-
         @if (Model.Any())
         {
             var productosPorCategoria = Model
-            .GroupBy(p => p.CategoryNavigation?.Name ?? p.Category ?? "Otros productos")
-            .OrderBy(g => g.Key);
+                .GroupBy(p => p.CategoryNavigation?.Name
+                    ?? p.Category
+                    ?? "Otros productos")
+                .OrderBy(g => g.Key);
 
             var categoryNumber = 1;
 
@@ -708,19 +653,20 @@
                 };
 
                 var categoryId = grupo.Key
-                .Trim()
-                .ToLower()
-                .Replace(" ", "-");
+                    .Trim()
+                    .ToLower()
+                    .Replace(" ", "-");
 
                 <section id="categoria-@categoryId"
                          class="category-section @categoryClass">
+
 
                     <div class="category-header">
 
                         <div class="category-title-area">
 
                             <span class="category-number">
-                                @(categoryNumber.ToString("00"))
+                                @categoryNumber.ToString("00")
                             </span>
 
                             <h2>
@@ -734,12 +680,13 @@
                             @grupo.Count()
 
                             @(grupo.Count() == 1
-                                                ? "producto"
-                                                : "productos")
+                                ? "producto"
+                                : "productos")
 
                         </span>
 
                     </div>
+
 
 
                     <div class="products-grid">
@@ -763,36 +710,37 @@
                                             display:flex;
                                             align-items:center;
                                             justify-content:center;
-                                            color:#806d60;
-                                            font-size:13px;">
+                                            color:#8b7667;
+                                            background:#e6d9cc;">
 
-                                            Sin imagen
+                                            <i class="bi bi-image"
+                                               style="font-size:34px;"></i>
 
                                         </div>
                                     }
 
 
-                                    @if (product.Stock <= 0)
-                                    {
-                                        <span class="product-status out">
-                                            Agotado
-                                        </span>
-                                    }
-                                    else
+                                    @if (product.Stock > 0)
                                     {
                                         <span class="product-status">
                                             Disponible
                                         </span>
                                     }
+                                    else
+                                    {
+                                        <span class="product-status out">
+                                            Agotado
+                                        </span>
+                                    }
 
                                 </div>
 
-
+                              
                                 <div class="product-info">
 
-                                    <span class="product-category">
+                                    <div class="product-category">
                                         @grupo.Key
-                                    </span>
+                                    </div>
 
                                     <h3>
                                         @product.Name
@@ -806,9 +754,8 @@
                                     <div class="product-bottom">
 
                                         <span class="product-price">
-                                            Bs. @product.Price.ToString("0.00")
+                                            Bs @product.Price.ToString("N2")
                                         </span>
-
 
                                         @if (product.Stock > 0)
                                         {
@@ -816,9 +763,7 @@
                                                asp-route-id="@product.Id"
                                                class="product-button">
 
-                                                <span>
-                                                    Detalles
-                                                </span>
+                                                Ver producto
 
                                                 <span class="product-arrow">
                                                     →
@@ -834,7 +779,6 @@
                                         }
 
                                     </div>
-
 
                                     @if (User.IsInRole("Admin"))
                                     {
@@ -889,7 +833,7 @@
                 </h3>
 
                 <p>
-                    En este momento no tenemos productos para mostrar en esta categoría.
+                    En este momento no tenemos productos para mostrar.
                 </p>
 
             </div>

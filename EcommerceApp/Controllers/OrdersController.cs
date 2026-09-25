@@ -246,6 +246,7 @@ namespace EcommerceApp.Controllers
                     {
                         product.Stock = 0;
                         product.IsAvailable = false;
+                        product.IsArchived = true;
                     }
 
                     var inventory =

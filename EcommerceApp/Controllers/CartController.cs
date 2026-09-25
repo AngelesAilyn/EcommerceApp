@@ -50,6 +50,11 @@ namespace EcommerceApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(int productId, int quantity = 1)
         {
+            if (!(User.Identity?.IsAuthenticated ?? false))
+            {
+                var returnUrl = Url.Action("Details", "Products", new { id = productId }) ?? "/Products";
+                return RedirectToAction("Login", "Account", new { returnUrl });
+            }
             if (quantity < 1)
                 quantity = 1;
 

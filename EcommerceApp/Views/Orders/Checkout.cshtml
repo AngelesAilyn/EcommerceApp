@@ -7,15 +7,42 @@
 <div class="checkout-page">
 
     <div class="checkout-header">
+        <span class="checkout-eyebrow">Último paso</span>
+
         <h1>Confirmar compra</h1>
-        <p>Revisa tu pedido y selecciona cómo deseas realizar el pago y recibirlo.</p>
+
+        <p>
+            Revisa tu pedido y selecciona cómo deseas realizar el pago y recibirlo.
+        </p>
     </div>
 
-    <div class="checkout-container">
+    <form asp-action="Confirm"
+          asp-controller="Orders"
+          method="post"
+          class="checkout-card">
+
+        @Html.AntiForgeryToken()
+
+        <div class="checkout-card-header">
+
+            <div class="checkout-card-icon">
+                <i class="bi bi-bag-heart"></i>
+            </div>
+
+            <div>
+                <span>Tu selección</span>
+                <h2>Resumen del pedido</h2>
+            </div>
+
+        </div>
+
 
         <div class="checkout-products">
 
-            <h2>Resumen de tu compra</h2>
+            <div class="checkout-products-header">
+                <span>Producto</span>
+                <span>Total</span>
+            </div>
 
             @foreach (var item in Model.Items)
             {
@@ -23,19 +50,29 @@
 
                     <div class="checkout-item-info">
 
-                        <h3>@item.Name</h3>
+                        <div class="checkout-product-icon">
+                            <i class="bi bi-cake2"></i>
+                        </div>
 
-                        <span>
-                            Cantidad: @item.Quantity
-                        </span>
+                        <div>
+
+                            <h3>
+                                @item.Name
+                            </h3>
+
+                            <span>
+                                @item.Quantity unidad(es)
+                            </span>
+
+                        </div>
 
                     </div>
 
                     <div class="checkout-item-price">
 
-                        <span>
+                        <small>
                             Bs. @item.Price.ToString("F2") c/u
-                        </span>
+                        </small>
 
                         <strong>
                             Bs. @item.Subtotal.ToString("F2")
@@ -48,29 +85,40 @@
 
         </div>
 
-        <div class="checkout-summary">
 
-            <h2>Total del pedido</h2>
+        <div class="checkout-total-box">
 
-            <div class="checkout-total">
+            <span>
+                Total del pedido
+            </span>
 
-                <span>Total</span>
+            <strong>
+                Bs. @Model.Total.ToString("F2")
+            </strong>
 
-                <strong>
-                    Bs. @Model.Total.ToString("F2")
-                </strong>
+        </div>
 
-            </div>
 
-            <form asp-action="Confirm"
-                  asp-controller="Orders"
-                  method="post">
+        <div class="checkout-options-grid">
 
-                @Html.AntiForgeryToken()
 
-                <div class="checkout-option-section">
+            <section class="checkout-option-group">
 
-                    <h3>Método de pago</h3>
+                <div class="checkout-option-title">
+
+                    <div class="checkout-option-icon">
+                        <i class="bi bi-credit-card"></i>
+                    </div>
+
+                    <div>
+                        <h3>Método de pago</h3>
+                        <p>Selecciona cómo realizarás el pago.</p>
+                    </div>
+
+                </div>
+
+
+                <div class="checkout-radio-list">
 
                     <label class="checkout-option">
 
@@ -79,11 +127,20 @@
                                value="Efectivo"
                                required />
 
-                        <span>
-                            Efectivo
+                        <span class="checkout-radio-circle"></span>
+
+                        <span class="checkout-option-content">
+
+                            <strong>Efectivo</strong>
+
+                            <small>
+                                Pago en efectivo
+                            </small>
+
                         </span>
 
                     </label>
+
 
                     <label class="checkout-option">
 
@@ -92,11 +149,20 @@
                                value="QR"
                                required />
 
-                        <span>
-                            QR
+                        <span class="checkout-radio-circle"></span>
+
+                        <span class="checkout-option-content">
+
+                            <strong>QR</strong>
+
+                            <small>
+                                Pago mediante código QR
+                            </small>
+
                         </span>
 
                     </label>
+
 
                     <label class="checkout-option">
 
@@ -105,17 +171,42 @@
                                value="Transferencia"
                                required />
 
-                        <span>
-                            Transferencia
+                        <span class="checkout-radio-circle"></span>
+
+                        <span class="checkout-option-content">
+
+                            <strong>Transferencia</strong>
+
+                            <small>
+                                Transferencia bancaria
+                            </small>
+
                         </span>
 
                     </label>
 
                 </div>
 
-                <div class="checkout-option-section">
+            </section>
 
-                    <h3>Forma de entrega</h3>
+
+            <section class="checkout-option-group">
+
+                <div class="checkout-option-title">
+
+                    <div class="checkout-option-icon">
+                        <i class="bi bi-truck"></i>
+                    </div>
+
+                    <div>
+                        <h3>Forma de entrega</h3>
+                        <p>Selecciona cómo recibirás tu pedido.</p>
+                    </div>
+
+                </div>
+
+
+                <div class="checkout-radio-list">
 
                     <label class="checkout-option">
 
@@ -124,11 +215,20 @@
                                value="Delivery"
                                required />
 
-                        <span>
-                            Delivery
+                        <span class="checkout-radio-circle"></span>
+
+                        <span class="checkout-option-content">
+
+                            <strong>Delivery</strong>
+
+                            <small>
+                                Recibe tu pedido en tu dirección
+                            </small>
+
                         </span>
 
                     </label>
+
 
                     <label class="checkout-option">
 
@@ -137,231 +237,647 @@
                                value="Recojo en tienda"
                                required />
 
-                        <span>
-                            Recojo en tienda
+                        <span class="checkout-radio-circle"></span>
+
+                        <span class="checkout-option-content">
+
+                            <strong>Recojo en tienda</strong>
+
+                            <small>
+                                Recoge tu pedido en la tienda
+                            </small>
+
                         </span>
 
                     </label>
 
                 </div>
 
-                <button type="submit"
-                        class="checkout-confirm-button">
-                    Confirmar pedido
-                </button>
+            </section>
 
-            </form>
+        </div>
+
+
+        <div class="checkout-actions">
 
             <a asp-controller="Cart"
                asp-action="Index"
                class="checkout-back-button">
+
+                <i class="bi bi-arrow-left"></i>
+
                 Volver al carrito
+
             </a>
+
+
+            <button type="submit"
+                    class="checkout-confirm-button">
+
+                <span>
+                    Confirmar pedido
+                </span>
+
+                <i class="bi bi-check2-circle"></i>
+
+            </button>
 
         </div>
 
-    </div>
+    </form>
 
 </div>
+
 
 <style>
 
     .checkout-page {
-        max-width: 1100px;
+        max-width: 1050px;
         margin: 0 auto;
-        padding: 55px 20px 80px;
+        padding: 48px 20px 75px;
     }
+
 
     .checkout-header {
         text-align: center;
-        margin-bottom: 35px;
+        margin-bottom: 30px;
     }
 
-        .checkout-header h1 {
-            margin: 0;
-            color: #35241b;
-            font-family: Georgia, "Times New Roman", serif;
-            font-size: 34px;
-        }
 
-        .checkout-header p {
-            margin: 10px 0 0;
-            color: #786960;
-            font-size: 14px;
-        }
+    .checkout-eyebrow {
+        display: inline-block;
+        margin-bottom: 7px;
+        color: #b8865b;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+    }
 
-    .checkout-container {
+
+    .checkout-header h1 {
+        margin: 0;
+        color: #4a3426;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 36px;
+        font-weight: 700;
+    }
+
+
+    .checkout-header p {
+        max-width: 650px;
+        margin: 9px auto 0;
+        color: #786960;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+
+    .checkout-card {
+        overflow: hidden;
+        background: #fffaf4;
+        border: 1px solid #e1cfbc;
+        border-radius: 22px;
+        box-shadow: 0 12px 32px rgba(73, 51, 40, 0.09);
+    }
+
+
+    .checkout-card-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 25px 28px;
+        background: #f1e2d2;
+        border-bottom: 1px solid #dfcbb7;
+    }
+
+
+    .checkout-card-icon {
+        width: 45px;
+        height: 45px;
+        flex: 0 0 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 13px;
+        background: #fffaf4;
+        color: #b17b4e;
+        font-size: 20px;
+    }
+
+
+    .checkout-card-header span {
+        display: block;
+        margin-bottom: 2px;
+        color: #a37651;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: .8px;
+        text-transform: uppercase;
+    }
+
+
+    .checkout-card-header h2 {
+        margin: 0;
+        color: #4a3426;
+        font-size: 21px;
+    }
+
+
+    .checkout-products {
+        padding: 8px 28px 0;
+    }
+
+
+    .checkout-products-header {
         display: grid;
-        grid-template-columns: 1.6fr 1fr;
-        gap: 25px;
-        align-items: start;
+        grid-template-columns: 1fr 150px;
+        padding: 13px 4px 10px;
+        border-bottom: 1px solid #e8dbce;
+        color: #967d6d;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: .5px;
+        text-transform: uppercase;
     }
 
-    .checkout-products,
-    .checkout-summary {
-        background: #fffdf9;
-        border: 1px solid #e4d5c5;
-        border-radius: 20px;
-        padding: 28px;
-        box-shadow: 0 10px 28px rgba(73, 51, 40, 0.08);
-    }
 
-        .checkout-products h2,
-        .checkout-summary h2 {
-            margin: 0 0 22px;
-            color: #35241b;
-            font-size: 21px;
+        .checkout-products-header span:last-child {
+            text-align: right;
         }
+
 
     .checkout-item {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 20px;
-        padding: 17px 0;
-        border-bottom: 1px solid #eee3d8;
+        padding: 16px 4px;
+        border-bottom: 1px solid #eee3d9;
     }
 
-        .checkout-item:last-child {
-            border-bottom: none;
-        }
+
+    .checkout-item-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+    }
+
+
+    .checkout-product-icon {
+        width: 39px;
+        height: 39px;
+        flex: 0 0 39px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: #f1e2d2;
+        color: #b17b4e;
+        font-size: 17px;
+    }
+
 
     .checkout-item-info h3 {
-        margin: 0 0 6px;
+        margin: 0 0 4px;
         color: #493328;
-        font-size: 15px;
+        font-size: 14px;
+        font-weight: 700;
     }
+
 
     .checkout-item-info span {
         color: #8a7a70;
-        font-size: 13px;
+        font-size: 12px;
     }
+
 
     .checkout-item-price {
+        min-width: 130px;
+        flex-shrink: 0;
         text-align: right;
-        white-space: nowrap;
     }
 
-        .checkout-item-price span {
+
+        .checkout-item-price small {
             display: block;
-            margin-bottom: 4px;
-            color: #8a7a70;
-            font-size: 12px;
+            margin-bottom: 3px;
+            color: #958379;
+            font-size: 11px;
         }
 
+
         .checkout-item-price strong {
-            color: #493328;
+            color: #8b6a4e;
             font-size: 15px;
         }
 
-    .checkout-total {
+
+    .checkout-total-box {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 17px 0 22px;
-        margin-bottom: 5px;
-        border-bottom: 1px solid #eaded2;
-        color: #493328;
+        gap: 20px;
+        margin: 20px 28px 0;
+        padding: 17px 20px;
+        border-radius: 13px;
+        background: #f1e2d2;
     }
 
-        .checkout-total strong {
+
+        .checkout-total-box span {
+            color: #5d493b;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+
+        .checkout-total-box strong {
             color: #8b5e3c;
-            font-size: 23px;
+            font-size: 24px;
+            white-space: nowrap;
         }
 
-    .checkout-option-section {
-        margin-top: 23px;
+
+    .checkout-options-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 22px;
+        margin: 25px 28px 0;
+        padding-top: 25px;
+        border-top: 1px solid #e8dbce;
     }
 
-        .checkout-option-section h3 {
-            margin: 0 0 12px;
-            color: #493328;
-            font-size: 15px;
-        }
 
-    .checkout-option {
+    .checkout-option-group {
+        min-width: 0;
+    }
+
+
+    .checkout-option-title {
         display: flex;
         align-items: center;
         gap: 10px;
-        padding: 11px 13px;
-        margin-bottom: 8px;
-        border: 1px solid #e4d5c5;
-        border-radius: 10px;
-        background: #fff;
-        color: #5c4332;
-        font-size: 13px;
-        cursor: pointer;
+        margin-bottom: 13px;
     }
 
-        .checkout-option:hover {
-            border-color: #c9ad92;
-        }
 
-        .checkout-option input {
-            accent-color: #8b5e3c;
-        }
-
-    .checkout-confirm-button {
-        width: 100%;
-        margin-top: 25px;
-        padding: 13px;
-        border: none;
+    .checkout-option-icon {
+        width: 37px;
+        height: 37px;
+        flex: 0 0 37px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         border-radius: 10px;
-        background: #4a3426;
-        color: white;
+        background: #f1e2d2;
+        color: #b17b4e;
+        font-size: 16px;
+    }
+
+
+    .checkout-option-title h3 {
+        margin: 0 0 2px;
+        color: #493328;
         font-size: 14px;
-        font-weight: 600;
+    }
+
+
+    .checkout-option-title p {
+        margin: 0;
+        color: #958379;
+        font-size: 11px;
+    }
+
+
+    .checkout-radio-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+
+    .checkout-option {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 53px;
+        box-sizing: border-box;
+        padding: 9px 12px;
+        border: 1px solid #e1d1c1;
+        border-radius: 11px;
+        background: #fffdf9;
         cursor: pointer;
         transition: .2s ease;
     }
 
+
+        .checkout-option:hover {
+            border-color: #c7a889;
+            background: #fff9f2;
+        }
+
+
+        .checkout-option input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+
+    .checkout-radio-circle {
+        width: 17px;
+        height: 17px;
+        flex: 0 0 17px;
+        box-sizing: border-box;
+        border: 2px solid #cbb6a2;
+        border-radius: 50%;
+        background: #fff;
+        transition: .2s ease;
+    }
+
+
+    .checkout-option input:checked + .checkout-radio-circle {
+        border: 5px solid #b8865b;
+    }
+
+
+    .checkout-option:has(input:checked) {
+        border-color: #b8865b;
+        background: #fdf5ec;
+    }
+
+
+    .checkout-option-content {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+    }
+
+
+        .checkout-option-content strong {
+            color: #5c4332;
+            font-size: 12px;
+        }
+
+
+        .checkout-option-content small {
+            color: #958379;
+            font-size: 10px;
+            line-height: 1.3;
+        }
+
+
+    .checkout-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 12px;
+        margin: 28px;
+        padding-top: 22px;
+        border-top: 1px solid #e8dbce;
+    }
+
+
+    .checkout-back-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        min-width: 145px;
+        box-sizing: border-box;
+        padding: 12px 18px;
+        border: 1px solid #d9c5b2;
+        border-radius: 11px;
+        background: #f1e5d9;
+        color: #604a39;
+        text-align: center;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 700;
+        transition: .2s ease;
+    }
+
+
+        .checkout-back-button:hover {
+            background: #e7d6c5;
+            color: #4a3426;
+        }
+
+
+    .checkout-confirm-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        min-width: 210px;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 11px;
+        background: #b8865b;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: .2s ease;
+    }
+
+
         .checkout-confirm-button:hover {
-            background: #6f513b;
+            background: #9f7048;
             transform: translateY(-1px);
         }
 
-    .checkout-back-button {
-        display: block;
-        margin-top: 12px;
-        padding: 11px;
-        border-radius: 10px;
-        background: #f4eadf;
-        color: #5c4332;
-        text-align: center;
-        text-decoration: none;
-        font-size: 13px;
-        font-weight: 600;
-    }
 
-        .checkout-back-button:hover {
-            background: #ead9c8;
+        .checkout-confirm-button i {
+            font-size: 16px;
         }
+
 
     @@media (max-width: 800px) {
 
-        .checkout-container {
+        .checkout-options-grid {
             grid-template-columns: 1fr;
+            gap: 24px;
         }
     }
+
 
     @@media (max-width: 600px) {
 
         .checkout-page {
-            padding: 40px 15px 65px;
+            padding: 35px 14px 60px;
         }
 
-        .checkout-products,
-        .checkout-summary {
-            padding: 22px;
+
+        .checkout-header {
+            margin-bottom: 23px;
         }
+
+
+            .checkout-header h1 {
+                font-size: 29px;
+            }
+
+
+            .checkout-header p {
+                font-size: 13px;
+            }
+
+
+        .checkout-card {
+            border-radius: 17px;
+        }
+
+
+        .checkout-card-header {
+            padding: 20px;
+        }
+
+
+            .checkout-card-header h2 {
+                font-size: 18px;
+            }
+
+
+        .checkout-products {
+            padding: 5px 18px 0;
+        }
+
+
+        .checkout-products-header {
+            grid-template-columns: 1fr 100px;
+        }
+
 
         .checkout-item {
             align-items: flex-start;
-            flex-direction: column;
+            gap: 12px;
         }
 
+
         .checkout-item-price {
-            text-align: left;
+            min-width: 100px;
+        }
+
+
+        .checkout-total-box {
+            margin-left: 18px;
+            margin-right: 18px;
+            padding: 15px;
+        }
+
+
+            .checkout-total-box span {
+                font-size: 12px;
+            }
+
+
+            .checkout-total-box strong {
+                font-size: 20px;
+            }
+
+
+        .checkout-options-grid {
+            margin-left: 18px;
+            margin-right: 18px;
+            padding-top: 20px;
+        }
+
+
+        .checkout-actions {
+            flex-direction: column-reverse;
+            margin: 23px 18px 20px;
+        }
+
+
+        .checkout-confirm-button,
+        .checkout-back-button {
+            width: 100%;
+        }
+    }
+
+
+    @@media (max-width: 430px) {
+
+        .checkout-page {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+
+        .checkout-card-header {
+            padding: 18px;
+        }
+
+
+        .checkout-products {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+
+        .checkout-products-header {
+            grid-template-columns: 1fr 85px;
+        }
+
+
+        .checkout-item-info {
+            gap: 8px;
+        }
+
+
+        .checkout-product-icon {
+            width: 35px;
+            height: 35px;
+            flex-basis: 35px;
+            font-size: 15px;
+        }
+
+
+        .checkout-item-info h3 {
+            font-size: 13px;
+        }
+
+
+        .checkout-item-info span {
+            font-size: 11px;
+        }
+
+
+        .checkout-item-price {
+            min-width: 85px;
+        }
+
+
+            .checkout-item-price small {
+                font-size: 9px;
+            }
+
+
+            .checkout-item-price strong {
+                font-size: 13px;
+            }
+
+
+        .checkout-total-box {
+            margin-left: 15px;
+            margin-right: 15px;
+        }
+
+
+        .checkout-options-grid {
+            margin-left: 15px;
+            margin-right: 15px;
+        }
+
+
+        .checkout-actions {
+            margin-left: 15px;
+            margin-right: 15px;
         }
     }
 

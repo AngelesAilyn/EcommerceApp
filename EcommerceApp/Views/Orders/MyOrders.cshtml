@@ -5,41 +5,62 @@
 }
 
 <div class="orders-page">
+
     <div class="orders-header">
 
-        <div>
-            <h1>Mis compras</h1>
-            <p>Consulta el historial de tus pedidos y revisa sus detalles.</p>
+        <div class="orders-header-content">
+
+            <span class="eyebrow">
+                Historial
+            </span>
+
+            <h1>
+                Mis compras
+            </h1>
+
+            <p>
+                Consulta tus pedidos y entra al detalle cuando quieras.
+            </p>
+
         </div>
 
         <a asp-controller="Products"
            asp-action="Index"
-           class="back-products-button">
+           class="btn-outline-bakery">
+
             <i class="bi bi-arrow-left"></i>
+
             Seguir comprando
+
         </a>
 
     </div>
 
+
     @if (!Model.Any())
     {
         <div class="empty-orders">
+
             <div class="empty-orders-icon">
                 <i class="bi bi-bag-x"></i>
             </div>
 
-            <h2>Aún no tienes compras</h2>
+            <h2>
+                Aún no tienes compras
+            </h2>
 
             <p>
-                Cuando realices tu primera compra,
-                aparecerá aquí.
+                Cuando realices tu primera compra aparecerá aquí.
             </p>
 
             <a asp-controller="Products"
                asp-action="Index"
-               class="orders-button">
+               class="btn-bakery">
+
                 Ver productos
+
             </a>
+
         </div>
     }
     else
@@ -52,12 +73,16 @@
 
                     <div class="order-card-header">
 
-                        <div>
-                            <span class="order-label">Pedido</span>
+                        <div class="order-heading">
+
+                            <span class="order-label">
+                                Pedido
+                            </span>
 
                             <h2>
                                 #@order.Id
                             </h2>
+
                         </div>
 
                         <span class="order-status">
@@ -66,60 +91,101 @@
 
                     </div>
 
+
                     <div class="order-info">
 
-                        <div>
-                            <span>Fecha</span>
+                        <div class="order-info-item">
+
+                            <span>
+                                <i class="bi bi-calendar3"></i>
+                                Fecha
+                            </span>
+
                             <strong>
-                                @order.OrderDate
-                                .ToLocalTime()
-                                .ToString("dd/MM/yyyy HH:mm")
+                                @order.OrderDate.ToLocalTime().ToString("dd/MM/yyyy HH:mm")
                             </strong>
+
                         </div>
 
-                        <div>
-                            <span>Total</span>
-                            <strong>
-                                Bs. @order.Total.ToString("F2")
+
+                        <div class="order-info-item">
+
+                            <span>
+                                <i class="bi bi-cash-coin"></i>
+                                Total
+                            </span>
+
+                            <strong class="order-total">
+                                Bs @order.Total.ToString("N2")
                             </strong>
+
                         </div>
 
-                        <div>
-                            <span>Método de pago</span>
+
+                        <div class="order-info-item">
+
+                            <span>
+                                <i class="bi bi-credit-card"></i>
+                                Método de pago
+                            </span>
+
                             <strong>
                                 @order.PaymentMethod
                             </strong>
+
                         </div>
 
-                        <div>
-                            <span>Estado del pago</span>
+
+                        <div class="order-info-item">
+
+                            <span>
+                                <i class="bi bi-check-circle"></i>
+                                Estado del pago
+                            </span>
+
                             <strong>
                                 @order.PaymentStatus
                             </strong>
+
                         </div>
 
-                        <div>
-                            <span>Forma de entrega</span>
+
+                        <div class="order-info-item">
+
+                            <span>
+                                <i class="bi bi-truck"></i>
+                                Forma de entrega
+                            </span>
+
                             <strong>
                                 @order.DeliveryMethod
                             </strong>
+
                         </div>
 
                     </div>
 
+
                     <div class="order-card-footer">
 
-                        <span>
+                        <span class="order-reference">
+
                             <i class="bi bi-receipt"></i>
+
                             Pedido #@order.Id
+
                         </span>
+
 
                         <a asp-controller="Orders"
                            asp-action="Details"
                            asp-route-id="@order.Id"
                            class="details-button">
+
                             Ver detalle
+
                             <i class="bi bi-arrow-right"></i>
+
                         </a>
 
                     </div>
@@ -131,230 +197,517 @@
     }
 
 </div>
+
+
 <style>
+
     .orders-page {
-        max-width: 1100px;
+        width: 100%;
+        max-width: 1120px;
         margin: 0 auto;
-        padding: 50px 25px 80px;
+        padding: 45px 20px 75px;
+        box-sizing: border-box;
     }
+
 
     .orders-header {
         display: flex;
+        align-items: flex-end;
         justify-content: space-between;
-        align-items: center;
-        gap: 20px;
-        margin-bottom: 35px;
+        gap: 25px;
+        margin-bottom: 30px;
     }
 
-    .back-products-button {
+
+    .orders-header-content {
+        min-width: 0;
+    }
+
+
+    .orders-header .eyebrow {
+        display: inline-block;
+        margin-bottom: 6px;
+        color: #b8865b;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+    }
+
+
+    .orders-header h1 {
+        margin: 0;
+        color: #4a3426;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 36px;
+        line-height: 1.15;
+        font-weight: 700;
+    }
+
+
+    .orders-header p {
+        margin: 9px 0 0;
+        color: #786960;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+
+    .btn-outline-bakery {
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 8px;
-        text-decoration: none;
-        background: #4a3426;
-        color: white;
-        border-radius: 10px;
+        flex-shrink: 0;
         padding: 10px 17px;
+        border: 1px solid #cdb49e;
+        border-radius: 11px;
+        background: #fffaf4;
+        color: #6b503d;
+        text-decoration: none;
+        font-size: 13px;
         font-weight: 600;
-        transition: 0.2s ease;
+        transition: .2s ease;
     }
 
-        .back-products-button:hover {
-            background: #6a4b36;
-            color: white;
-        }
 
-        .orders-header h1 {
-            margin: 0 0 8px;
+        .btn-outline-bakery:hover {
+            background: #f1e2d2;
+            border-color: #b99576;
             color: #4a3426;
-            font-size: 2.4rem;
-            font-weight: 700;
+            transform: translateY(-1px);
         }
 
-        .orders-header p {
-            margin: 0;
-            color: #7a6250;
-            font-size: 1rem;
-        }
 
     .orders-list {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 16px;
     }
 
+
     .order-card {
-        background: #fffaf4;
-        border: 1px solid #eadbca;
-        border-radius: 18px;
         overflow: hidden;
-        box-shadow: 0 5px 18px rgba(74, 52, 38, 0.08);
+        background: #fffaf4;
+        border: 1px solid #e3d2c0;
+        border-radius: 18px;
+        box-shadow: 0 7px 22px rgba(74, 52, 38, .07);
+        transition: .2s ease;
     }
+
+
+        .order-card:hover {
+            border-color: #d5bda5;
+            box-shadow: 0 9px 26px rgba(74, 52, 38, .10);
+        }
+
 
     .order-card-header {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        gap: 20px;
-        padding: 22px 25px;
-        border-bottom: 1px solid #eadbca;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 17px 21px;
+        background: #f8eee3;
+        border-bottom: 1px solid #e5d5c5;
     }
+
+
+    .order-heading {
+        min-width: 0;
+    }
+
 
     .order-label {
         display: block;
-        color: #92765d;
-        font-size: 0.85rem;
-        margin-bottom: 3px;
+        margin-bottom: 2px;
+        color: #a17d61;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: .8px;
+        text-transform: uppercase;
     }
+
 
     .order-card-header h2 {
         margin: 0;
         color: #4a3426;
-        font-size: 1.5rem;
+        font-size: 20px;
+        line-height: 1.2;
     }
+
 
     .order-status {
-        padding: 8px 15px;
-        border-radius: 20px;
-        background: #f0dfca;
-        color: #6d4d35;
-        font-size: 0.9rem;
-        font-weight: 600;
-    }
-
-    .order-info {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 20px;
-        padding: 25px;
-    }
-
-        .order-info div {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .order-info span {
-            color: #92765d;
-            font-size: 0.82rem;
-        }
-
-        .order-info strong {
-            color: #4a3426;
-            font-size: 0.95rem;
-        }
-
-    .order-card-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 15px;
-        padding: 18px 25px;
-        background: #f8eee3;
-        border-top: 1px solid #eadbca;
-    }
-
-        .order-card-footer > span {
-            color: #806650;
-            font-size: 0.9rem;
-        }
-
-    .details-button,
-    .orders-button {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
-        text-decoration: none;
-        background: #4a3426;
-        color: white;
-        border-radius: 10px;
-        padding: 10px 17px;
-        font-weight: 600;
-        transition: 0.2s ease;
+        min-height: 30px;
+        padding: 5px 13px;
+        border: 1px solid #dfc6ac;
+        border-radius: 20px;
+        background: #f1dfca;
+        color: #79583e;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
     }
 
-        .details-button:hover,
-        .orders-button:hover {
-            background: #6a4b36;
-            color: white;
+
+    .order-info {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 0;
+        padding: 20px 21px;
+    }
+
+
+    .order-info-item {
+        min-width: 0;
+        padding: 0 17px;
+        border-right: 1px solid #eaded2;
+    }
+
+
+        .order-info-item:first-child {
+            padding-left: 0;
+        }
+
+
+        .order-info-item:last-child {
+            padding-right: 0;
+            border-right: none;
+        }
+
+
+        .order-info-item > span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 7px;
+            color: #9a806d;
+            font-size: 10px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+
+            .order-info-item > span i {
+                color: #b8865b;
+                font-size: 11px;
+            }
+
+
+        .order-info-item strong {
+            display: block;
+            overflow-wrap: anywhere;
+            color: #4a3426;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+
+        .order-info-item .order-total {
+            color: #9f7048;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+
+    .order-card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 13px 21px;
+        background: #f3e7da;
+        border-top: 1px solid #e5d5c5;
+    }
+
+
+    .order-reference {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: #806b5c;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+
+        .order-reference i {
+            color: #b8865b;
+            font-size: 13px;
+        }
+
+
+    .details-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        min-width: 120px;
+        padding: 9px 14px;
+        border-radius: 9px;
+        background: #b8865b;
+        color: #fff;
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: 700;
+        transition: .2s ease;
+    }
+
+
+        .details-button:hover {
+            background: #9f7048;
+            color: #fff;
             transform: translateY(-1px);
         }
 
+
     .empty-orders {
+        padding: 60px 25px;
         text-align: center;
         background: #fffaf4;
-        border: 1px solid #eadbca;
+        border: 1px solid #e3d2c0;
         border-radius: 18px;
-        padding: 60px 25px;
-        box-shadow: 0 5px 18px rgba(74, 52, 38, 0.06);
+        box-shadow: 0 7px 22px rgba(74, 52, 38, .06);
     }
 
+
     .empty-orders-icon {
-        width: 70px;
-        height: 70px;
-        margin: 0 auto 20px;
+        width: 68px;
+        height: 68px;
+        margin: 0 auto 18px;
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 50%;
-        background: #f0dfca;
-        color: #6d4d35;
-        font-size: 2rem;
+        background: #f1e2d2;
+        color: #b17b4e;
+        font-size: 28px;
     }
+
 
     .empty-orders h2 {
-        margin: 0 0 10px;
+        margin: 0 0 8px;
         color: #4a3426;
+        font-size: 21px;
     }
+
 
     .empty-orders p {
-        margin: 0 auto 25px;
-        color: #806650;
+        max-width: 400px;
+        margin: 0 auto 22px;
+        color: #806b5c;
+        font-size: 13px;
+        line-height: 1.5;
     }
 
-    @@media (max-width: 900px) {
-        .order-info {
-            grid-template-columns: repeat(2, 1fr);
+
+    .btn-bakery {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 18px;
+        border: none;
+        border-radius: 10px;
+        background: #b8865b;
+        color: #fff;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
+        transition: .2s ease;
+    }
+
+
+        .btn-bakery:hover {
+            background: #9f7048;
+            color: #fff;
+            transform: translateY(-1px);
         }
+
+
+    @@media (max-width: 950px) {
+
+        .order-info {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            row-gap: 18px;
+        }
+
+
+        .order-info-item {
+            border-right: none;
+            padding: 0 12px;
+        }
+
+
+            .order-info-item:nth-child(3) {
+                border-right: none;
+            }
+
+
+            .order-info-item:nth-child(4),
+            .order-info-item:nth-child(5) {
+                padding-top: 5px;
+            }
     }
 
-    @@media (max-width: 600px) {
+
+    @@media (max-width: 700px) {
+
         .orders-page {
             padding: 35px 15px 60px;
         }
 
-        .orders-header h1 {
-            font-size: 2rem;
+
+        .orders-header {
+            align-items: stretch;
+            flex-direction: column;
+            gap: 17px;
         }
+
+
+            .orders-header h1 {
+                font-size: 30px;
+            }
+
+
+            .orders-header p {
+                font-size: 13px;
+            }
+
+
+        .btn-outline-bakery {
+            align-self: flex-start;
+        }
+
 
         .order-card-header {
             align-items: flex-start;
-            flex-direction: column;
+            padding: 16px 17px;
         }
 
+
         .order-info {
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px 0;
+            padding: 18px 17px;
         }
+
+
+        .order-info-item {
+            padding: 0 12px;
+            border-right: 1px solid #eaded2;
+        }
+
+
+            .order-info-item:nth-child(2n) {
+                border-right: none;
+            }
+
+
+            .order-info-item:first-child,
+            .order-info-item:nth-child(3),
+            .order-info-item:nth-child(5) {
+                padding-left: 0;
+            }
+
+
+            .order-info-item:nth-child(2),
+            .order-info-item:nth-child(4) {
+                padding-right: 0;
+            }
+
 
         .order-card-footer {
             align-items: stretch;
             flex-direction: column;
+            padding: 13px 17px;
         }
+
 
         .details-button {
             width: 100%;
         }
-        @@media (max-width: 600px) {
-            .orders-header {
-                align-items: stretch;
-                flex-direction: column;
+    }
+
+
+    @@media (max-width: 480px) {
+
+        .orders-page {
+            padding: 30px 12px 55px;
+        }
+
+
+        .orders-header h1 {
+            font-size: 27px;
+        }
+
+
+        .order-card {
+            border-radius: 15px;
+        }
+
+
+        .order-card-header {
+            padding: 15px;
+        }
+
+
+            .order-card-header h2 {
+                font-size: 18px;
             }
 
-            .back-products-button {
-                justify-content: center;
+
+        .order-status {
+            padding: 5px 10px;
+            font-size: 10px;
+        }
+
+
+        .order-info {
+            grid-template-columns: 1fr;
+            gap: 15px;
+            padding: 17px 15px;
+        }
+
+
+        .order-info-item,
+        .order-info-item:first-child,
+        .order-info-item:nth-child(2),
+        .order-info-item:nth-child(3),
+        .order-info-item:nth-child(4),
+        .order-info-item:nth-child(5) {
+            padding: 0;
+            border-right: none;
+        }
+
+
+        .order-info-item {
+            padding-bottom: 13px !important;
+            border-bottom: 1px solid #eee3d9 !important;
+        }
+
+
+            .order-info-item:last-child {
+                padding-bottom: 0 !important;
+                border-bottom: none !important;
             }
+
+
+        .order-card-footer {
+            padding: 12px 15px;
+        }
+
+
+        .order-reference {
+            font-size: 10px;
+        }
+
+
+        .empty-orders {
+            padding: 45px 18px;
         }
     }
+
 </style>

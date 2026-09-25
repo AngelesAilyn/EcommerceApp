@@ -17,7 +17,14 @@ namespace EcommerceApp.Controllers
         {
             var productos = await _context.Products
                 .AsNoTracking()
-                .Where(p => !string.IsNullOrEmpty(p.Category) && p.Stock > 0)
+                .Include(p => p.CategoryNavigation)
+                .Where(p =>
+                    !string.IsNullOrEmpty(p.Category) &&
+                    p.Stock > 0 &&
+                    !p.IsArchived &&
+                    p.IsAvailable &&
+                    p.CategoryNavigation != null &&
+                    p.CategoryNavigation.IsActive)
                 .OrderBy(p => p.Category)
                 .ThenBy(p => p.Name)
                 .ToListAsync();

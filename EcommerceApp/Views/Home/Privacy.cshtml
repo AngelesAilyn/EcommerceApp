@@ -1,6 +1,1448 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Información";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="information-page">
+
+    <div class="information-tabs">
+
+        <button type="button"
+                class="information-tab active"
+                data-section="about">
+
+            <i class="bi bi-shop"></i>
+            <span>Acerca de nosotros</span>
+
+        </button>
+
+        <button type="button"
+                class="information-tab"
+                data-section="privacy">
+
+            <i class="bi bi-shield-check"></i>
+            <span>Política de privacidad</span>
+
+        </button>
+
+    </div>
+
+
+    <main class="information-content">
+
+        <section id="about" class="information-section active">
+
+            <div class="about-hero">
+
+                <div class="about-hero-text">
+
+                    <span class="section-label">
+                        DULCE ANTOJO
+                    </span>
+
+                    <h1>
+                        Acerca de nosotros
+                    </h1>
+
+                    <p>
+                        Repostería artesanal y una experiencia de compra
+                        sencilla, clara y cercana.
+                    </p>
+
+                </div>
+
+                <div class="about-hero-mark">
+
+                    <div class="hero-mark-circle">
+                        <i class="bi bi-cake2"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="about-story">
+
+                <div class="story-number">
+                    01
+                </div>
+
+                <div class="story-content">
+
+                    <h2>
+                        Nuestra historia
+                    </h2>
+
+                    <p class="story-main">
+                        <strong>Dulce Antojo</strong> es una repostería
+                        artesanal donde puedes conocer nuestros productos
+                        y realizar tus pedidos de manera sencilla.
+                    </p>
+
+                    <p>
+                        Creamos este espacio para que puedas consultar
+                        nuestro catálogo, seleccionar los productos que
+                        deseas y gestionar tus compras desde un mismo lugar.
+                    </p>
+
+                    <p>
+                        Buscamos combinar el sabor y la esencia de la
+                        repostería artesanal con una experiencia de compra
+                        clara, práctica y cómoda.
+                    </p>
+
+                    <a asp-controller="Products"
+                       asp-action="Index"
+                       class="about-button">
+
+                        <span>
+                            Explorar productos
+                        </span>
+
+                        <i class="bi bi-arrow-right"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="values-section">
+
+                <div class="values-heading">
+
+                    <span class="section-label">
+                        NUESTROS VALORES
+                    </span>
+
+                    <h2>
+                        Lo que representa
+                        <strong>Dulce Antojo</strong>
+                    </h2>
+
+                    <p>
+                        Cuatro principios que forman parte de nuestra
+                        manera de trabajar.
+                    </p>
+
+                </div>
+
+
+                <div class="about-values">
+
+                    <div class="about-value-card value-quality">
+
+                        <div class="value-top">
+
+                            <span>01</span>
+
+                            <div class="value-icon">
+                                <i class="bi bi-stars"></i>
+                            </div>
+
+                        </div>
+
+                        <h3>
+                            Calidad
+                        </h3>
+
+                        <p>
+                            Cuidamos cada detalle para ofrecer productos
+                            preparados con atención.
+                        </p>
+
+                        <div class="value-line"></div>
+
+                    </div>
+
+
+                    <div class="about-value-card value-craft">
+
+                        <div class="value-top">
+
+                            <span>02</span>
+
+                            <div class="value-icon">
+                                <i class="bi bi-hand-heart"></i>
+                            </div>
+
+                        </div>
+
+                        <h3>
+                            Artesanía
+                        </h3>
+
+                        <p>
+                            Nuestra propuesta nace de la esencia de la
+                            repostería artesanal.
+                        </p>
+
+                        <div class="value-line"></div>
+
+                    </div>
+
+
+                    <div class="about-value-card value-care">
+
+                        <div class="value-top">
+
+                            <span>03</span>
+
+                            <div class="value-icon">
+                                <i class="bi bi-heart"></i>
+                            </div>
+
+                        </div>
+
+                        <h3>
+                            Dedicación
+                        </h3>
+
+                        <p>
+                            Ponemos atención en cada producto y en cada
+                            pedido realizado.
+                        </p>
+
+                        <div class="value-line"></div>
+
+                    </div>
+
+
+                    <div class="about-value-card value-close">
+
+                        <div class="value-top">
+
+                            <span>04</span>
+
+                            <div class="value-icon">
+                                <i class="bi bi-person-heart"></i>
+                            </div>
+
+                        </div>
+
+                        <h3>
+                            Cercanía
+                        </h3>
+
+                        <p>
+                            Queremos brindar una experiencia sencilla,
+                            clara y cercana para nuestros clientes.
+                        </p>
+
+                        <div class="value-line"></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="about-signature">
+
+                <div class="signature-icon">
+                    <i class="bi bi-cake2"></i>
+                </div>
+
+                <div class="signature-text">
+
+                    <span>
+                        NUESTRA ESENCIA
+                    </span>
+
+                    <strong>
+                        Hecho con amor, horneado para ti.
+                    </strong>
+
+                </div>
+
+                <div class="signature-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <section id="privacy" class="information-section">
+
+            <div class="privacy-heading">
+
+                <div>
+
+                    <span>
+                        INFORMACIÓN Y PRIVACIDAD
+                    </span>
+
+                    <h1>
+                        Política de privacidad
+                    </h1>
+
+                    <p>
+                        Selecciona una pregunta para conocer qué información
+                        utilizamos y para qué es necesaria.
+                    </p>
+
+                </div>
+
+                <div class="privacy-heading-icon">
+                    <i class="bi bi-shield-lock"></i>
+                </div>
+
+            </div>
+
+
+            <div class="privacy-accordion">
+
+
+                <div class="privacy-accordion-item">
+
+                    <button type="button" class="privacy-question">
+
+                        <span class="privacy-question-number">
+                            01
+                        </span>
+
+                        <span class="privacy-question-text">
+                            ¿Qué información utilizamos?
+                        </span>
+
+                        <span class="privacy-question-icon">
+                            <i class="bi bi-plus-lg"></i>
+                        </span>
+
+                    </button>
+
+                    <div class="privacy-answer">
+
+                        <p>
+                            Podemos utilizar información necesaria para
+                            administrar tu cuenta y gestionar tus pedidos,
+                            como tu nombre, correo electrónico y los datos
+                            necesarios para realizar la entrega.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="privacy-accordion-item">
+
+                    <button type="button" class="privacy-question">
+
+                        <span class="privacy-question-number">
+                            02
+                        </span>
+
+                        <span class="privacy-question-text">
+                            ¿Para qué utilizamos tus datos?
+                        </span>
+
+                        <span class="privacy-question-icon">
+                            <i class="bi bi-plus-lg"></i>
+                        </span>
+
+                    </button>
+
+                    <div class="privacy-answer">
+
+                        <p>
+                            La información se utiliza principalmente para
+                            crear y administrar tu cuenta, procesar y
+                            registrar tus pedidos, mostrar tu historial
+                            de compras y gestionar la forma de entrega
+                            seleccionada.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="privacy-accordion-item">
+
+                    <button type="button" class="privacy-question">
+
+                        <span class="privacy-question-number">
+                            03
+                        </span>
+
+                        <span class="privacy-question-text">
+                            ¿Compartimos tu información?
+                        </span>
+
+                        <span class="privacy-question-icon">
+                            <i class="bi bi-plus-lg"></i>
+                        </span>
+
+                    </button>
+
+                    <div class="privacy-answer">
+
+                        <p>
+                            Tus datos personales no se venden ni se utilizan
+                            para comercializar información personal. Cuando
+                            intervienen servicios externos necesarios para
+                            el funcionamiento técnico de la aplicación,
+                            la información se maneja de acuerdo con las
+                            condiciones correspondientes.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="privacy-accordion-item">
+
+                    <button type="button" class="privacy-question">
+
+                        <span class="privacy-question-number">
+                            04
+                        </span>
+
+                        <span class="privacy-question-text">
+                            ¿Cómo protegemos tu información?
+                        </span>
+
+                        <span class="privacy-question-icon">
+                            <i class="bi bi-plus-lg"></i>
+                        </span>
+
+                    </button>
+
+                    <div class="privacy-answer">
+
+                        <p>
+                            Aplicamos medidas técnicas y administrativas
+                            destinadas a proteger la información almacenada
+                            y reducir el riesgo de accesos no autorizados.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="privacy-accordion-item">
+
+                    <button type="button" class="privacy-question">
+
+                        <span class="privacy-question-number">
+                            05
+                        </span>
+
+                        <span class="privacy-question-text">
+                            ¿Para qué necesitamos la información de tus pedidos?
+                        </span>
+
+                        <span class="privacy-question-icon">
+                            <i class="bi bi-plus-lg"></i>
+                        </span>
+
+                    </button>
+
+                    <div class="privacy-answer">
+
+                        <p>
+                            La información de los pedidos permite registrar
+                            los productos comprados, sus cantidades, el
+                            total del pedido, el método de pago seleccionado
+                            y la forma de entrega elegida.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="privacy-accordion-item">
+
+                    <button type="button" class="privacy-question">
+
+                        <span class="privacy-question-number">
+                            06
+                        </span>
+
+                        <span class="privacy-question-text">
+                            ¿Tienes alguna consulta sobre tus datos?
+                        </span>
+
+                        <span class="privacy-question-icon">
+                            <i class="bi bi-plus-lg"></i>
+                        </span>
+
+                    </button>
+
+                    <div class="privacy-answer">
+
+                        <p>
+                            Si tienes alguna consulta relacionada con la
+                            información asociada a tu cuenta o con tus
+                            pedidos, puedes comunicarte con Dulce Antojo
+                            mediante nuestros canales oficiales.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="privacy-bottom">
+
+                <div class="privacy-bottom-icon">
+                    <i class="bi bi-lock"></i>
+                </div>
+
+                <div>
+
+                    <span>
+                        TU PRIVACIDAD
+                    </span>
+
+                    <strong>
+                        Utilizamos la información necesaria para gestionar
+                        las funciones de nuestra tienda.
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <div class="information-back">
+
+        <a asp-controller="Products"
+           asp-action="Index">
+
+            <i class="bi bi-arrow-left"></i>
+
+            Volver a productos
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<style>
+
+    .information-page {
+        width: 100%;
+        min-height: 100vh;
+        padding: 22px 30px 65px;
+        box-sizing: border-box;
+        background: #f5eadc;
+    }
+
+    .information-tabs {
+        max-width: 1100px;
+        margin: 0 auto 23px;
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .information-tab {
+        min-width: 205px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 11px 19px;
+        border: 1px solid #d4bda5;
+        border-radius: 7px;
+        background: #fffaf4;
+        color: #705745;
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: .2s ease;
+    }
+
+        .information-tab i {
+            font-size: 14px;
+        }
+
+        .information-tab:hover {
+            border-color: #b8865b;
+            color: #9f7048;
+        }
+
+        .information-tab.active {
+            background: #8b6a4e;
+            border-color: #8b6a4e;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(74, 52, 38, .14);
+        }
+
+    .information-content {
+        width: 100%;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    .information-section {
+        display: none;
+        width: 100%;
+        animation: informationAppear .22s ease;
+    }
+
+        .information-section.active {
+            display: block;
+        }
+
+    @@keyframes informationAppear {
+
+        from {
+            opacity: 0;
+            transform: translateY(4px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .about-hero {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 35px;
+        padding: 18px 5px 25px;
+        border-bottom: 1px solid #cdb49d;
+    }
+
+    .about-hero-text {
+        flex: 1;
+        text-align: left;
+    }
+
+    .section-label {
+        display: block;
+        margin-bottom: 9px;
+        color: #ae7648;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+    }
+
+    .about-hero h1 {
+        margin: 0;
+        color: #4a3426;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 42px;
+        font-weight: 500;
+        line-height: 1.15;
+    }
+
+    .about-hero p {
+        max-width: 720px;
+        margin: 14px 0 0;
+        color: #716158;
+        font-size: 16px;
+        line-height: 1.7;
+    }
+
+        .about-hero p strong {
+            color: #8b5e3d;
+        }
+
+    .about-hero-mark {
+        width: 125px;
+        flex: 0 0 125px;
+        text-align: center;
+    }
+
+    .hero-mark-circle {
+        width: 70px;
+        height: 70px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: #ddc3aa;
+        color: #8b674d;
+        font-size: 28px;
+    }
+
+    .about-story {
+        display: grid;
+        grid-template-columns: 55px minmax(0, 1fr);
+        gap: 20px;
+        max-width: 930px;
+        margin: 0 auto;
+        padding: 35px 5px 34px;
+    }
+
+    .story-number {
+        padding-top: 8px;
+        color: #b8865b;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+    }
+
+    .story-content {
+        text-align: left;
+    }
+
+        .story-content h2 {
+            margin: 0 0 15px;
+            color: #4a3426;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 32px;
+            font-weight: 500;
+        }
+
+        .story-content p {
+            max-width: 850px;
+            margin: 0 0 13px;
+            color: #6b5c52;
+            font-size: 15px;
+            line-height: 1.75;
+        }
+
+        .story-content .story-main {
+            color: #4a3426;
+            font-size: 17px;
+            line-height: 1.7;
+        }
+
+        .story-content strong {
+            color: #8b5e3d;
+        }
+
+    .about-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        margin-top: 9px;
+        padding: 12px 19px;
+        border-radius: 6px;
+        background: #b27b54;
+        color: #fff;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 700;
+        transition: .2s ease;
+    }
+
+        .about-button:hover {
+            background: #986744;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+    .values-section {
+        padding-top: 29px;
+        border-top: 1px solid #d8c4af;
+    }
+
+    .values-heading {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+        .values-heading .section-label {
+            margin-bottom: 7px;
+        }
+
+        .values-heading h2 {
+            margin: 0;
+            color: #4a3426;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 31px;
+            font-weight: 500;
+            line-height: 1.25;
+        }
+
+            .values-heading h2 strong {
+                color: #8b6a4e;
+                font-weight: 500;
+            }
+
+        .values-heading p {
+            max-width: 600px;
+            margin: 9px auto 0;
+            color: #806f63;
+            font-size: 13px;
+            line-height: 1.65;
+        }
+
+    .about-values {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 13px;
+    }
+
+    .about-value-card {
+        position: relative;
+        min-height: 205px;
+        padding: 20px;
+        box-sizing: border-box;
+        border: 1px solid #d8c4af;
+        border-radius: 8px;
+        background: #fffaf4;
+        overflow: hidden;
+        transition: .2s ease;
+        text-align: left;
+    }
+
+        .about-value-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 18px rgba(74, 52, 38, .08);
+        }
+
+    .value-quality {
+        background: #fffaf4;
+    }
+
+    .value-craft {
+        background: #f8eee3;
+    }
+
+    .value-care {
+        background: #f5e6d6;
+    }
+
+    .value-close {
+        background: #eee0d0;
+    }
+
+    .value-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 30px;
+    }
+
+        .value-top > span {
+            color: #aa7954;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+        }
+
+    .value-icon {
+        width: 47px;
+        height: 47px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 11px;
+        background: rgba(255, 250, 244, .85);
+        color: #956c4d;
+        font-size: 20px;
+    }
+
+    .about-value-card h3 {
+        margin: 0 0 8px;
+        color: #4a3426;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 21px;
+        font-weight: 500;
+    }
+
+    .about-value-card p {
+        margin: 0;
+        color: #76675d;
+        font-size: 13px;
+        line-height: 1.65;
+    }
+
+    .value-line {
+        width: 30px;
+        height: 2px;
+        margin-top: 17px;
+        background: #b8865b;
+    }
+
+    .about-signature {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-top: 22px;
+        padding: 17px 20px;
+        background: #e8d5c1;
+        border-radius: 7px;
+        text-align: left;
+    }
+
+    .signature-icon {
+        width: 40px;
+        height: 40px;
+        flex: 0 0 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: #fffaf4;
+        color: #a16e48;
+        font-size: 17px;
+    }
+
+    .signature-text span {
+        display: block;
+        margin-bottom: 4px;
+        color: #a06e48;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+    }
+
+    .signature-text strong {
+        color: #4a3426;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .signature-dots {
+        display: flex;
+        gap: 4px;
+        margin-left: auto;
+    }
+
+        .signature-dots span {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #b8865b;
+        }
+
+    .privacy-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 30px;
+        padding: 18px 5px 24px;
+        border-bottom: 1px solid #cdb49d;
+    }
+
+        .privacy-heading > div:first-child {
+            text-align: left;
+        }
+
+            .privacy-heading > div:first-child > span {
+                display: block;
+                margin-bottom: 8px;
+                color: #ae7648;
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: 2px;
+            }
+
+        .privacy-heading h1 {
+            margin: 0;
+            color: #4a3426;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 36px;
+            font-weight: 500;
+        }
+
+        .privacy-heading p {
+            max-width: 720px;
+            margin: 10px 0 0;
+            color: #75675d;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+    .privacy-heading-icon {
+        width: 68px;
+        height: 68px;
+        flex: 0 0 68px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 13px;
+        background: #ddc3aa;
+        color: #8b6a4e;
+        font-size: 27px;
+    }
+
+    .privacy-accordion {
+        padding-top: 18px;
+    }
+
+    .privacy-accordion-item {
+        margin-bottom: 9px;
+        border: 1px solid #ddcbb9;
+        border-radius: 8px;
+        background: #fffaf4;
+        overflow: hidden;
+        transition: .2s ease;
+    }
+
+        .privacy-accordion-item.open {
+            border-color: #c7a27f;
+            box-shadow: 0 4px 12px rgba(74, 52, 38, .06);
+        }
+
+    .privacy-question {
+        width: 100%;
+        min-height: 68px;
+        display: grid;
+        grid-template-columns: 45px minmax(0, 1fr) 38px;
+        align-items: center;
+        gap: 13px;
+        padding: 10px 18px;
+        border: none;
+        background: transparent;
+        color: #4a3426;
+        font-family: inherit;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .privacy-question-number {
+        width: 34px;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 7px;
+        background: #ead8c4;
+        color: #9f7048;
+        font-size: 9px;
+        font-weight: 700;
+    }
+
+    .privacy-question-text {
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+    .privacy-question-icon {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: #f1e3d5;
+        color: #9f7048;
+        font-size: 12px;
+        transition: .2s ease;
+    }
+
+    .privacy-accordion-item.open .privacy-question-icon {
+        background: #b8865b;
+        color: #fff;
+        transform: rotate(45deg);
+    }
+
+    .privacy-answer {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows .25s ease;
+    }
+
+        .privacy-answer p {
+            min-height: 0;
+            overflow: hidden;
+            margin: 0;
+            padding: 0 76px;
+            color: #6f6056;
+            font-size: 14px;
+            line-height: 1.75;
+        }
+
+    .privacy-accordion-item.open .privacy-answer {
+        grid-template-rows: 1fr;
+    }
+
+        .privacy-accordion-item.open .privacy-answer p {
+            padding: 0 76px 21px;
+        }
+
+    .privacy-bottom {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        margin-top: 18px;
+        padding: 17px 20px;
+        background: #e8d5c1;
+        border-left: 4px solid #b8865b;
+    }
+
+    .privacy-bottom-icon {
+        width: 40px;
+        height: 40px;
+        flex: 0 0 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: #fffaf4;
+        color: #9f7048;
+        font-size: 16px;
+    }
+
+    .privacy-bottom span {
+        display: block;
+        margin-bottom: 4px;
+        color: #a06f48;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+    }
+
+    .privacy-bottom strong {
+        color: #4a3426;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .information-back {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+        .information-back a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #725943;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+            .information-back a:hover {
+                color: #9f7048;
+            }
+
+    @@media (max-width: 900px) {
+
+        .about-values {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .values-heading {
+            text-align: center;
+        }
+
+            .values-heading p {
+                max-width: 650px;
+            }
+    }
+
+    @@media (max-width: 700px) {
+
+        .information-page {
+            padding: 18px 17px 55px;
+        }
+
+        .information-tab {
+            min-width: 0;
+            flex: 1;
+            padding: 11px 8px;
+            font-size: 11px;
+        }
+
+        .about-hero {
+            gap: 18px;
+        }
+
+            .about-hero h1 {
+                font-size: 34px;
+            }
+
+            .about-hero p {
+                font-size: 14px;
+            }
+
+        .about-story {
+            grid-template-columns: 40px minmax(0, 1fr);
+            gap: 13px;
+        }
+
+        .story-content h2 {
+            font-size: 28px;
+        }
+
+        .story-content p {
+            font-size: 14px;
+        }
+
+        .story-content .story-main {
+            font-size: 15px;
+        }
+
+        .values-heading h2 {
+            font-size: 28px;
+        }
+
+        .values-heading p {
+            font-size: 12px;
+        }
+
+        .about-value-card h3 {
+            font-size: 20px;
+        }
+
+        .about-value-card p {
+            font-size: 12px;
+        }
+
+        .privacy-heading h1 {
+            font-size: 31px;
+        }
+
+        .privacy-heading p {
+            font-size: 13px;
+        }
+
+        .privacy-question-text {
+            font-size: 14px;
+        }
+
+        .privacy-answer p {
+            font-size: 13px;
+        }
+    }
+
+    @@media (max-width: 500px) {
+
+        .information-page {
+            padding: 17px 11px 45px;
+        }
+
+        .information-tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .information-tab {
+            font-size: 10px;
+            padding: 10px 5px;
+        }
+
+            .information-tab i {
+                font-size: 12px;
+            }
+
+        .about-hero {
+            align-items: flex-start;
+        }
+
+            .about-hero h1 {
+                font-size: 30px;
+            }
+
+            .about-hero p {
+                font-size: 13px;
+            }
+
+        .about-hero-mark {
+            width: 55px;
+            flex-basis: 55px;
+        }
+
+        .hero-mark-circle {
+            width: 48px;
+            height: 48px;
+            font-size: 19px;
+        }
+
+        .about-story {
+            display: block;
+            padding: 27px 3px;
+        }
+
+        .story-number {
+            margin-bottom: 8px;
+        }
+
+        .story-content h2 {
+            font-size: 26px;
+        }
+
+        .story-content p {
+            font-size: 13px;
+        }
+
+        .story-content .story-main {
+            font-size: 14px;
+        }
+
+        .about-button {
+            width: 100%;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+
+        .values-section {
+            padding-top: 25px;
+        }
+
+        .values-heading h2 {
+            font-size: 25px;
+        }
+
+        .values-heading p {
+            font-size: 11px;
+        }
+
+        .about-values {
+            grid-template-columns: 1fr;
+        }
+
+        .about-value-card {
+            min-height: 175px;
+        }
+
+            .about-value-card h3 {
+                font-size: 21px;
+            }
+
+            .about-value-card p {
+                font-size: 13px;
+            }
+
+        .about-signature {
+            padding: 14px;
+        }
+
+        .signature-text strong {
+            font-size: 14px;
+        }
+
+        .signature-dots {
+            display: none;
+        }
+
+        .privacy-heading {
+            gap: 12px;
+        }
+
+            .privacy-heading h1 {
+                font-size: 27px;
+            }
+
+            .privacy-heading p {
+                font-size: 12px;
+            }
+
+        .privacy-heading-icon {
+            width: 48px;
+            height: 48px;
+            flex-basis: 48px;
+            font-size: 19px;
+        }
+
+        .privacy-question {
+            grid-template-columns: 35px minmax(0, 1fr) 29px;
+            gap: 8px;
+            padding: 10px 11px;
+        }
+
+        .privacy-question-number {
+            width: 29px;
+            height: 29px;
+        }
+
+        .privacy-question-text {
+            font-size: 12px;
+            line-height: 1.45;
+        }
+
+        .privacy-question-icon {
+            width: 27px;
+            height: 27px;
+        }
+
+        .privacy-answer p {
+            padding: 0 48px;
+            font-size: 12px;
+        }
+
+        .privacy-accordion-item.open .privacy-answer p {
+            padding: 0 48px 17px;
+        }
+
+        .privacy-bottom strong {
+            font-size: 11px;
+            line-height: 1.5;
+        }
+    }
+
+</style>
+
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function() {
+
+        const tabs = document.querySelectorAll(".information-tab");
+        const sections = document.querySelectorAll(".information-section");
+
+        tabs.forEach(function(tab) {
+
+            tab.addEventListener("click", function() {
+
+                const selectedSection = this.dataset.section;
+
+                tabs.forEach(function(item) {
+                    item.classList.remove("active");
+                });
+
+                sections.forEach(function(section) {
+                    section.classList.remove("active");
+                });
+
+                this.classList.add("active");
+
+                const selected = document.getElementById(selectedSection);
+
+                if (selected) {
+                    selected.classList.add("active");
+                }
+
+            });
+
+        });
+
+
+        const privacyQuestions = document.querySelectorAll(".privacy-question");
+
+        privacyQuestions.forEach(function(question) {
+
+            question.addEventListener("click", function() {
+
+                const item = this.closest(".privacy-accordion-item");
+                const isOpen = item.classList.contains("open");
+
+                document.querySelectorAll(".privacy-accordion-item").forEach(function(otherItem) {
+                    otherItem.classList.remove("open");
+                });
+
+                if (!isOpen) {
+                    item.classList.add("open");
+                }
+
+            });
+
+        });
+
+    });
+
+</script>

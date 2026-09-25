@@ -4,69 +4,411 @@
     ViewData["Title"] = "Inventario";
 }
 
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success text-center rounded-0">@TempData["SuccessMessage"]</div>
-}
+<style>
+    .admin-list-page {
+        min-height: calc(100vh - 100px);
+        padding: 35px 20px 70px;
+        background: #f7f1e9;
+    }
 
-<div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="fw-bold mb-1">Inventario</h1>
-            <p class="text-muted mb-0">Control de existencias de los productos</p>
+    .page-shell {
+        width: min(1180px, 100%);
+        margin: 0 auto;
+    }
+
+    .page-heading {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 25px;
+        margin-bottom: 25px;
+    }
+
+    .eyebrow {
+        display: block;
+        margin-bottom: 7px;
+        color: #9a7258;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .page-heading h1 {
+        margin: 0;
+        color: #3f2c22;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 42px;
+        font-weight: 400;
+    }
+
+    .page-heading p {
+        margin: 8px 0 0;
+        color: #806d60;
+        font-size: 13px;
+    }
+
+    .catalog-toolbar {
+        width: 100%;
+        padding: 0 0 20px;
+    }
+
+    .category-navigation {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+        .category-navigation a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 9px 16px;
+            border: 1px solid #d9c9b8;
+            border-radius: 999px;
+            background: #fffaf4;
+            color: #684b3a;
+            text-decoration: none;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: .7px;
+            text-transform: uppercase;
+            transition: .2s ease;
+        }
+
+            .category-navigation a:hover {
+                background: #eadfd3;
+                border-color: #cdb9a5;
+                color: #4a3426;
+                transform: translateY(-1px);
+            }
+
+            .category-navigation a.active {
+                background: #5b3d2c;
+                border-color: #5b3d2c;
+                color: #fff;
+            }
+
+    .admin-table-card {
+        overflow: hidden;
+        background: #fffaf4;
+        border: 1px solid #dfd1c2;
+        border-radius: 20px;
+        box-shadow: 0 10px 28px rgba(74, 52, 38, .08);
+    }
+
+    .admin-table-wrap {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .admin-table {
+        width: 100%;
+        min-width: 850px;
+        border-collapse: collapse;
+    }
+
+        .admin-table thead {
+            background: #eee2d4;
+        }
+
+        .admin-table th {
+            padding: 15px 17px;
+            color: #705442;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-align: left;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .admin-table td {
+            padding: 16px 17px;
+            border-top: 1px solid #e9ded2;
+            color: #756358;
+            font-size: 12px;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        .admin-table tbody tr {
+            transition: background .2s ease;
+        }
+
+            .admin-table tbody tr:hover {
+                background: #f8f0e7;
+            }
+
+        .admin-table td strong {
+            color: #493327;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 15px;
+            font-weight: 400;
+        }
+
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 75px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 8px;
+        font-weight: 800;
+        letter-spacing: .7px;
+        text-transform: uppercase;
+    }
+
+        .status-pill.ok {
+            background: #e3eadf;
+            color: #58704f;
+        }
+
+        .status-pill.warn {
+            background: #eee2c9;
+            color: #80663a;
+        }
+
+        .status-pill.bad {
+            background: #eadbd5;
+            color: #805c50;
+        }
+
+    .table-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 13px;
+        border: 1px solid #d9cabb;
+        border-radius: 999px;
+        background: #eee4da;
+        color: #604838;
+        text-decoration: none;
+        font-size: 8px;
+        font-weight: 800;
+        letter-spacing: .6px;
+        text-transform: uppercase;
+        transition: .2s ease;
+        white-space: nowrap;
+    }
+
+        .table-btn:hover {
+            background: #e1d3c4;
+            color: #4a3426;
+            transform: translateY(-1px);
+        }
+
+        .table-btn.primary {
+            background: #5b3d2c;
+            border-color: #5b3d2c;
+            color: #fff !important;
+        }
+
+            .table-btn.primary:hover {
+                background: #422c21;
+                border-color: #422c21;
+                color: #fff !important;
+            }
+
+    .inventory-empty {
+        padding: 60px 25px;
+        text-align: center;
+    }
+
+        .inventory-empty h3 {
+            margin: 0 0 8px;
+            color: #493327;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 28px;
+            font-weight: 400;
+        }
+
+        .inventory-empty p {
+            margin: 0;
+            color: #806d60;
+            font-size: 13px;
+        }
+
+    .inventory-message {
+        margin-bottom: 20px;
+        padding: 12px 16px;
+        border: 1px solid #d5dfd0;
+        border-radius: 14px;
+        background: #edf3e9;
+        color: #58704f;
+        font-size: 12px;
+        text-align: center;
+    }
+
+    @@media (max-width: 800px) {
+        .admin-list-page {
+            padding: 28px 14px 55px;
+        }
+
+        .page-heading {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+            .page-heading h1 {
+                font-size: 36px;
+            }
+
+        .catalog-toolbar {
+            overflow: hidden;
+        }
+
+        .category-navigation {
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            scrollbar-width: none;
+        }
+
+            .category-navigation::-webkit-scrollbar {
+                display: none;
+            }
+
+            .category-navigation a {
+                flex: 0 0 auto;
+                white-space: nowrap;
+            }
+
+        .admin-table-card {
+            border-radius: 16px;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 13px 14px;
+        }
+    }
+
+    @@media (max-width: 500px) {
+        .admin-list-page {
+            padding: 24px 10px 45px;
+        }
+
+        .page-heading h1 {
+            font-size: 32px;
+        }
+
+        .page-heading p {
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .admin-table {
+            min-width: 820px;
+        }
+
+            .admin-table th,
+            .admin-table td {
+                padding: 12px;
+            }
+    }
+</style>
+
+<div class="admin-list-page">
+
+    <div class="page-shell">
+
+        <div class="page-heading">
+
+            <div>
+                <span class="eyebrow">
+                    Administración
+                </span>
+
+                <h1>
+                    Inventario
+                </h1>
+
+                <p>
+                    Control de existencias y actualización de stock.
+                </p>
+            </div>
+
         </div>
-    </div>
 
-    <div class="mb-4">
-        <div class="d-flex flex-wrap gap-2">
-            <a asp-action="Index"
-               class="btn @(string.IsNullOrEmpty(ViewBag.CategoriaSeleccionada) ? "btn-dark" : "btn-outline-dark")">
-                Todos
-            </a>
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="inventory-message">
+                ✓ @TempData["SuccessMessage"]
+            </div>
+        }
 
-            @foreach (var categoria in ViewBag.Categorias)
-            {
+        <div class="catalog-toolbar">
+
+            <div class="category-navigation">
+
                 <a asp-action="Index"
-                   asp-route-category="@categoria.Name"
-                   class="btn @(ViewBag.CategoriaSeleccionada == categoria.Name ? "btn-dark" : "btn-outline-dark")">
-                    @categoria.Name
+                   class="@(string.IsNullOrEmpty(ViewBag.CategoriaSeleccionada) ? "active" : "")">
+                    Todos
                 </a>
-            }
-        </div>
-    </div>
 
-    <div class="card shadow-sm border-0">
-        <div class="card-body p-0">
-            @if (!Model.Any())
-            {
-                <div class="text-center py-5">
-                    <h4>No hay registros de inventario</h4>
-                    <p class="text-muted mb-0">
-                        No existen productos en esta categoría.
-                    </p>
-                </div>
-            }
-            else
-            {
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
+                @foreach (var categoria in ViewBag.Categorias)
+                {
+                    <a asp-action="Index"
+                       asp-route-category="@categoria.Name"
+                       class="@(ViewBag.CategoriaSeleccionada == categoria.Name ? "active" : "")">
+                        @categoria.Name
+                    </a>
+                }
+
+            </div>
+
+        </div>
+
+        <div class="admin-table-card">
+
+            <div class="admin-table-wrap">
+
+                @if (!Model.Any())
+                {
+                    <div class="inventory-empty">
+
+                        <h3>
+                            No hay registros de inventario
+                        </h3>
+
+                        <p>
+                            No existen productos en esta categoría.
+                        </p>
+
+                    </div>
+                }
+                else
+                {
+                    <table class="admin-table">
+
                         <thead>
+
                             <tr>
                                 <th>Producto</th>
                                 <th>Categoría</th>
-                                <th>Stock actual</th>
-                                <th>Stock mínimo</th>
+                                <th>Actual</th>
+                                <th>Mínimo</th>
                                 <th>Estado</th>
-                                <th>Última actualización</th>
+                                <th>Actualización</th>
                                 <th>Acciones</th>
                             </tr>
+
                         </thead>
+
                         <tbody>
+
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    <td class="fw-semibold">
-                                        @item.Product?.Name
+
+                                    <td>
+                                        <strong>
+                                            @item.Product?.Name
+                                        </strong>
                                     </td>
 
                                     <td>
@@ -74,7 +416,9 @@
                                     </td>
 
                                     <td>
-                                        @item.CurrentQuantity
+                                        <strong>
+                                            @item.CurrentQuantity
+                                        </strong>
                                     </td>
 
                                     <td>
@@ -82,24 +426,26 @@
                                     </td>
 
                                     <td>
+
                                         @if (item.StockStatus == "Agotado")
                                         {
-                                            <span class="badge bg-danger">
+                                            <span class="status-pill bad">
                                                 Agotado
                                             </span>
                                         }
                                         else if (item.StockStatus == "Stock bajo")
                                         {
-                                            <span class="badge bg-warning text-dark">
+                                            <span class="status-pill warn">
                                                 Stock bajo
                                             </span>
                                         }
                                         else
                                         {
-                                            <span class="badge bg-success">
+                                            <span class="status-pill ok">
                                                 Disponible
                                             </span>
                                         }
+
                                     </td>
 
                                     <td>
@@ -107,18 +453,27 @@
                                     </td>
 
                                     <td>
+
                                         <a asp-action="Edit"
                                            asp-route-id="@item.Id"
-                                           class="btn btn-sm btn-outline-dark">
+                                           class="table-btn primary">
                                             Editar
                                         </a>
+
                                     </td>
+
                                 </tr>
                             }
+
                         </tbody>
+
                     </table>
-                </div>
-            }
+                }
+
+            </div>
+
         </div>
+
     </div>
+
 </div>

@@ -15,7 +15,11 @@ namespace EcommerceApp.Controllers
             var products = context.Products
                 .AsNoTracking()
                 .Include(p => p.CategoryNavigation)
-                .Where(p => !p.IsArchived && p.IsAvailable && p.Stock > 0);
+                .Where(p => !p.IsArchived &&
+                       p.IsAvailable &&
+                       p.Stock > 0 &&
+                       p.CategoryNavigation != null &&
+                       p.CategoryNavigation.IsActive);
 
             if (!string.IsNullOrWhiteSpace(category))
             {
@@ -44,7 +48,13 @@ namespace EcommerceApp.Controllers
         {
             var product = await context.Products
                 .Include(p => p.CategoryNavigation)
-                .FirstOrDefaultAsync(p => p.Id == id && !p.IsArchived);
+                .FirstOrDefaultAsync(p =>
+                    p.Id == id &&
+                    !p.IsArchived &&
+                    p.IsAvailable &&
+                    p.Stock > 0 &&
+                    p.CategoryNavigation != null &&
+                    p.CategoryNavigation.IsActive);
 
             if (product == null)
                 return NotFound();

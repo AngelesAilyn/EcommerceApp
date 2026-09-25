@@ -5,533 +5,461 @@
 }
 
 <style>
-
-    .categories-page {
-        position: relative;
-        min-height: calc(100vh - 120px);
-        padding: 45px 25px 70px;
-        overflow: hidden;
-        background: radial-gradient(circle at 10% 15%, rgba(255,255,255,.75) 0 45px, transparent 46px), radial-gradient(circle at 90% 20%, rgba(255,255,255,.55) 0 65px, transparent 66px), linear-gradient(135deg, #f3eadf 0%, #ead8c5 48%, #f7eee5 100%);
+    .admin-list-page {
+        min-height: calc(100vh - 100px);
+        padding: 35px 20px 70px;
+        background: #f7f1e9;
     }
 
-    .decor {
-        position: absolute;
-        pointer-events: none;
-        opacity: .35;
-        animation: floatDecor 6s ease-in-out infinite;
+    .page-shell {
+        width: min(1180px, 100%);
+        margin: 0 auto;
     }
 
-        .decor.one {
-            top: 80px;
-            left: 5%;
-            font-size: 42px;
-        }
-
-        .decor.two {
-            top: 230px;
-            right: 6%;
-            font-size: 35px;
-            animation-delay: 1s;
-        }
-
-        .decor.three {
-            bottom: 80px;
-            left: 10%;
-            font-size: 30px;
-            animation-delay: 2s;
-        }
-
-        .decor.four {
-            bottom: 120px;
-            right: 12%;
-            font-size: 42px;
-            animation-delay: 3s;
-        }
-
-    @@keyframes floatDecor {
-
-        0%, 100% {
-            transform: translateY(0) rotate(-3deg);
-        }
-
-        50% {
-            transform: translateY(-12px) rotate(4deg);
-        }
+    .page-heading {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 25px;
+        margin-bottom: 25px;
     }
 
-    .categories-header {
-        position: relative;
-        z-index: 2;
-        text-align: center;
-        margin-bottom: 38px;
-        animation: fadeDown .7s ease both;
+        .page-heading > div {
+            min-width: 0;
+        }
+
+    .eyebrow {
+        display: block;
+        margin-bottom: 7px;
+        color: #9a7258;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
     }
 
-        .categories-header span {
-            display: block;
-            margin-bottom: 7px;
-            color: #8b5e3c;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-        }
+    .page-heading h1 {
+        margin: 0;
+        color: #3f2c22;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 42px;
+        font-weight: 400;
+    }
 
-        .categories-header h1 {
-            margin: 0;
-            color: #35241b;
-            font-family: Georgia, "Times New Roman", serif;
-            font-size: 42px;
-            font-weight: 700;
-        }
+    .page-heading p {
+        margin: 8px 0 0;
+        color: #806d60;
+        font-size: 13px;
+    }
 
-        .categories-header p {
-            margin: 10px auto 20px;
-            max-width: 600px;
-            color: #786960;
-            font-size: 15px;
-        }
-
-    .btn-new-category {
+    .btn-bakery {
         display: inline-flex;
         align-items: center;
-        gap: 7px;
-        padding: 11px 20px;
-        border-radius: 12px;
-        background: #4a3426;
-        color: white;
+        justify-content: center;
+        gap: 8px;
+        flex-shrink: 0;
+        padding: 11px 17px;
+        border-radius: 999px;
+        background: #5b3d2c;
+        color: #fff !important;
         text-decoration: none;
-        font-size: 13px;
-        font-weight: 600;
-        box-shadow: 0 8px 18px rgba(74, 52, 38, .18);
-        transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: .7px;
+        text-transform: uppercase;
+        box-shadow: 0 7px 16px rgba(74, 52, 38, .14);
+        transition: .25s ease;
     }
 
-        .btn-new-category:hover {
-            background: #6f513b;
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 12px 24px rgba(74, 52, 38, .22);
+        .btn-bakery:hover {
+            background: #422c21;
+            color: #fff !important;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 22px rgba(74, 52, 38, .18);
         }
 
+    .admin-table-card {
+        overflow: hidden;
+        background: #fffaf4;
+        border: 1px solid #dfd1c2;
+        border-radius: 20px;
+        box-shadow: 0 10px 28px rgba(74, 52, 38, .08);
+    }
+
+    .admin-table-wrap {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .admin-table {
+        width: 100%;
+        min-width: 720px;
+        border-collapse: collapse;
+    }
+
+        .admin-table thead {
+            background: #eee2d4;
+        }
+
+        .admin-table th {
+            padding: 15px 18px;
+            color: #705442;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 1.1px;
+            text-align: left;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .admin-table td {
+            padding: 17px 18px;
+            border-top: 1px solid #e9ded2;
+            color: #756358;
+            font-size: 12px;
+            vertical-align: middle;
+        }
+
+        .admin-table tbody tr {
+            transition: background .2s ease;
+        }
+
+            .admin-table tbody tr:hover {
+                background: #f8f0e7;
+            }
+
+        .admin-table td strong {
+            color: #493327;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 70px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 8px;
+        font-weight: 800;
+        letter-spacing: .8px;
+        text-transform: uppercase;
+    }
+
+        .status-pill.ok {
+            background: #e3eadf;
+            color: #58704f;
+        }
+
+        .status-pill.bad {
+            background: #eadbd5;
+            color: #805c50;
+        }
+
+    .table-actions {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        flex-wrap: wrap;
+    }
+
+        .table-actions form {
+            margin: 0;
+        }
+
+    .table-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 8px 11px;
+        border: 1px solid #d9cabb;
+        border-radius: 999px;
+        background: #eee4da;
+        color: #604838;
+        font-size: 8px;
+        font-weight: 800;
+        letter-spacing: .6px;
+        text-transform: uppercase;
+        text-decoration: none;
+        cursor: pointer;
+        transition: .2s ease;
+        white-space: nowrap;
+    }
+
+        .table-btn:hover {
+            background: #e1d3c4;
+            color: #4a3426;
+            transform: translateY(-1px);
+        }
+
+        .table-btn.primary {
+            background: #5b3d2c;
+            border-color: #5b3d2c;
+            color: #fff !important;
+        }
+
+            .table-btn.primary:hover {
+                background: #422c21;
+                border-color: #422c21;
+                color: #fff !important;
+            }
+
     .category-message {
-        position: relative;
-        z-index: 3;
-        max-width: 650px;
-        margin: 0 auto 25px;
-        padding: 13px 18px;
-        border-radius: 13px;
-        background: #fffdf9;
-        border: 1px solid #d8c4ae;
-        color: #4a3426;
+        margin: 0 auto 20px;
+        padding: 12px 16px;
+        border: 1px solid #ddcdbc;
+        border-radius: 14px;
+        background: #fffaf4;
+        color: #604838;
+        font-size: 12px;
         text-align: center;
-        box-shadow: 0 8px 20px rgba(74, 52, 38, .10);
-        animation: messageIn .5s ease both;
+        box-shadow: 0 6px 18px rgba(74, 52, 38, .06);
     }
 
         .category-message strong {
-            color: #6f513b;
-        }
-
-    .categories-grid {
-        position: relative;
-        z-index: 2;
-        max-width: 1100px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 25px;
-    }
-
-    .category-card {
-        position: relative;
-        min-height: 230px;
-        padding: 28px;
-        overflow: hidden;
-        border-radius: 24px;
-        border: 1px solid rgba(255,255,255,.7);
-        box-shadow: 0 12px 30px rgba(74, 52, 38, .12);
-        animation: cardAppear .65s ease both;
-        transition: transform .3s ease, box-shadow .3s ease;
-    }
-
-        .category-card:hover {
-            transform: translateY(-7px);
-            box-shadow: 0 18px 35px rgba(74, 52, 38, .18);
-        }
-
-        .category-card::before {
-            content: "";
-            position: absolute;
-            width: 150px;
-            height: 150px;
-            right: -55px;
-            top: -55px;
-            border-radius: 50%;
-            background: rgba(255,255,255,.30);
-        }
-
-        .category-card::after {
-            content: "";
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            left: -35px;
-            bottom: -45px;
-            border-radius: 50%;
-            background: rgba(255,255,255,.22);
-        }
-
-    .category-rolls {
-        background: linear-gradient(135deg, #d8b18b, #f1dfcb);
-    }
-
-    .category-cookies {
-        background: linear-gradient(135deg, #b98b68, #ead0b8);
-    }
-
-    .category-navidad {
-        background: linear-gradient(135deg, #c7a27b, #eadbc8);
-    }
-
-    .category-tortas {
-        background: linear-gradient(135deg, #e7c5bd, #f5e4df);
-    }
-
-    .category-default {
-        background: linear-gradient(135deg, #d8c4ae, #f4e9dc);
-    }
-
-    .category-content {
-        position: relative;
-        z-index: 2;
-    }
-
-    .category-icon {
-        width: 58px;
-        height: 58px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 18px;
-        border-radius: 18px;
-        background: rgba(255,255,255,.55);
-        font-size: 28px;
-        box-shadow: 0 6px 15px rgba(74, 52, 38, .10);
-    }
-
-    .category-card h2 {
-        margin: 0 0 8px;
-        color: #35241b;
-        font-family: Georgia, "Times New Roman", serif;
-        font-size: 25px;
-        font-weight: 700;
-    }
-
-    .category-description {
-        min-height: 40px;
-        margin-bottom: 15px;
-        color: #604d40;
-        font-size: 13px;
-        line-height: 1.5;
-    }
-
-    .category-status {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        margin-bottom: 18px;
-        padding: 6px 10px;
-        border-radius: 20px;
-        background: rgba(255,255,255,.55);
-        color: #5c4739;
-        font-size: 11px;
-        font-weight: 700;
-    }
-
-    .status-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: #6c9565;
-    }
-
-        .status-dot.inactive {
-            background: #8d8179;
-        }
-
-    .category-actions {
-        display: flex;
-        gap: 9px;
-        align-items: center;
-    }
-
-        .category-actions a,
-        .category-actions button {
-            border: none;
-            border-radius: 9px;
-            padding: 8px 13px;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            transition: .2s ease;
-        }
-
-    .btn-edit-category {
-        background: #4a3426;
-        color: white;
-    }
-
-        .btn-edit-category:hover {
-            background: #6f513b;
-            color: white;
-            transform: translateY(-2px);
-        }
-
-    .btn-toggle-category {
-        background: rgba(255,255,255,.65);
-        color: #594638;
-    }
-
-        .btn-toggle-category:hover {
-            background: white;
-            transform: translateY(-2px);
+            color: #4a3426;
         }
 
     .empty-category {
-        position: relative;
-        z-index: 2;
         max-width: 600px;
-        margin: 0 auto;
-        padding: 40px;
+        margin: 35px auto;
+        padding: 55px 30px;
+        border: 1px solid #dfd1c2;
+        border-radius: 20px;
+        background: #fffaf4;
         text-align: center;
-        border-radius: 24px;
-        background: rgba(255,253,249,.85);
-        box-shadow: 0 12px 30px rgba(74,52,38,.10);
+        box-shadow: 0 10px 28px rgba(74, 52, 38, .07);
     }
 
     .empty-category-icon {
-        font-size: 45px;
         margin-bottom: 10px;
+        font-size: 40px;
     }
 
     .empty-category h2 {
-        color: #35241b;
+        margin: 0 0 8px;
+        color: #493327;
         font-family: Georgia, "Times New Roman", serif;
+        font-size: 28px;
+        font-weight: 400;
     }
 
     .empty-category p {
-        color: #786960;
-    }*/
+        margin: 0 0 20px;
+        color: #806d60;
+        font-size: 13px;
+    }
 
-    @@keyframes fadeDown {
-
-        from {
-            opacity: 0;
-            transform: translateY(-18px);
+    @@media (max-width: 800px) {
+        .admin-list-page {
+            padding: 28px 14px 55px;
         }
 
-        to {
-            opacity: 1;
-            transform: translateY(0);
+        .page-heading {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+            .page-heading h1 {
+                font-size: 36px;
+            }
+
+        .btn-bakery {
+            width: 100%;
+        }
+
+        .admin-table-card {
+            border-radius: 16px;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 13px 14px;
         }
     }
 
-    @@keyframes cardAppear {
-
-        from {
-            opacity: 0;
-            transform: translateY(20px);
+    @@media (max-width: 500px) {
+        .admin-list-page {
+            padding: 24px 10px 45px;
         }
 
-        to {
-            opacity: 1;
-            transform: translateY(0);
+        .page-heading h1 {
+            font-size: 32px;
         }
+
+        .page-heading p {
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .admin-table {
+            min-width: 680px;
+        }
+
+            .admin-table th,
+            .admin-table td {
+                padding: 12px;
+            }
+
+                .admin-table td strong {
+                    font-size: 15px;
+                }
     }
-
-    @@keyframes messageIn {
-
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    @@media (max-width: 750px) {
-
-        .categories-page {
-            padding: 35px 15px 55px;
-        }
-
-        .categories-header h1 {
-            font-size: 34px;
-        }
-
-        .categories-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .category-card {
-            min-height: 210px;
-        }
-    }
-
 </style>
 
-<div class="categories-page">
+<div class="admin-list-page">
 
-    <div class="decor one">🍪</div>
-    <div class="decor two">🍰</div>
-    <div class="decor three">✨</div>
-    <div class="decor four">🍥</div>
+    <div class="page-shell">
 
-    <div class="categories-header">
+        <div class="page-heading">
 
-        <span>Dulce Antojo</span>
+            <div>
+                <span class="eyebrow">
+                    Administración
+                </span>
 
-        <h1>Categorías</h1>
+                <h1>
+                    Categorías
+                </h1>
 
-        <p>
-            Organiza tus productos y mantén tu catálogo
-            de repostería siempre en orden.
-        </p>
-
-        <a asp-action="Create"
-           class="btn-new-category">
-            <span>＋</span>
-            Nueva categoría
-        </a>
-
-    </div>
-
-
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="category-message">
-            ✓ <strong>@TempData["SuccessMessage"]</strong>
-        </div>
-    }
-
-
-    @if (!Model.Any())
-    {
-        <div class="empty-category">
-
-            <div class="empty-category-icon">
-                🍰
+                <p>
+                    Organiza los productos de Dulce Antojo sin llenar la pantalla de tarjetas.
+                </p>
             </div>
 
-            <h2>Aún no hay categorías</h2>
-
-            <p>
-                Crea la primera categoría para comenzar
-                a organizar tus productos.
-            </p>
-
-            <a asp-action="Create"
-               class="btn-new-category">
-                Crear primera categoría
+            <a asp-action="Create" class="btn-bakery">
+                <i class="bi bi-plus-lg"></i>
+                Nueva categoría
             </a>
 
         </div>
-    }
-    else
-    {
-        <div class="categories-grid">
 
-            @foreach (var category in Model)
-            {
-                var categoryClass = "category-default";
-                var categoryIcon = "🍰";
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="category-message">
+                ✓ <strong>@TempData["SuccessMessage"]</strong>
+            </div>
+        }
 
-                if (category.Name == "Rolls de canela")
-                {
-                    categoryClass = "category-rolls";
-                    categoryIcon = "🍥";
-                }
-                else if (category.Name == "Cookies")
-                {
-                    categoryClass = "category-cookies";
-                    categoryIcon = "🍪";
-                }
-                else if (category.Name == "Navideña")
-                {
-                    categoryClass = "category-navidad";
-                    categoryIcon = "🎄";
-                }
-                else if (category.Name == "Tortas por porción")
-                {
-                    categoryClass = "category-tortas";
-                    categoryIcon = "🍰";
-                }
+        @if (!Model.Any())
+        {
+            <div class="empty-category">
 
-                <div class="category-card @categoryClass">
+                <div class="empty-category-icon">
+                    🍰
+                </div>
 
-                    <div class="category-content">
+                <h2>
+                    Aún no hay categorías
+                </h2>
 
-                        <div class="category-icon">
-                            @categoryIcon
-                        </div>
+                <p>
+                    Crea la primera categoría para comenzar a organizar tus productos.
+                </p>
 
-                        <h2>
-                            @category.Name
-                        </h2>
+                <a asp-action="Create" class="btn-bakery">
+                    <i class="bi bi-plus-lg"></i>
+                    Crear primera categoría
+                </a>
 
-                        <div class="category-description">
-                            @(string.IsNullOrWhiteSpace(category.Description)
-                                                ? "Sin descripción"
-                                                : category.Description)
-                        </div>
+            </div>
+        }
+        else
+        {
+            <div class="admin-table-card">
 
-                        <div class="category-status">
+                <div class="admin-table-wrap">
 
-                            <span class="status-dot @(category.IsActive ? "" : "inactive")">
-                            </span>
+                    <table class="admin-table">
 
-                            @(category.IsActive ? "Categoría activa" : "Categoría inactiva")
+                        <thead>
+                            <tr>
+                                <th>Categoría</th>
+                                <th>Descripción</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
 
-                        </div>
+                        <tbody>
 
-                        <div class="category-actions">
+                            @foreach (var category in Model)
+                            {
+                                <tr>
 
-                            <a asp-action="Edit"
-                               asp-route-id="@category.Id"
-                               class="btn-edit-category">
-                                Editar
-                            </a>
+                                    <td>
+                                        <strong>
+                                            @category.Name
+                                        </strong>
+                                    </td>
 
-                            <form asp-action="ToggleStatus"
-                                  asp-route-id="@category.Id"
-                                  method="post">
+                                    <td>
+                                        @(string.IsNullOrWhiteSpace(category.Description)
+                                            ? "Sin descripción"
+                                            : category.Description)
+                                    </td>
 
-                                @Html.AntiForgeryToken()
+                                    <td>
 
-                                <button type="submit"
-                                        class="btn-toggle-category">
+                                        <span class="status-pill @(category.IsActive ? "ok" : "bad")">
+                                            @(category.IsActive ? "Activa" : "Inactiva")
+                                        </span>
 
-                                    @(category.IsActive
-                                                                ? "Desactivar"
-                                                                : "Activar")
+                                    </td>
 
-                                </button>
+                                    <td>
 
-                            </form>
+                                        <div class="table-actions">
 
-                        </div>
+                                            <a class="table-btn primary"
+                                               asp-action="Edit"
+                                               asp-route-id="@category.Id">
 
-                    </div>
+                                                <i class="bi bi-pencil"></i>
+                                                Editar
+
+                                            </a>
+
+                                            <form asp-action="ToggleStatus"
+                                                  method="post">
+
+                                                @Html.AntiForgeryToken()
+
+                                                <input type="hidden"
+                                                       name="id"
+                                                       value="@category.Id" />
+
+                                                <button class="table-btn"
+                                                        type="submit">
+
+                                                    @(category.IsActive
+                                                        ? "Desactivar"
+                                                        : "Activar")
+
+                                                </button>
+
+                                            </form>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
 
                 </div>
-            }
 
-        </div>
-    }
+            </div>
+        }
+
+    </div>
 
 </div>
