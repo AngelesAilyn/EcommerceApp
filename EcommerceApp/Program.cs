@@ -9,7 +9,7 @@ QuestPDF.Settings.License = LicenseType.Community;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Permite usar un archivo local ignorado por Git durante el desarrollo.
+
 if (builder.Environment.IsDevelopment())
 {
     builder.Configuration.AddJsonFile(
@@ -79,7 +79,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Products}/{action=Index}/{id?}");
 
-// Crear roles y usuario administrador por defecto
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -96,8 +95,6 @@ using (var scope = app.Services.CreateScope())
         }
     }
 
-    // Crear un administrador únicamente cuando las credenciales se proporcionan por configuración.
-    // Nunca se guardan credenciales reales dentro del código fuente.
     var adminEmail = builder.Configuration["ADMIN_EMAIL"];
     var adminPassword = builder.Configuration["ADMIN_PASSWORD"];
 

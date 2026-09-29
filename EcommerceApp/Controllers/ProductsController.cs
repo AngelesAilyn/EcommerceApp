@@ -16,19 +16,6 @@ namespace EcommerceApp.Controllers
             string? category,
             string? search)
         {
-            /*
-             * ============================================================
-             * PRODUCTOS DISPONIBLES
-             * ============================================================
-             *
-             * Solo mostramos productos que:
-             *
-             * - No estén archivados.
-             * - Estén disponibles.
-             * - Tengan stock.
-             * - Pertenezcan a una categoría.
-             * - Su categoría esté activa.
-             */
 
             var productsQuery = context.Products
                 .AsNoTracking()
@@ -41,38 +28,8 @@ namespace EcommerceApp.Controllers
                     p.CategoryNavigation.IsActive);
 
 
-            /*
-             * ============================================================
-             * LIMPIAR LA BÚSQUEDA
-             * ============================================================
-             *
-             * Esto permite que:
-             *
-             * Chocolate
-             * Chocolate.
-             * "Chocolate!"
-             * ¿Chocolate?
-             *
-             * sean tratados como:
-             *
-             * Chocolate
-             */
-
             var cleanSearch = NormalizarTexto(search);
 
-
-            /*
-             * ============================================================
-             * FILTRO POR CATEGORÍA
-             * ============================================================
-             *
-             * Si el usuario seleccionó una categoría y todavía
-             * no está realizando una búsqueda, mostramos solamente
-             * esa categoría.
-             *
-             * Si existe una búsqueda, también respetamos la categoría
-             * actual para poder avisar si el producto no está allí.
-             */
 
             if (!string.IsNullOrWhiteSpace(category))
             {
@@ -81,17 +38,6 @@ namespace EcommerceApp.Controllers
                     p.CategoryNavigation.Name == category);
             }
 
-
-            /*
-             * ============================================================
-             * BÚSQUEDA
-             * ============================================================
-             *
-             * Para poder buscar correctamente incluso cuando el usuario
-             * escribe palabras con acentos o cuando Web Speech API
-             * agrega signos de puntuación, hacemos la comparación
-             * después de cargar los productos.
-             */
 
             List<Product> products;
 
@@ -120,11 +66,6 @@ namespace EcommerceApp.Controllers
             }
 
 
-            /*
-             * ============================================================
-             * CATEGORÍAS ACTIVAS
-             * ============================================================
-             */
 
             ViewBag.Categories = await context.Categories
                 .AsNoTracking()
@@ -134,21 +75,10 @@ namespace EcommerceApp.Controllers
                 .ToListAsync();
 
 
-            /*
-             * ============================================================
-             * DATOS PARA LA VISTA
-             * ============================================================
-             */
 
             ViewBag.SelectedCategory = category;
             ViewBag.Search = cleanSearch;
 
-
-            /*
-             * Si estamos buscando y estamos dentro de una categoría
-             * pero no encontramos resultados, indicamos que no existe
-             * allí y permitimos buscar en todas las categorías.
-             */
 
             if (!string.IsNullOrWhiteSpace(cleanSearch) &&
                 !string.IsNullOrWhiteSpace(category) &&
@@ -179,23 +109,6 @@ namespace EcommerceApp.Controllers
             return View(products);
         }
 
-
-        /*
-         * ================================================================
-         * NORMALIZAR TEXTO
-         * ================================================================
-         *
-         * Esta función:
-         *
-         * - convierte a minúsculas;
-         * - elimina acentos;
-         * - elimina puntos;
-         * - elimina comas;
-         * - elimina signos de interrogación;
-         * - elimina signos de exclamación;
-         * - elimina otros signos;
-         * - elimina espacios innecesarios.
-         */
 
         private static string NormalizarTexto(string? texto)
         {
