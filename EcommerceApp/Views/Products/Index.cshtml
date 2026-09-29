@@ -130,11 +130,6 @@
                 color: #fff;
             }
 
-
-    /* =========================
-           BUSCADOR
-           ========================= */
-
     .voice-search {
         max-width: 600px;
         margin: 0 auto 35px;
@@ -236,11 +231,6 @@
         }
     }
 
-
-    /* =========================
-           CATEGORÍAS
-           ========================= */
-
     .category-section.category-chocolate {
         background: #b88b5c;
     }
@@ -313,11 +303,6 @@
         letter-spacing: 1px;
         text-transform: uppercase;
     }
-
-
-    /* =========================
-           PRODUCTOS
-           ========================= */
 
     .products-grid {
         display: grid;
@@ -556,11 +541,6 @@
             font-size: 13px;
         }
 
-
-    /* =========================
-           RESPONSIVE
-           ========================= */
-
     @@media (max-width: 1200px) {
 
         .products-grid {
@@ -764,10 +744,6 @@
 
         </nav>
 
-
-        <!-- =========================
-             BUSCADOR POR VOZ Y TEXTO
-             ========================= -->
 
         <div class="voice-search">
 
@@ -1082,10 +1058,6 @@
 </div>
 
 
-<!-- =========================
-     WEB SPEECH API
-     ========================= -->
-
 <script>
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -1103,22 +1075,6 @@
             document.getElementById("searchForm");
 
 
-        /*
-         * ============================================================
-         * NORMALIZAR TEXTO
-         * ============================================================
-         *
-         * Elimina:
-         *
-         * Chocolate.
-         * Chocolate!
-         * ¿Chocolate?
-         *
-         * y convierte todo a:
-         *
-         * chocolate
-         */
-
         function normalizarTexto(texto) {
 
             if (!texto) {
@@ -1134,12 +1090,6 @@
                 .trim();
         }
 
-
-        /*
-         * ============================================================
-         * WEB SPEECH API
-         * ============================================================
-         */
 
         const SpeechRecognition =
             window.SpeechRecognition ||
@@ -1168,11 +1118,6 @@
         recognition.interimResults = false;
 
 
-        /*
-         * ============================================================
-         * COMIENZA A ESCUCHAR
-         * ============================================================
-         */
 
         recognition.onstart = function () {
 
@@ -1184,11 +1129,6 @@
         };
 
 
-        /*
-         * ============================================================
-         * RESULTADO DE VOZ
-         * ============================================================
-         */
 
         recognition.onresult = function (event) {
 
@@ -1219,12 +1159,6 @@
         };
 
 
-        /*
-         * ============================================================
-         * TERMINA EL RECONOCIMIENTO
-         * ============================================================
-         */
-
         recognition.onend = function () {
 
             button.classList.remove("listening");
@@ -1232,11 +1166,6 @@
         };
 
 
-        /*
-         * ============================================================
-         * ERRORES
-         * ============================================================
-         */
 
         recognition.onerror = function (event) {
 
@@ -1264,11 +1193,6 @@
         };
 
 
-        /*
-         * ============================================================
-         * BOTÓN DEL MICRÓFONO
-         * ============================================================
-         */
 
         button.addEventListener("click", function () {
 
@@ -1288,15 +1212,6 @@
         });
 
 
-        /*
-         * ============================================================
-         * BÚSQUEDA ESCRITA
-         * ============================================================
-         *
-         * Esperamos un pequeño momento después de que el usuario
-         * termine de escribir y enviamos el formulario.
-         */
-
         let timeoutBusqueda;
 
         input.addEventListener("input", function () {
@@ -1308,11 +1223,6 @@
                 const texto =
                     normalizarTexto(input.value);
 
-
-                /*
-                 * Si está vacío, volvemos a mostrar
-                 * todos los productos.
-                 */
 
                 if (texto === "") {
 
@@ -1329,10 +1239,6 @@
                 }
 
 
-                /*
-                 * Actualizamos el valor limpio
-                 * y enviamos la búsqueda.
-                 */
 
                 input.value = texto;
 
@@ -1342,12 +1248,6 @@
 
         });
 
-
-        /*
-         * ============================================================
-         * ENTER
-         * ============================================================
-         */
 
         input.addEventListener("keydown", function (event) {
 

@@ -2,9 +2,6 @@
 {
     public class AdminDashboardViewModel
     {
-        // =========================
-        // RESUMEN GENERAL
-        // =========================
 
         public int TotalPedidos { get; set; }
 
@@ -15,33 +12,17 @@
         public int PedidosPendientes { get; set; }
 
 
-        // =========================
-        // VENTAS POR MES
-        // =========================
-
         public List<VentaMensualViewModel> VentasPorMes { get; set; }
             = new List<VentaMensualViewModel>();
 
-
-        // =========================
-        // PRODUCTOS MÁS SOLICITADOS
-        // =========================
 
         public List<ProductoSolicitadoViewModel> ProductosMasSolicitados { get; set; }
             = new List<ProductoSolicitadoViewModel>();
 
 
-        // =========================
-        // DETALLE DE PEDIDOS
-        // =========================
-
         public List<PedidoReporteViewModel> Pedidos { get; set; }
             = new List<PedidoReporteViewModel>();
 
-
-        // =========================
-        // FECHA DEL REPORTE
-        // =========================
 
         public DateTime FechaGeneracion { get; set; }
             = DateTime.Now;

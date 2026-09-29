@@ -4,8 +4,7 @@ using EcommerceApp.Models;
 
 namespace EcommerceApp.Controllers
 {
-    // Constructor primario: userManager y signInManager quedan disponibles
-    // en toda la clase sin declarar campos ni constructor explícito.
+    
     public class AccountController(
     UserManager<ApplicationUser> userManager,
     SignInManager<ApplicationUser> signInManager) : Controller
